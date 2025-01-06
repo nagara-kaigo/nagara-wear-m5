@@ -2,7 +2,7 @@
 #include <M5Core2.h>
 
 void initRecorder() {
-    M5.begin();
+    //M5.begin();
 }
 
 void recordAndSend() {

@@ -5,4 +5,4 @@
 __MACOSX/
 data/
 config.env
-src/config.h
+main/config.h

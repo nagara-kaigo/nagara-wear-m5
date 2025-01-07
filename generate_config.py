@@ -1,5 +1,5 @@
 env_file = "config.env"
-header_file = "src/config.h"
+header_file = "main/config.h"
 
 def generate_config():
     with open(env_file, "r") as env, open(header_file, "w") as header:

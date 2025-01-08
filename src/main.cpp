@@ -25,20 +25,22 @@ void loop() {
 
   if ( M5.Touch.ispressed() ) { // タッチされている場合
     touch = M5.Touch.getPressPoint();
-    switch (appState.currentScreen) {
-      case USER_PICKER:
-        if (handleUserPickerTouch(touch, appState)) {
-          appState.currentScreen = FINAL_SCREEN;
-          M5.Lcd.clear();
-          showHeaderBar("final screen");
-          showFooterBar(appState);
-          M5.Lcd.setCursor(10,40);
-          M5.Lcd.print("User: " + appState.selectedUser);
-          M5.Lcd.print("\nReceiver: " + appState.selectedReceiver);
-        }
-        break;
-      case FINAL_SCREEN:
-        break;
+    if (touch.y < 200) {
+      switch (appState.currentScreen) {
+        case USER_PICKER:
+          if (handleUserPickerTouch(touch, appState)) {
+            appState.currentScreen = FINAL_SCREEN;
+            M5.Lcd.clear();
+            showHeaderBar("final screen");
+            showFooterBar(appState);
+            M5.Lcd.setCursor(10,40);
+            M5.Lcd.print("User: " + appState.selectedUser);
+            M5.Lcd.print("\nReceiver: " + appState.selectedReceiver);
+          }
+          break;
+        case FINAL_SCREEN:
+          break;
+      }
     }
   }
 

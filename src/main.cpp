@@ -5,16 +5,16 @@
 //#include "openai.h"
 #include "ui/header.h"
 #include "ui/footer.h"
+#include "screens/screen_pick_user.h"
 #include "screens/screen_pick_receiver.h"
 
 AppState appState;
 
 void setup() {
   M5.begin();
-  appState.currentScreen = RECEIVER_PICKER;
-  appState.selectedUser = String(DEFAULT_USER_UUID);
-  showReceiverPickerScreen(appState);
-  //showFooterBar(appState);
+  appState.currentScreen = USER_PICKER;
+  //appState.selectedUser = String(DEFAULT_USER_UUID);
+  showUserPickerScreen(appState);
   //initRecorder();
   //initNetwork();
 }
@@ -24,11 +24,10 @@ void loop() {
   TouchPoint_t touch;
 
   if ( M5.Touch.ispressed() ) { // タッチされている場合
-    Serial.println("touched");
     touch = M5.Touch.getPressPoint();
     switch (appState.currentScreen) {
-      case RECEIVER_PICKER:
-        if (handleReceiverPickerTouch(touch, appState)) {
+      case USER_PICKER:
+        if (handleUserPickerTouch(touch, appState)) {
           appState.currentScreen = FINAL_SCREEN;
           M5.Lcd.clear();
           showHeaderBar("final screen");
@@ -43,11 +42,16 @@ void loop() {
     }
   }
 
+  // Home button
   if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
-    Serial.println("BtnB");
-    appState.currentScreen = RECEIVER_PICKER;
-    showReceiverPickerScreen(appState);
+    appState.currentScreen = USER_PICKER;
+    showUserPickerScreen(appState);
+  } else if (M5.BtnA.wasReleased() || M5.BtnA.pressedFor(1000, 200)) {
+    //pass
+  } else if (M5.BtnC.wasReleased() || M5.BtnC.pressedFor(1000, 200)) {
+    //pass
   }
+
   //recordAndSend();
   //delay(10);
 }

@@ -3,6 +3,7 @@
 //#include "recorder.h"
 //#include "network.h"
 //#include "openai.h"
+#include "ui/header.h"
 #include "ui/footer.h"
 #include "screens/screen_pick_receiver.h"
 
@@ -29,8 +30,9 @@ void loop() {
         if (handleReceiverPickerTouch(touch, appState)) {
           appState.currentScreen = FINAL_SCREEN;
           M5.Lcd.clear();
+          showHeaderBar("final screen");
           showFooterBar(appState);
-          M5.Lcd.setCursor(10,10);
+          M5.Lcd.setCursor(10,40);
           M5.Lcd.print("User: " + appState.selectedUser);
           M5.Lcd.print("\nReceiver: " + appState.selectedReceiver);
         }

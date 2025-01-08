@@ -4,9 +4,9 @@ void showFooterBar(const AppState &state) {
     M5.Lcd.setTextSize(2);
     M5.Lcd.drawLine(10, 210, 310, 210, WHITE);
     M5.Lcd.setTextDatum(5);
-    M5.Lcd.drawString("back", 80, 230);
+    M5.Lcd.drawString("back", 80, 225);
     M5.Lcd.setTextDatum(4);
-    M5.Lcd.drawString("Home", 160, 230);
+    M5.Lcd.drawString("Home", 160, 225);
     M5.Lcd.setTextDatum(3);
-    M5.Lcd.drawString("setting", 240, 230);
+    M5.Lcd.drawString("setting", 240, 225);
 }

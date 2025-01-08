@@ -2,7 +2,9 @@
 
 void showReceiverPickerScreen(const AppState &state) {
     M5.Lcd.clear();
+    showHeaderBar("pick receiver");
     showFooterBar(state);
+    /*
     M5.Lcd.setCursor(10, 10);
     M5.Lcd.setTextSize(2);
     M5.Lcd.print("User: " + state.selectedUser);
@@ -11,6 +13,7 @@ void showReceiverPickerScreen(const AppState &state) {
     M5.Lcd.fillRect(10, 70, 300, 50, BLUE); // ボタン
     M5.Lcd.setCursor(60, 160);
     M5.Lcd.print("Receiver1");
+    */
 }
 
 bool handleReceiverPickerTouch(const TouchPoint_t &touch, AppState &state) {

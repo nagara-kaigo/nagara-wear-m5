@@ -41,18 +41,19 @@ void loop() {
         case FINAL_SCREEN:
           break;
       }
+    } else {
+      // Home button
+      if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
+        appState.currentScreen = USER_PICKER;
+        showUserPickerScreen(appState);
+      } else if (M5.BtnA.wasReleased() || M5.BtnA.pressedFor(1000, 200)) {
+        //pass
+      } else if (M5.BtnC.wasReleased() || M5.BtnC.pressedFor(1000, 200)) {
+        //pass
+      }
     }
   }
 
-  // Home button
-  if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
-    appState.currentScreen = USER_PICKER;
-    showUserPickerScreen(appState);
-  } else if (M5.BtnA.wasReleased() || M5.BtnA.pressedFor(1000, 200)) {
-    //pass
-  } else if (M5.BtnC.wasReleased() || M5.BtnC.pressedFor(1000, 200)) {
-    //pass
-  }
 
   //recordAndSend();
   //delay(10);

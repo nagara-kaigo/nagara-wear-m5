@@ -2,6 +2,7 @@
 
 void showReceiverPickerScreen(const AppState &state) {
     M5.Lcd.clear();
+    showFooterBar(state);
     M5.Lcd.setCursor(10, 10);
     M5.Lcd.setTextSize(2);
     M5.Lcd.print("User: " + state.selectedUser);

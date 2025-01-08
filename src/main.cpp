@@ -3,7 +3,7 @@
 #include "recorder.h"
 #include "network.h"
 #include "openai.h"
-#include "src/screens/screen_pick_receiver.h"
+#include "screens/screen_pick_receiver.h"
 
 AppState appState;
 

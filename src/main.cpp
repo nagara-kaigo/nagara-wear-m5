@@ -3,6 +3,7 @@
 //#include "recorder.h"
 //#include "network.h"
 //#include "openai.h"
+#include "ui/header.h"
 #include "ui/footer.h"
 #include "screens/screen_pick_receiver.h"
 
@@ -23,14 +24,16 @@ void loop() {
   TouchPoint_t touch;
 
   if ( M5.Touch.ispressed() ) { // タッチされている場合
+    Serial.println("touched");
     touch = M5.Touch.getPressPoint();
     switch (appState.currentScreen) {
       case RECEIVER_PICKER:
         if (handleReceiverPickerTouch(touch, appState)) {
           appState.currentScreen = FINAL_SCREEN;
           M5.Lcd.clear();
+          showHeaderBar("final screen");
           showFooterBar(appState);
-          M5.Lcd.setCursor(10,10);
+          M5.Lcd.setCursor(10,40);
           M5.Lcd.print("User: " + appState.selectedUser);
           M5.Lcd.print("\nReceiver: " + appState.selectedReceiver);
         }
@@ -41,9 +44,10 @@ void loop() {
   }
 
   if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
+    Serial.println("BtnB");
     appState.currentScreen = RECEIVER_PICKER;
     showReceiverPickerScreen(appState);
   }
   //recordAndSend();
-  //delay(100);
+  //delay(10);
 }

@@ -24,6 +24,7 @@ void loop() {
   TouchPoint_t touch;
 
   if ( M5.Touch.ispressed() ) { // タッチされている場合
+    Serial.println("touched");
     touch = M5.Touch.getPressPoint();
     switch (appState.currentScreen) {
       case RECEIVER_PICKER:
@@ -43,9 +44,10 @@ void loop() {
   }
 
   if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
+    Serial.println("BtnB");
     appState.currentScreen = RECEIVER_PICKER;
     showReceiverPickerScreen(appState);
   }
   //recordAndSend();
-  //delay(100);
+  //delay(10);
 }

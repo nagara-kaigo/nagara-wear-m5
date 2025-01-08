@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <M5Core2.h>
 #include "config.h"
 #include "recorder.h"

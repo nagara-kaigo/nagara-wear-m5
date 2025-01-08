@@ -7,11 +7,11 @@
 
 AppState appState;
 
-Screen currentScreen = RECEIVER_PICKER;
-
 void setup() {
   M5.begin();
   M5.Touch.begin();
+  Serial.begin(115200);
+  appState.currentScreen = RECEIVER_PICKER;
   appState.selectedUser = String(DEFAULT_USER_UUID);
   showReceiverPickerScreen(appState);
   //initRecorder();
@@ -23,10 +23,11 @@ void loop() {
   TouchPoint_t touch = M5.Touch.getPressPoint();
 
   if (touch.x != -1 && touch.y != -1) { // タッチされている場合
-    switch (currentScreen) {
+    M5.Lcd.clear();
+    switch (appState.currentScreen) {
       case RECEIVER_PICKER:
         if (handleReceiverPickerTouch(touch, appState)) {
-          currentScreen = FINAL_SCREEN;
+          appState.currentScreen = FINAL_SCREEN;
           M5.Lcd.clear();
           M5.Lcd.setCursor(10,10);
           M5.Lcd.print("User: " + appState.selectedUser);

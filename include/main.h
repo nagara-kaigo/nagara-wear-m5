@@ -4,7 +4,11 @@
 #include <Arduino.h>
 
 // 画面を識別する列挙型
-enum Screen { RECEIVER_PICKER, FINAL_SCREEN };
+enum Screen { 
+    USER_PICKER, 
+    RECEIVER_PICKER, 
+    FINAL_SCREEN
+};
 
 // アプリケーション全体で使用する状態管理構造体
 struct AppState {

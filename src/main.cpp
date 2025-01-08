@@ -10,8 +10,6 @@ AppState appState;
 
 void setup() {
   M5.begin();
-  M5.Touch.begin();
-  Serial.begin(115200);
   appState.currentScreen = RECEIVER_PICKER;
   appState.selectedUser = String(DEFAULT_USER_UUID);
   showReceiverPickerScreen(appState);
@@ -20,11 +18,10 @@ void setup() {
 }
 
 void loop() {
-  M5.update();
-  TouchPoint_t touch = M5.Touch.getPressPoint();
+  TouchPoint_t touch;
 
-  if (touch.x != -1 && touch.y != -1) { // タッチされている場合
-    M5.Lcd.clear();
+  if ( M5.Touch.ispressed() ) { // タッチされている場合
+    touch = M5.Touch.getPressPoint();
     switch (appState.currentScreen) {
       case RECEIVER_PICKER:
         if (handleReceiverPickerTouch(touch, appState)) {
@@ -40,5 +37,5 @@ void loop() {
     }
   }
   //recordAndSend();
-  delay(50);
+  delay(100);
 }

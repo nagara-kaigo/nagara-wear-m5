@@ -11,7 +11,7 @@ enum Screen {
     USER_PICKER, 
     RECEIVER_PICKER, 
     STANDBY,
-    RECORDER,
+    RECORDING,
     FINAL_SCREEN
 };
 

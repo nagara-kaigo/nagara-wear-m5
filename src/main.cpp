@@ -8,12 +8,13 @@
 #include "screens/screen_pick_user.h"
 #include "screens/screen_pick_receiver.h"
 #include "screens/screen_standby.h"
-//#include "screens/screen_recorder.h"
+#include "screens/screen_recording.h"
 
 AppState appState;
 
 void setup() {
   M5.begin();
+  M5.Lcd.setTextFont(4);
   appState.currentScreen = USER_PICKER;
   //appState.selectedUser = String(DEFAULT_USER_UUID);
   showUserPickerScreen(appState);
@@ -37,9 +38,8 @@ void loop() {
           break;
         case STANDBY:
           if (handleRecBtnTouch(touch, appState)) {
-            appState.currentScreen = RECORDER;
-            //showRecorderScreen(appState);
-            M5.Lcd.clear();
+            appState.currentScreen = RECORDING;
+            showRecordingScreen(appState);
           }
           break;
       }

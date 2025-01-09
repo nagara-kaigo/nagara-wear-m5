@@ -46,12 +46,19 @@ void loop() {
     } else {
       // Home button
       if (M5.BtnB.wasReleased() || M5.BtnB.pressedFor(1000, 200)) {
+        M5.Axp.SetLDOEnable(3, true);
+        delay(75);
+        M5.Axp.SetLDOEnable(3, false);
         appState.currentScreen = USER_PICKER;
         showUserPickerScreen(appState);
       } else if (M5.BtnA.wasReleased() || M5.BtnA.pressedFor(1000, 200)) {
-        //pass
+        M5.Axp.SetLDOEnable(3, true);
+        delay(75);
+        M5.Axp.SetLDOEnable(3, false);
       } else if (M5.BtnC.wasReleased() || M5.BtnC.pressedFor(1000, 200)) {
-        //pass
+        M5.Axp.SetLDOEnable(3, true);
+        delay(75);
+        M5.Axp.SetLDOEnable(3, false);
       }
     }
   }

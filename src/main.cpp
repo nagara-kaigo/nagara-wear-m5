@@ -7,6 +7,8 @@
 #include "ui/footer.h"
 #include "screens/screen_pick_user.h"
 #include "screens/screen_pick_receiver.h"
+#include "screens/screen_standby.h"
+//#include "screens/screen_recorder.h"
 
 AppState appState;
 
@@ -29,16 +31,16 @@ void loop() {
       switch (appState.currentScreen) {
         case USER_PICKER:
           if (handleUserPickerTouch(touch, appState)) {
-            appState.currentScreen = FINAL_SCREEN;
-            M5.Lcd.clear();
-            showHeaderBar("final screen");
-            showFooterBar(appState);
-            M5.Lcd.setCursor(10,40);
-            M5.Lcd.print("User: " + appState.selectedUser);
-            M5.Lcd.print("\nReceiver: " + appState.selectedReceiver);
+            appState.currentScreen = STANDBY;
+            showStandbyScreen(appState);
           }
           break;
-        case FINAL_SCREEN:
+        case STANDBY:
+          if (handleRecBtnTouch(touch, appState)) {
+            appState.currentScreen = RECORDER;
+            //showRecorderScreen(appState);
+            M5.Lcd.clear();
+          }
           break;
       }
     } else {

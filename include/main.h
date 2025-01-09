@@ -1,12 +1,17 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#define LCDWIDE 320
+#define LCDHEIGHT 240
+
 #include <Arduino.h>
 
 // 画面を識別する列挙型
 enum Screen { 
     USER_PICKER, 
     RECEIVER_PICKER, 
+    STANDBY,
+    RECORDER,
     FINAL_SCREEN
 };
 

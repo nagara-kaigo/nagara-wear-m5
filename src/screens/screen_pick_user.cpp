@@ -2,13 +2,13 @@
 
 void showUserPickerScreen(const AppState &state) {
     M5.Lcd.clear();
-    showHeaderBar("pick user");
+    showHeaderBar("利用者を選んでください");
     M5.Lcd.drawRect(20, 40, 260, 60, WHITE);
     M5.Lcd.drawRect(20, 110, 260, 60, WHITE);
     M5.Lcd.drawRect(20, 180, 260, 60, WHITE);
     M5.Lcd.setTextDatum(3);
-    M5.Lcd.drawString("test user", 30, 70);
-    M5.Lcd.drawString("user1", 30, 140);
+    M5.Lcd.drawString("テスト ユーザ", 30, 70);
+    M5.Lcd.drawString("他のユーザ", 30, 140);
 
     showFooterBar(state);
 }

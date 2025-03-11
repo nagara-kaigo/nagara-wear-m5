@@ -3,18 +3,28 @@
 void showRecordingScreen(const AppState &state) {
     M5.Lcd.clear();
     M5.Lcd.setTextColor(RED, BLACK);
-    showHeaderBar("Now Recording!");
+    showHeaderBar("AI文字起こし中!");
     M5.Lcd.setTextColor(WHITE, BLACK);
-    M5.Lcd.setCursor(0,40);
-    M5.Lcd.print("meal type: LUNCH");
-    M5.Lcd.print("\nmainDish: 80%");
-	M5.Lcd.print("\nsideDish: 100%");
-    M5.Lcd.setTextColor(GREEN, BLACK);
-	M5.Lcd.print(" OK");
-    M5.Lcd.setTextColor(WHITE, BLACK);
-	M5.Lcd.print("\nsoup: 30%");
-	M5.Lcd.print("\nnote: ");
+    M5.Lcd.setCursor(0,60);
+    M5.Lcd.print("氏名: \n食事の種類: \n主食: \n副菜: \n汁物: \n特記事項");
+    showFooterBar(state);
 
+    delay(15000);
+
+    M5.Lcd.clear();
+    M5.Lcd.setTextColor(RED, BLACK);
+    showHeaderBar("AI文字起こし中!");
+    M5.Lcd.setTextColor(WHITE, BLACK);
+    M5.Lcd.setCursor(0,60);
+    M5.Lcd.print("氏名: 春日井太郎さん");
+    M5.Lcd.print("\n食事の種類: 昼食");
+    M5.Lcd.print("\n主食: 1/10");
+	M5.Lcd.print("\n副菜: 2/10");
+    //M5.Lcd.setTextColor(GREEN, BLACK);
+	//M5.Lcd.print(" 完了");
+    //M5.Lcd.setTextColor(WHITE, BLACK);
+	M5.Lcd.print("\n汁物: 0/10");
+	M5.Lcd.print("\n特記事項: 途中で手が止まってしまった。水分はほとんど摂ってない。");
     showFooterBar(state);
 }
 

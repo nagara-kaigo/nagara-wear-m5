@@ -10,7 +10,9 @@ void showStandbyScreen(const AppState &state) {
     M5.Lcd.clear();
     showHeaderBar("RECボタンで開始します");
     M5.Lcd.setCursor(10,40);
-    M5.Lcd.print("User: " + state.selectedUser);
+    M5.Lcd.setTextDatum(0);
+    //M5.Lcd.drawString("User: " + state.selectedUser, 10, 40);
+    M5.Lcd.drawString("利用者: 介護士A", 10, 40);
     //myButton.draw();
     M5.Lcd.drawRect(100, 80, 120, 80, WHITE);
     M5.Lcd.setTextDatum(4);

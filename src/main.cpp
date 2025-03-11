@@ -1,4 +1,5 @@
 #include <M5Core2.h>
+#include "CUF_24px.h"
 #include "config.h"
 //#include "recorder.h"
 //#include "network.h"
@@ -15,6 +16,7 @@ AppState appState;
 void setup() {
   M5.begin();
   M5.Lcd.setTextFont(4);
+  M5.Lcd.setFreeFont(&unicode_24px);
   appState.currentScreen = USER_PICKER;
   //appState.selectedUser = String(DEFAULT_USER_UUID);
   showUserPickerScreen(appState);

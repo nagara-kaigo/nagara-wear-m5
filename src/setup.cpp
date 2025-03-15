@@ -4,7 +4,7 @@
 #include "screen_manager.h"
 #include "system/sd_handler.h"
 #include "system/wifi_manager.h"
-#include "audio/audio_recorder.h"
+#include "audio/audio_handler.h"
 //#include "audio/audio_buffer.h"
 
 AppState appState;
@@ -23,10 +23,4 @@ void initializeSystem() {
   }
 
   connectToWiFi();
-  
-  initializeAudioRecorder();
-  //initializeAudioBuffer();
-
-  xTaskCreatePinnedToCore(task0, "Task0", 16384, NULL, 2, NULL, 1);
-  xTaskCreatePinnedToCore(task1, "Task1", 16384, NULL, 1, NULL, 1);
 }

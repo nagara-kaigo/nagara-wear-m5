@@ -2,10 +2,12 @@
 
 void showUserPickerScreen(const AppState &state) {
     M5.Lcd.clear();
+    M5.Lcd.fillScreen(WHITE);
+    M5.Lcd.setTextColor(BLACK, WHITE);
     showHeaderBar("利用者を選んでください");
-    M5.Lcd.drawRect(20, 40, 260, 60, WHITE);
-    M5.Lcd.drawRect(20, 110, 260, 60, WHITE);
-    M5.Lcd.drawRect(20, 180, 260, 60, WHITE);
+    M5.Lcd.drawRect(20, 40, 260, 60, BLACK);
+    M5.Lcd.drawRect(20, 110, 260, 60, BLACK);
+    M5.Lcd.drawRect(20, 180, 260, 60, BLACK);
     M5.Lcd.setTextDatum(3);
     M5.Lcd.drawString("介護士A", 30, 70);
     M5.Lcd.drawString("介護士B", 30, 140);

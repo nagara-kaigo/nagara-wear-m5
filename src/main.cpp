@@ -7,10 +7,10 @@
 #include "screens/screen_pick_receiver.h"
 #include "screens/screen_standby.h"
 #include "screens/screen_recording.h"
-#include "audio_recorder.h"
-#include "sd_handler.h"
-#include "whisper_client.h"
-#include "wifi_manager.h"
+#include "audio/audio_recorder.h"
+#include "system/sd_handler.h"
+#include "services/whisper_client.h"
+#include "system/wifi_manager.h"
 
 AppState appState;
 

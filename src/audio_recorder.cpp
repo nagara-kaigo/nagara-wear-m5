@@ -10,6 +10,7 @@ static uint8_t* tempBuffer = nullptr;
 static volatile size_t writeIndex = 0;
 static volatile size_t readIndex  = 0;
 static SemaphoreHandle_t ringBufferMutex;
+static uint8_t buffer[1024];
 static bool isRecording = false;
 File recordingFile;
 
@@ -46,11 +47,42 @@ void initializeAudioRecorder() {
 }
 
 void toggleRecording() {
-    isRecording = !isRecording;
     if (isRecording) {
-        SD.remove("/recording.wav");
-        recordingFile = SD.open("/recording.wav", FILE_APPEND);
-    } else {
+        isRecording = false;
+        updateWavHeader(recordingFile);
         recordingFile.close();
+        Network::sendAudioToAPI("/recording.wav");
+    } else {
+        isRecording = true;
+        SD.remove("/recording.wav");
+        recordingFile = SD.open("/recording.wav", FILE_WRITE);
+        writeWavHeader(recordingFile, 16000, 16, 1);
     }
+}
+
+void task0(void* arg) {
+    while (1) {
+        if (isRecording) {
+            size_t bytesRead;
+            i2s_read(I2S_NUM_0, buffer, sizeof(buffer), &bytesRead, pdMS_TO_TICKS(100));
+            if (bytesRead > 0) {
+                recordingFile.write(buffer, bytesRead);
+            }
+        }
+        vTaskDelay(pdMS_TO_TICKS(30));
+    }
+}
+
+void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannels) {
+    uint8_t wavHeader[44] = { /* ヘッダー省略 */ };
+    file.write(wavHeader, 44);
+}
+
+void updateWavHeader(File file) {
+    uint32_t fileSize = file.size();
+    file.seek(4);
+    file.write((uint8_t*)&fileSize, 4);
+    file.seek(40);
+    uint32_t dataChunkSize = fileSize - 44;
+    file.write((uint8_t*)&dataChunkSize, 4);
 }

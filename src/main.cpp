@@ -11,6 +11,7 @@
 #include "sd_handler.h"
 #include "whisper_client.h"
 #include "wifi_manager.h"
+#include "audio_buffer.h"
 
 AppState appState;
 
@@ -20,17 +21,20 @@ void setup() {
   M5.Lcd.setFreeFont(&unicode_24px);
 
   appState.currentScreen = USER_PICKER;
-  //appState.selectedUser = String(DEFAULT_USER_UUID);
   showUserPickerScreen(appState);
 
-  initializeAudioRecorder();
-  connectToWiFi();
-
-  if (initializeSD()) { // SDカードの初期化
-    Serial.println("SD Card initialized.");
-  } else {
-    Serial.println("SD Card not found.");
+  if (!initializeSD()) {
+    Serial.println("SD Card init failed!");
+    return;
   }
+
+  connectToWiFi();
+  
+  initializeAudioRecorder();
+  initializeAudioBuffer();
+
+  xTaskCreatePinnedToCore(task0, "Task0", 16384, NULL, 2, NULL, 1);
+  xTaskCreatePinnedToCore(task1, "Task1", 16384, NULL, 1, NULL, 1);
 }
 
 void loop() {
@@ -39,6 +43,7 @@ void loop() {
 
   if ( M5.Touch.ispressed() ) { // タッチされている場合
     touch = M5.Touch.getPressPoint();
+    // メインコンテンツのタッチ
     if (touch.y < 200) {
       switch (appState.currentScreen) {
         case USER_PICKER:
@@ -54,6 +59,7 @@ void loop() {
           }
           break;
       }
+    // フッター部分のタッチ
     } else {
       // Home button
       if (touch.x >= 109 && touch.x <=218) {
@@ -62,6 +68,7 @@ void loop() {
         M5.Axp.SetLDOEnable(3, false);
         appState.currentScreen = USER_PICKER;
         showUserPickerScreen(appState);
+      // transcription button
       } else if (touch.x < 109) {
         M5.Axp.SetLDOEnable(3, true);
         delay(75);

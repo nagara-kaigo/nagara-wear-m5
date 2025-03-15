@@ -2,6 +2,7 @@
 #include "audio/audio_recorder.h"
 #include "audio/audio_handler.h"
 #include "system/wifi_manager.h"
+#include "services/whisper_client.h"
 
 void task0(void *parameter);
 void task1(void *parameter);
@@ -22,7 +23,7 @@ void task0(void *parameter) {
 
 void task1(void *parameter) {
   while (true) {
-    uploadAudioData();  // ネットワーク経由でデータ送信
+    transcribeAudio();  // ネットワーク経由でデータ送信
     vTaskDelay(5000 / portTICK_PERIOD_MS);  // 5秒ごとに送信
   }
 }

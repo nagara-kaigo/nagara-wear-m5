@@ -1,21 +1,11 @@
 #include "whisper_client.h"
-#include <Arduino.h>
-#include <HTTPClient.h>
+#include "network_handler.h"
 #include "SD.h"
+#include "config.h"
 
-const char* host = "api.openai.com";
-const int httpsPort = 443;
-const char* api_key = "YOUR_API_KEY";
+const char* API_KEY = OPENAI_API_KEY;
 
 void transcribeAudio() {
-    WiFiClientSecure client;
-    client.setInsecure();
-
-    if (!client.connect(host, httpsPort)) {
-        Serial.println("OpenAI APIへの接続に失敗しました");
-        return;
-    }
-
     File recordingFile = SD.open("/recording.wav", FILE_READ);
     if (!recordingFile) {
         Serial.println("録音ファイルを開けませんでした");
@@ -27,13 +17,20 @@ void transcribeAudio() {
                        "Content-Disposition: form-data; name=\"model\"\r\n\r\n" +
                        "whisper-1\r\n";
 
-    String request =
-        String("POST ") + "/v1/audio/transcriptions" + " HTTP/1.1\r\n" +
-        "Host: " + host + "\r\n" +
-        "Authorization: Bearer " + String(api_key) + "\r\n" +
+    String headers =
+        "Authorization: Bearer " + String(API_KEY) + "\r\n" +
         "Content-Type: multipart/form-data; boundary=" + boundary + "\r\n" +
-        "Connection: close\r\n\r\n";
+        "Connection: close\r\n";
 
-    client.print(request);
+    String body = partModel + "--" + boundary + "--\r\n";
+
+    NetworkHandler network;
+    String response;
+    if (network.sendHttpPostRequest("/v1/audio/transcriptions", headers, body, response)) {
+        Serial.println("API応答: " + response);
+    } else {
+        Serial.println("リクエスト送信に失敗しました");
+    }
+
     recordingFile.close();
 }

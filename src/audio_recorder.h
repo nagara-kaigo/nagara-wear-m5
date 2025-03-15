@@ -1,6 +1,7 @@
 #ifndef AUDIO_RECORDER_H
 #define AUDIO_RECORDER_H
 
+#include <M5Core2.h>
 #include <driver/i2s.h>
 
 void initializeAudioRecorder();

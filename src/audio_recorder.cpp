@@ -2,6 +2,7 @@
 #include <M5Core2.h>
 #include <Arduino.h>
 #include "sd_handler.h"
+#include "whisper_client.h"
 
 #define BUFFER_SIZE (16000 * 2 * 10) 
 
@@ -51,7 +52,7 @@ void toggleRecording() {
         isRecording = false;
         updateWavHeader(recordingFile);
         recordingFile.close();
-        Network::sendAudioToAPI("/recording.wav");
+        transcribeAudio("/recording.wav");
     } else {
         isRecording = true;
         SD.remove("/recording.wav");

@@ -4,6 +4,6 @@
 #include <WiFiClientSecure.h>
 #include <string>
 
-void transcribeAudio();
+void transcribeAudio(const char* filename);
 
 #endif

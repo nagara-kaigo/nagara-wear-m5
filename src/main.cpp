@@ -7,6 +7,7 @@
 #include "screens/screen_pick_receiver.h"
 #include "screens/screen_standby.h"
 #include "screens/screen_recording.h"
+#include "screens/screen_transcription.h"
 #include "audio_recorder.h"
 #include "sd_handler.h"
 #include "whisper_client.h"
@@ -74,7 +75,7 @@ void loop() {
         delay(75);
         M5.Axp.SetLDOEnable(3, false);
         appState.currentScreen = TRANSCRIPTION;
-        //showTranscriptionScreen(appState);
+        showTranscriptionScreen(appState);
       } else if (touch.x > 218) {
         M5.Axp.SetLDOEnable(3, true);
         delay(75);

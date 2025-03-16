@@ -15,10 +15,8 @@ void changeScreen(Screen newScreen) {
     case RECORDING:
       showRecordingScreen(appState);
       break;
-    /*
     case TRANSCRIPTION:
       showTranscriptionScreen(appState);
       break;
-    */
   }
 }

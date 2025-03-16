@@ -1,5 +1,5 @@
-#ifndef AUDIO_RECORD_H
-#define AUDIO_RECORD_H
+#ifndef AUDIO_HANDLER_H
+#define AUDIO_HANDLER_H
 
 void initializeAudioRecorder();
 

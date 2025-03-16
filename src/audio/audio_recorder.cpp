@@ -1,11 +1,8 @@
 #include "audio_recorder.h"
-#include <M5Core2.h>
 
 AudioRecorder::AudioRecorder()
     : audioRingBuffer(nullptr), tempBuffer(nullptr), writeIndex(0), readIndex(0),
-      ringBufferMutex(nullptr), recording(false), recordingTaskHandle(nullptr) {
-    initialize();
-}
+      ringBufferMutex(nullptr), recording(false), recordingTaskHandle(nullptr) {}
 
 AudioRecorder::~AudioRecorder() {
     if (audioRingBuffer) free(audioRingBuffer);
@@ -14,9 +11,22 @@ AudioRecorder::~AudioRecorder() {
 }
 
 void AudioRecorder::initialize() {
+    /*
+    M5.begin(); // M5Core2の初期化
+    if (!SD.begin()) {
+        Serial.println("SDカードの初期化に失敗しました");
+        return;
+    }
+    */
+
     audioRingBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
     tempBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
     ringBufferMutex = xSemaphoreCreateMutex();
+
+    if (!audioRingBuffer || !tempBuffer || !ringBufferMutex) {
+        Serial.println("Memory allocation failed!");
+        return;
+    }
 
     i2s_config_t i2s_config = {
         .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM),
@@ -30,20 +40,13 @@ void AudioRecorder::initialize() {
         .use_apll = false
     };
 
-    i2s_pin_config_t pin_config = {
-        .bck_io_num = 12,
-        .ws_io_num = 0,
-        .data_out_num = -1,
-        .data_in_num = 34
-    };
-
     i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
-    i2s_set_pin(I2S_PORT, &pin_config);
+    i2s_set_pin(I2S_PORT, NULL); // 内蔵マイク使用
     i2s_set_clk(I2S_PORT, 16000, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
 }
 
 void AudioRecorder::startRecording() {
-    if (recording) return;
+    if (recording || recordingTaskHandle != nullptr) return;
     recording = true;
 
     recordingFile = SD.open("/recording.pcm", FILE_WRITE);
@@ -53,38 +56,45 @@ void AudioRecorder::startRecording() {
         return;
     }
 
-    xTaskCreatePinnedToCore(recordTask, "AudioRecordTask", 4096, this, 1, &recordingTaskHandle, 1);
+    Serial.println("[task0] Recording start");
+    xTaskCreatePinnedToCore(recordTask, "AudioRecordTask", 8192, this, 2, &recordingTaskHandle, 1);
 }
 
 void AudioRecorder::stopRecording() {
     if (!recording) return;
-    recording = false;
+    recording = false; 
 
     if (recordingTaskHandle) {
+        vTaskDelay(100 / portTICK_PERIOD_MS);
         vTaskDelete(recordingTaskHandle);
         recordingTaskHandle = nullptr;
     }
-    
+
     if (recordingFile) {
         recordingFile.close();
     }
-}
 
-bool AudioRecorder::isRecording() const {
-    return recording;
+    Serial.println("[task0] Recording end");
 }
 
 void AudioRecorder::recordTask(void* param) {
     AudioRecorder* recorder = static_cast<AudioRecorder*>(param);
     size_t bytesRead;
-    
+
+    if (!recorder->tempBuffer) {
+        Serial.println("Error: tempBuffer is NULL");
+        recorder->recording = false;
+        vTaskDelete(nullptr);
+        return;
+    }
+
     while (recorder->recording) {
-        i2s_read(I2S_PORT, recorder->tempBuffer, BUFFER_SIZE, &bytesRead, portMAX_DELAY);
-        
-        if (bytesRead > 0) {
+        esp_err_t result = i2s_read(I2S_PORT, recorder->tempBuffer, BUFFER_SIZE, &bytesRead, portMAX_DELAY);
+
+        if (result == ESP_OK && bytesRead > 0) {
             recorder->recordingFile.write(recorder->tempBuffer, bytesRead);
         }
     }
-    
+
     vTaskDelete(nullptr);
 }

@@ -6,7 +6,7 @@
 #include "config.h"
 #include "../ui/header.h"
 #include "../ui/footer.h"
-#include "../audio_recorder.h"
+//#include "../audio_recorder.h"
 
 void showTranscriptionScreen(const AppState &state);
 

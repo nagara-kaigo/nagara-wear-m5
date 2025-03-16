@@ -8,7 +8,7 @@ class NetworkHandler {
 public:
     NetworkHandler();
     bool sendHttpPostRequest(const String& url, const String& headers, const String& body, String& response);
-    
+    WiFiClientSecure& getClient() { return client; }
 private:
     WiFiClientSecure client;
 };

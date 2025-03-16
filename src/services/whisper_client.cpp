@@ -13,24 +13,73 @@ void transcribeAudio() {
     }
 
     String boundary = "----M5StackBoundary";
+    
+    // `model` のパート
     String partModel = "--" + boundary + "\r\n" +
                        "Content-Disposition: form-data; name=\"model\"\r\n\r\n" +
                        "whisper-1\r\n";
 
-    String headers =
+    // `file` のヘッダー
+    String partFileHeader = "--" + boundary + "\r\n" +
+                            "Content-Disposition: form-data; name=\"file\"; filename=\"recording.wav\"\r\n" +
+                            "Content-Type: audio/wav\r\n\r\n";
+
+    String partEnd = "\r\n--" + boundary + "--\r\n";
+
+    // **Content-Length の計算**
+    size_t fileSize = recordingFile.size();
+    size_t contentLength = partModel.length() + partFileHeader.length() + fileSize + partEnd.length();
+
+    // **HTTP ヘッダーの作成**
+    String headers = String(
+        "POST /v1/audio/transcriptions HTTP/1.1\r\n") +
+        "Host: api.openai.com\r\n" +
         "Authorization: Bearer " + String(API_KEY) + "\r\n" +
         "Content-Type: multipart/form-data; boundary=" + boundary + "\r\n" +
-        "Connection: close\r\n";
+        "Content-Length: " + String(contentLength) + "\r\n" +
+        "Connection: close\r\n\r\n";
 
-    String body = partModel + "--" + boundary + "--\r\n";
-
+    // **HTTP リクエストの送信**
     NetworkHandler network;
-    String response;
-    if (network.sendHttpPostRequest("/v1/audio/transcriptions", headers, body, response)) {
-        Serial.println("API応答: " + response);
-    } else {
-        Serial.println("リクエスト送信に失敗しました");
+    WiFiClientSecure& client = network.getClient();  // `WiFiClientSecure` の取得
+
+    if (!client.connect("api.openai.com", 443)) {
+        Serial.println("APIサーバーに接続できませんでした");
+        return;
     }
 
+    // **ヘッダー送信**
+    client.print(headers);
+
+    // **`model` のパートを送信**
+    client.print(partModel);
+
+    // **`file` のヘッダーを送信**
+    client.print(partFileHeader);
+
+    // **音声データをチャンク単位で送信**
+    uint8_t buffer[512];
+    size_t bytesRead;
+    while ((bytesRead = recordingFile.read(buffer, sizeof(buffer))) > 0) {
+        client.write(buffer, bytesRead);
+    }
+
+    // **最後のバウンダリを送信**
+    client.print(partEnd);
+
     recordingFile.close();
+
+    // **レスポンスの取得**
+    String response = "";
+    while (client.available() == 0) {
+        delay(10);
+    }
+
+    while (client.available()) {
+        response += client.readString();
+    }
+
+    client.stop();
+
+    Serial.println("API応答: " + response);
 }

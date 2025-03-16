@@ -4,7 +4,6 @@
 #include "screen_manager.h"
 #include "system/sd_handler.h"
 #include "system/wifi_manager.h"
-#include "audio/audio_handler.h"
 //#include "audio/audio_buffer.h"
 
 AppState appState;

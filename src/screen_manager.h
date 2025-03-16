@@ -7,6 +7,7 @@
 #include "screens/screen_pick_receiver.h"
 #include "screens/screen_standby.h"
 #include "screens/screen_recording.h"
+#include "screens/screen_transcription.h"
 
 void changeScreen(Screen newScreen);
 

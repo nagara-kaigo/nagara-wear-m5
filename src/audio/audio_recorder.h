@@ -15,9 +15,9 @@ public:
     void startRecording();
     void stopRecording();
     bool isRecording() const;
+    void initialize();
 
 private:
-    void initialize();
     static void recordTask(void* param);
     
     uint8_t* audioRingBuffer;

@@ -29,8 +29,8 @@ void stopBackgroundTasks() {
 void task0(void *parameter) {
     recorder.startRecording();
     while (true) {
-        vTaskDelay(30 / portTICK_PERIOD_MS);
         recorder.recordTask(parameter);
+        vTaskDelay(30 / portTICK_PERIOD_MS);
         /*
         vTaskDelay(3000 / portTICK_PERIOD_MS);
         recorder.stopRecording();
@@ -41,9 +41,9 @@ void task0(void *parameter) {
 
 void task1(void *parameter) {
     while (true) {
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
         Serial.println("[task1] Transcribing audio");
         transcribeAudio();  // ネットワーク経由で送信
         Serial.println("[task1] Transcription complete");
-        vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 }

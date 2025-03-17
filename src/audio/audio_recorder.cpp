@@ -20,14 +20,13 @@ AudioRecorder::~AudioRecorder() {
 }
 
 void AudioRecorder::initialize() {
+    this->tempBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
     audioRingBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
     if (!audioRingBuffer) {
         Serial.println("Failed to allocate audioRingBuffer");
         while(1);  // メモリ確保失敗時は停止
         //return;
     }
-
-    tempBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
     if (!tempBuffer) {
         Serial.println("Failed to allocate tempBuffer");
         free(audioRingBuffer);  // 失敗時に確保済みメモリを解放
@@ -65,7 +64,6 @@ void AudioRecorder::initialize() {
         .data_in_num = 34   // DINピン
       };
 
-    i2s_driver_uninstall(I2S_PORT);  // 既存のI2Sドライバを削除
     esp_err_t err = i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
     if (err != ESP_OK) {
         Serial.printf("I2S Driver install failed: %d\n", err);
@@ -110,30 +108,37 @@ void AudioRecorder::stopRecording() {
 }
 
 void AudioRecorder::recordTask(void* param) {
+    uint8_t buffer[1024];  
+    bool tmp=true;
+    Serial.println("recording now");
     AudioRecorder* recorder = static_cast<AudioRecorder*>(param);
     size_t bytesRead;
-
+    Serial.println("before if");
+    /*
     if (!recorder->tempBuffer) {
         Serial.println("Error: tempBuffer is NULL");
         recorder->recording = false;
         vTaskDelete(nullptr);
         return;
-    }
+    }*/
 
-    while (recorder->recording) {
-        esp_err_t result = i2s_read(I2S_PORT, recorder->tempBuffer, BUFFER_SIZE, &bytesRead, portMAX_DELAY);
+    Serial.println("before while");
+
+    //while (tmp) {
+        Serial.println("start I2s_read");
+        esp_err_t result = i2s_read(I2S_PORT, buffer, sizeof(buffer), &bytesRead, portMAX_DELAY);
         Serial.printf("Bytes read: %d\n", bytesRead);
         Serial.printf("Result: %d\n", result);
 
         if (result == ESP_OK && bytesRead > 0) {
             for (int i = 0; i < 10&&bytesRead; i++) {
-                Serial.printf("%02x ", recorder->tempBuffer[i]);
+                Serial.printf("%02x ", buffer[i]);
             }
-            recorder->recordingFile.write(recorder->tempBuffer, bytesRead);
+            recorder->recordingFile.write(buffer, bytesRead);
         }
-    }
+    //}
 
-    recorder->recording = false;
-    vTaskDelete(nullptr);
+    //recorder->recording = false;
+    //vTaskDelete(nullptr);
     return;
 }

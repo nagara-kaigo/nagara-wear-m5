@@ -9,8 +9,8 @@ void task1(void *parameter);
 
 void startBackgroundTasks() {
     recorder.initialize();
-    xTaskCreatePinnedToCore(task0, "AudioTask", 8192, NULL, 2, &task0Handle, 1);
-    xTaskCreatePinnedToCore(task1, "NetworkTask", 4096, NULL, 1, &task1Handle, 1);
+    xTaskCreatePinnedToCore(task0, "AudioTask", 16384, NULL, 2, &task0Handle, 1);
+    xTaskCreatePinnedToCore(task1, "NetworkTask", 16384, NULL, 1, &task1Handle, 1);
 }
 
 void stopBackgroundTasks() {

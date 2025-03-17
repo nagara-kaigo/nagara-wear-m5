@@ -5,26 +5,44 @@ AudioRecorder::AudioRecorder()
       ringBufferMutex(nullptr), recording(false), recordingTaskHandle(nullptr) {}
 
 AudioRecorder::~AudioRecorder() {
-    if (audioRingBuffer) free(audioRingBuffer);
-    if (tempBuffer) free(tempBuffer);
-    if (ringBufferMutex) vSemaphoreDelete(ringBufferMutex);
+    if (audioRingBuffer) {
+        free(audioRingBuffer);
+        audioRingBuffer = nullptr;
+    }
+    if (tempBuffer) {
+        free(tempBuffer);
+        tempBuffer = nullptr;
+    }
+    if (ringBufferMutex) {
+        vSemaphoreDelete(ringBufferMutex);
+        ringBufferMutex = nullptr;
+    }
 }
 
 void AudioRecorder::initialize() {
-    /*
-    M5.begin(); // M5Core2の初期化
-    if (!SD.begin()) {
-        Serial.println("SDカードの初期化に失敗しました");
-        return;
-    }
-    */
-
     audioRingBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
-    tempBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
-    ringBufferMutex = xSemaphoreCreateMutex();
+    if (!audioRingBuffer) {
+        Serial.println("Failed to allocate audioRingBuffer");
+        while(1);  // メモリ確保失敗時は停止
+        //return;
+    }
 
-    if (!audioRingBuffer || !tempBuffer || !ringBufferMutex) {
-        Serial.println("Memory allocation failed!");
+    tempBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
+    if (!tempBuffer) {
+        Serial.println("Failed to allocate tempBuffer");
+        free(audioRingBuffer);  // 失敗時に確保済みメモリを解放
+        audioRingBuffer = nullptr;
+        while(1);  // メモリ確保失敗時は停止
+        //return;
+    }
+
+    ringBufferMutex = xSemaphoreCreateMutex();
+    if (!ringBufferMutex) {
+        Serial.println("Failed to create mutex");
+        free(audioRingBuffer);
+        free(tempBuffer);
+        audioRingBuffer = nullptr;
+        tempBuffer = nullptr;
         return;
     }
 
@@ -40,8 +58,22 @@ void AudioRecorder::initialize() {
         .use_apll = false
     };
 
-    i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
-    i2s_set_pin(I2S_PORT, NULL); // 内蔵マイク使用
+    i2s_pin_config_t pin_config = {
+        .bck_io_num = 12,   // BCKピン
+        .ws_io_num = 0,     // LRCKピン
+        .data_out_num = -1, // 出力不要（録音のみ）
+        .data_in_num = 34   // DINピン
+      };
+
+    i2s_driver_uninstall(I2S_PORT);  // 既存のI2Sドライバを削除
+    esp_err_t err = i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
+    if (err != ESP_OK) {
+        Serial.printf("I2S Driver install failed: %d\n", err);
+        return;
+    }
+
+    //i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
+    i2s_set_pin(I2S_PORT, &pin_config); // 内蔵マイク使用
     i2s_set_clk(I2S_PORT, 16000, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
 }
 
@@ -92,9 +124,14 @@ void AudioRecorder::recordTask(void* param) {
         esp_err_t result = i2s_read(I2S_PORT, recorder->tempBuffer, BUFFER_SIZE, &bytesRead, portMAX_DELAY);
 
         if (result == ESP_OK && bytesRead > 0) {
+            for (int i = 0; i < 10&&bytesRead; i++) {
+                Serial.printf("%02x ", recorder->tempBuffer[i]);
+            }
             recorder->recordingFile.write(recorder->tempBuffer, bytesRead);
         }
     }
 
+    recorder->recording = false;
     vTaskDelete(nullptr);
+    return;
 }

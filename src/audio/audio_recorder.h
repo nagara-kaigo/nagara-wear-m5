@@ -16,9 +16,10 @@ public:
     void stopRecording();
     bool isRecording() const;
     void initialize();
+    static void recordTask(void* param);
 
 private:
-    static void recordTask(void* param);
+    //static void recordTask(void* param);
     
     uint8_t* audioRingBuffer;
     uint8_t* tempBuffer;

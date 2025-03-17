@@ -8,7 +8,7 @@ void task0(void *parameter);
 void task1(void *parameter);
 
 void startBackgroundTasks() {
-    recorder.initialize();
+    //recorder.initialize();
     xTaskCreatePinnedToCore(task0, "AudioTask", 16384, NULL, 2, &task0Handle, 1);
     xTaskCreatePinnedToCore(task1, "NetworkTask", 16384, NULL, 1, &task1Handle, 1);
 }
@@ -27,11 +27,15 @@ void stopBackgroundTasks() {
 }
 
 void task0(void *parameter) {
+    recorder.startRecording();
     while (true) {
-        recorder.startRecording();
+        vTaskDelay(30 / portTICK_PERIOD_MS);
+        recorder.recordTask(parameter);
+        /*
         vTaskDelay(3000 / portTICK_PERIOD_MS);
         recorder.stopRecording();
         vTaskDelay(1000 / portTICK_PERIOD_MS); 
+        */
     }
 }
 

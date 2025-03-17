@@ -122,6 +122,8 @@ void AudioRecorder::recordTask(void* param) {
 
     while (recorder->recording) {
         esp_err_t result = i2s_read(I2S_PORT, recorder->tempBuffer, BUFFER_SIZE, &bytesRead, portMAX_DELAY);
+        Serial.printf("Bytes read: %d\n", bytesRead);
+        Serial.printf("Result: %d\n", result);
 
         if (result == ESP_OK && bytesRead > 0) {
             for (int i = 0; i < 10&&bytesRead; i++) {

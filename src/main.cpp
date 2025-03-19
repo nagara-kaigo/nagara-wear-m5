@@ -5,6 +5,7 @@
 #include "audio/audio_recorder.h"
 
 AudioRecorder recorder; // グローバルインスタンス
+File recordingFile;
 
 void setup() {
   initializeSystem();

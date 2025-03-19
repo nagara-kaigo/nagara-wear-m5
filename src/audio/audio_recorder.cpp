@@ -1,8 +1,15 @@
 #include "audio_recorder.h"
+#include "../services/whisper_client.h"
 
 AudioRecorder::AudioRecorder()
     : audioRingBuffer(nullptr), tempBuffer(nullptr), writeIndex(0), readIndex(0),
-      ringBufferMutex(nullptr), recording(false), recordingTaskHandle(nullptr) {}
+      ringBufferMutex(nullptr), recording(false), recordingTaskHandle(nullptr)
+      {
+        writeIndex = 0;
+        readIndex = 0;
+        audioRingBuffer = nullptr;
+        tempBuffer = nullptr;
+      }
 
 AudioRecorder::~AudioRecorder() {
     if (audioRingBuffer) {
@@ -27,21 +34,12 @@ void AudioRecorder::initialize() {
         while(1);  // メモリ確保失敗時は停止
         //return;
     }
-    if (!tempBuffer) {
-        Serial.println("Failed to allocate tempBuffer");
-        free(audioRingBuffer);  // 失敗時に確保済みメモリを解放
-        audioRingBuffer = nullptr;
-        while(1);  // メモリ確保失敗時は停止
-        //return;
-    }
 
     ringBufferMutex = xSemaphoreCreateMutex();
     if (!ringBufferMutex) {
         Serial.println("Failed to create mutex");
         free(audioRingBuffer);
-        free(tempBuffer);
         audioRingBuffer = nullptr;
-        tempBuffer = nullptr;
         return;
     }
 
@@ -78,16 +76,18 @@ void AudioRecorder::initialize() {
 void AudioRecorder::startRecording() {
     if (recording || recordingTaskHandle != nullptr) return;
     recording = true;
-
-    recordingFile = SD.open("/recording.pcm", FILE_WRITE);
+    /*
+    recordingFile = SD.open("/recording.wav", FILE_WRITE);
     if (!recordingFile) {
         Serial.println("Failed to open file for recording");
         recording = false;
         return;
     }
+    writeWavHeader(recordingFile,16000, 16, 1);
+    */
 
     Serial.println("[task0] Recording start");
-    xTaskCreatePinnedToCore(recordTask, "AudioRecordTask", 8192, this, 2, &recordingTaskHandle, 1);
+    //xTaskCreatePinnedToCore(recordTask, "AudioRecordTask", 8192, this, 2, &recordingTaskHandle, 1);
 }
 
 void AudioRecorder::stopRecording() {
@@ -108,35 +108,32 @@ void AudioRecorder::stopRecording() {
 }
 
 void AudioRecorder::recordTask(void* param) {
+    Serial.println("start recordTask");
+    if (param == nullptr) {
+        Serial.println("Error: recordTask received nullptr");
+        vTaskDelete(nullptr);
+        return;
+    }
     uint8_t buffer[1024];  
-    bool tmp=true;
     Serial.println("recording now");
     AudioRecorder* recorder = static_cast<AudioRecorder*>(param);
     size_t bytesRead;
-    Serial.println("before if");
-    /*
-    if (!recorder->tempBuffer) {
-        Serial.println("Error: tempBuffer is NULL");
-        recorder->recording = false;
-        vTaskDelete(nullptr);
-        return;
-    }*/
-
-    Serial.println("before while");
-
-    //while (tmp) {
-        Serial.println("start I2s_read");
-        esp_err_t result = i2s_read(I2S_PORT, buffer, sizeof(buffer), &bytesRead, portMAX_DELAY);
-        Serial.printf("Bytes read: %d\n", bytesRead);
-        Serial.printf("Result: %d\n", result);
-
-        if (result == ESP_OK && bytesRead > 0) {
-            for (int i = 0; i < 10&&bytesRead; i++) {
-                Serial.printf("%02x ", buffer[i]);
-            }
-            recorder->recordingFile.write(buffer, bytesRead);
+    esp_err_t result = i2s_read(I2S_PORT, buffer, sizeof(buffer), &bytesRead, portMAX_DELAY);
+    if (result == ESP_OK && bytesRead > 0) {
+        /*
+        for (int i = 0; i < 10&&bytesRead; i++) {
+            Serial.printf("%02x ", buffer[i]);
         }
-    //}
+        recorder->recordingFile.write(buffer, bytesRead);
+        */
+        if (xSemaphoreTake(recorder->ringBufferMutex, (TickType_t)10) == pdTRUE) {
+            for (size_t i = 0; i < bytesRead; i++) {
+              recorder->audioRingBuffer[recorder->writeIndex] = buffer[i];
+              recorder->writeIndex = (recorder->writeIndex + 1) % BUFFER_SIZE;
+            }
+            xSemaphoreGive(recorder->ringBufferMutex);
+          }
+    }
 
     //recorder->recording = false;
     //vTaskDelete(nullptr);

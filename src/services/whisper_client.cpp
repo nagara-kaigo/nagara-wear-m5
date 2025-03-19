@@ -2,8 +2,54 @@
 #include "network_handler.h"
 #include "SD.h"
 #include "config.h"
+#include "../task_manager.h"
 
+//extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
+
+
+void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannels) {
+    uint32_t fileSize = 0; // 後で更新
+    uint32_t dataChunkSize = 0;
+  
+    uint8_t wavHeader[44] = {
+      'R','I','F','F',
+      (uint8_t)(fileSize      ), (uint8_t)(fileSize >> 8 ), (uint8_t)(fileSize >>16 ), (uint8_t)(fileSize >>24 ),
+      'W','A','V','E',
+      'f','m','t',' ',
+      16,0,0,0,
+      1,0,
+      (uint8_t)numChannels, (uint8_t)(numChannels >> 8),
+      (uint8_t)(sampleRate      ), (uint8_t)(sampleRate >> 8 ), (uint8_t)(sampleRate >>16 ), (uint8_t)(sampleRate >>24 ),
+      (uint8_t)((sampleRate * numChannels * bitsPerSample/8)      ),
+      (uint8_t)((sampleRate * numChannels * bitsPerSample/8) >> 8 ),
+      (uint8_t)((sampleRate * numChannels * bitsPerSample/8) >>16 ),
+      (uint8_t)((sampleRate * numChannels * bitsPerSample/8) >>24 ),
+      (uint8_t)(numChannels * bitsPerSample/8),0,
+      (uint8_t)bitsPerSample,0,
+      'd','a','t','a',
+      (uint8_t)(dataChunkSize      ), (uint8_t)(dataChunkSize >> 8 ),
+      (uint8_t)(dataChunkSize >>16 ), (uint8_t)(dataChunkSize >>24 )
+    };
+  
+    file.write(wavHeader, 44);
+  }
+
+  void updateWavHeader(File file) {
+    if (!file) return;
+    uint32_t fileSize = file.size();
+    uint32_t dataChunkSize = fileSize - 44; // 実際のデータサイズ
+  
+    file.seek(4);
+    file.write((uint8_t *)&fileSize, 4);
+  
+    file.seek(40);
+    file.write((uint8_t *)&dataChunkSize, 4);
+  }
+
+
+
+
 
 void transcribeAudio() {
     File recordingFile = SD.open("/recording.wav", FILE_READ);
@@ -11,6 +57,42 @@ void transcribeAudio() {
         Serial.println("録音ファイルを開けませんでした");
         return;
     }
+
+    if (recorder.isRecording()) {
+        Serial.println("task1 isRecording: reading from ring buffer");
+  
+        // リングバッファから未処理分を読み取る
+        size_t available = 0;
+        if (xSemaphoreTake(recorder.getRingBufferMutex(), (TickType_t)100) == pdTRUE) {
+          // いまの書き込み位置をコピーして、
+          size_t currentWriteIndex = recorder.getwriteIndex();
+          // (writeIndex - readIndex + BUFFER_SIZE) % BUFFER_SIZE が未読バイト数
+          available = (currentWriteIndex + BUFFER_SIZE - recorder.getreadIndex()) % BUFFER_SIZE;
+  
+          // 大きすぎると chunkFile が巨大になるので、必要なら制限
+          // ここではとりあえず全部読み出す
+          for (size_t i = 0; i < available; i++) {
+            uint8_t* tempBuf = recorder.gettempBuffer();
+            tempBuf[i] = recorder.getaudioRingBuffer()[recorder.getreadIndex()];
+            recorder.setReadIndex((recorder.getreadIndex() + 1) % BUFFER_SIZE);
+          }
+          xSemaphoreGive(recorder.getRingBufferMutex());
+        }
+  
+        if (available == 0) {
+          Serial.println("No new data in ring buffer");
+        }
+
+        SD.remove("/recording.wav");
+        recordingFile = SD.open("/recording.wav", FILE_WRITE);
+        writeWavHeader(recordingFile, 16000, 16, 1);
+        recordingFile.write(recorder.gettempBuffer(), available);
+        updateWavHeader(recordingFile);
+        recordingFile.flush();
+        recordingFile.close();
+    }
+
+
 
     String boundary = "----M5StackBoundary";
     
@@ -83,3 +165,5 @@ void transcribeAudio() {
 
     Serial.println("API応答: " + response);
 }
+
+

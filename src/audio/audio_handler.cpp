@@ -1,19 +1,22 @@
+#include "audio_handler.h"
 #include "audio_recorder.h"
 
-static AudioRecorder recorder;
+static AudioRecorder* recorder = nullptr;
 
 void initializeAudioRecorder() {
-    // コンストラクタで `initialize()` が自動的に呼ばれるため、特に処理は不要
+    if (recorder == nullptr) {
+        recorder = new AudioRecorder();
+    }
 }
 
 void startRecording() {
-    recorder.startRecording();
+    if (recorder) recorder->startRecording();
 }
 
 void stopRecording() {
-    recorder.stopRecording();
+    if (recorder) recorder->stopRecording();
 }
 
 bool isRecording() {
-    return recorder.isRecording();
+    return recorder ? recorder->isRecording() : false;
 }

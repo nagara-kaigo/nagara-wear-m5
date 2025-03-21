@@ -5,7 +5,7 @@
 #include <driver/i2s.h>
 #include "../system/sd_handler.h"
 
-#define BUFFER_SIZE (16000 * 2 * 10)  
+#define BUFFER_SIZE (16000 * 2 * 8)
 
 class AudioRecorder {
 public:
@@ -14,11 +14,22 @@ public:
 
     void startRecording();
     void stopRecording();
-    bool isRecording() const;
-
-private:
+    bool isRecording() const{return recording;};
     void initialize();
     static void recordTask(void* param);
+    SemaphoreHandle_t getRingBufferMutex() const {return ringBufferMutex;}
+    volatile size_t getwriteIndex() const {return writeIndex;};
+    volatile size_t getreadIndex() const {return readIndex;};
+    void setReadIndex(size_t value) { readIndex = value; };
+    uint8_t* getaudioRingBuffer() const {return audioRingBuffer;};
+    uint8_t* gettempBuffer() const {return tempBuffer;};
+    void settempBuffer(uint8_t* buffer) { tempBuffer = buffer; };
+    
+
+
+    
+
+private:
     
     uint8_t* audioRingBuffer;
     uint8_t* tempBuffer;

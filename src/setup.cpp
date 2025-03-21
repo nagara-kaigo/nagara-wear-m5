@@ -4,13 +4,13 @@
 #include "screen_manager.h"
 #include "system/sd_handler.h"
 #include "system/wifi_manager.h"
-#include "audio/audio_handler.h"
 //#include "audio/audio_buffer.h"
 
 AppState appState;
 
 void initializeSystem() {
   M5.begin();
+  M5.Axp.SetLDOEnable(2, true);
   M5.Lcd.setTextFont(4);
   M5.Lcd.setFreeFont(&unicode_24px);
 

@@ -82,7 +82,7 @@ void transcribeAudio() {
         if (available == 0) {
           Serial.println("No new data in ring buffer");
         }
-
+        Serial.println("open SD");
         SD.remove("/recording.wav");
         recordingFile = SD.open("/recording.wav", FILE_WRITE);
         writeWavHeader(recordingFile, 16000, 16, 1);
@@ -91,6 +91,9 @@ void transcribeAudio() {
         recordingFile.flush();
         recordingFile.close();
     }
+    Serial.println("complete reccording.wav");
+    recordingFile = SD.open("/recording.wav", FILE_READ);
+    Serial.println("open SDcard for Reading");
 
 
 

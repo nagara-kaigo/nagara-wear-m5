@@ -108,14 +108,12 @@ void AudioRecorder::stopRecording() {
 }
 
 void AudioRecorder::recordTask(void* param) {
-    Serial.println("start recordTask");
     if (param == nullptr) {
         Serial.println("Error: recordTask received nullptr");
         vTaskDelete(nullptr);
         return;
     }
     uint8_t buffer[1024];  
-    Serial.println("recording now");
     AudioRecorder* recorder = static_cast<AudioRecorder*>(param);
     size_t bytesRead;
     esp_err_t result = i2s_read(I2S_PORT, buffer, sizeof(buffer), &bytesRead, portMAX_DELAY);

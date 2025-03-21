@@ -38,7 +38,7 @@ void task0(void *parameter) {
 
 void task1(void *parameter) {
     AudioRecorder* recorder = static_cast<AudioRecorder*>(parameter);
-    while (true) {
+    while (true) {  
         vTaskDelay(5000 / portTICK_PERIOD_MS);
         Serial.println("[task1] Transcribing audio");
         transcribeAudio();  // ネットワーク経由で送信

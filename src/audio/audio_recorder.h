@@ -24,6 +24,10 @@ public:
     uint8_t* getaudioRingBuffer() const {return audioRingBuffer;};
     uint8_t* gettempBuffer() const {return tempBuffer;};
     void settempBuffer(uint8_t* buffer) { tempBuffer = buffer; };
+    size_t getCursol() const {return cursol;};
+    void setCursol(size_t value) {cursol = value;};
+    size_t getCursolX() const {return cursolx;};
+    void setCursolx(size_t value) {cursolx = value;};
     
 
 
@@ -40,6 +44,8 @@ private:
     File recordingFile;
     TaskHandle_t recordingTaskHandle;
     static const i2s_port_t I2S_PORT = I2S_NUM_0;
+    size_t cursol = 25;
+    size_t cursolx = 0;
 };
 
 #endif

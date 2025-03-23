@@ -5,6 +5,7 @@
 #include "../task_manager.h"
 #include <string>
 #include <ArduinoJson.h>
+#include <M5Core2.h>
 
 
 //extern AudioRecorder recorder;
@@ -12,6 +13,83 @@ const char* API_KEY = OPENAI_API_KEY;
 
 //パース後のテキスト変数
 String JPresponse;
+
+
+//日本語一文字取り出し関数
+String getNextUtf8Char(const String &text, size_t &index) {
+  if (index >= text.length()) return "";
+
+  uint8_t c = (uint8_t)text[index];
+  int charLen = 1;
+  if ((c & 0xE0) == 0xC0) charLen = 2;
+  else if ((c & 0xF0) == 0xE0) charLen = 3;
+  else if ((c & 0xF8) == 0xF0) charLen = 4;
+
+  if (index + charLen > text.length()) charLen = 1;
+
+  String oneChar = text.substring(index, index + charLen);
+  index += charLen;
+  return oneChar;
+}
+
+
+
+//日本語文字数カウント関数
+int JPcount(const String& text) {
+  int count = 0;
+  int i = 0;
+
+  while (i < text.length()) {
+    uint8_t c = (uint8_t)text[i];
+
+    int charLen = 1;
+    if ((c & 0xE0) == 0xC0) {         // 110xxxxx → 2バイト文字
+      charLen = 2;
+    } else if ((c & 0xF0) == 0xE0) {  // 1110xxxx → 3バイト文字
+      charLen = 3;
+    } else if ((c & 0xF8) == 0xF0) {  // 11110xxx → 4バイト文字（絵文字など）
+      charLen = 4;
+    }
+
+    i += charLen;
+    count++;
+  }
+
+  return count;
+}
+
+
+
+
+//画面折り返し用関数
+void drawWrappedText(const String& text ,int fontsize) {
+  size_t y = recorder.getCursol();
+  size_t x = recorder.getCursolX();
+  size_t JPlength = JPcount(text);
+  int maxlength = 24 * (M5.Lcd.width() / (fontsize + 2));
+  Serial.println(y);
+  Serial.println(JPlength);
+  String currentLine = "";
+  size_t index = 0;
+  for (int i = 0; i < JPlength;) {
+    Serial.println("for loop first");
+    for (x; x < maxlength;) {
+      Serial.println("for loop Second");
+      String oneChar = getNextUtf8Char(text, index); // iが中で進む！
+      M5.Lcd.drawString(oneChar, x, y, 1);
+      x += 26;
+      i++;
+    }
+    x = 0;
+    y += 26;
+    recorder.setCursol(y);
+    recorder.setCursolx(x);
+  }
+}
+
+
+
+
 
 
 void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannels) {
@@ -213,7 +291,11 @@ void transcribeAudio() {
     JPresponse = getJsonValue(response,"text");
     Serial.println("API応答: " + response);
 
-    Serial.println("API応答: " + JPresponse);
+    Serial.println("パース後: " + JPresponse);
+
+      // 認識結果を表示
+    M5.Lcd.setTextSize(0.5);
+    drawWrappedText(JPresponse,24);
 }
 
 

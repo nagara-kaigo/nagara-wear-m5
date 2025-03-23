@@ -3,9 +3,15 @@
 #include "SD.h"
 #include "config.h"
 #include "../task_manager.h"
+#include <string>
+#include <ArduinoJson.h>
+
 
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
+
+//パース後のテキスト変数
+String JPresponse;
 
 
 void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannels) {
@@ -46,6 +52,44 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
     file.seek(40);
     file.write((uint8_t *)&dataChunkSize, 4);
   }
+
+
+
+  //JSONから任意のパーツを取り出す
+  String getJsonValue(const String& response, const String& key) {
+    // 1) HTTPレスポンス文字列中でヘッダーとボディを区切りにしている "\r\n\r\n" を探す
+    int index = response.indexOf("\r\n\r\n");
+    if (index == -1) {
+      // ヘッダーらしきものが見つからない場合はエラー扱い
+      Serial.println("[Error] Could not find HTTP header delimiter.");
+      return "";
+    }
+  
+    // 2) JSONの部分を抜き出す
+    String jsonPart = response.substring(index + 4);
+  
+    // 3) JSON解析用のドキュメントを用意（バッファサイズは適宜拡大可能）
+    DynamicJsonDocument doc(1024);
+  
+    // 4) JSON文字列をdocにパース
+    DeserializationError error = deserializeJson(doc, jsonPart);
+    if (error) {
+      // パース失敗時はログを出して空文字を返す
+      Serial.println("[Error] Failed to parse JSON");
+      return "";
+    }
+  
+    // 5) doc[key] から値を取得し、String へ変換
+    if (doc[key].isNull()) {
+      // 指定したキーがJSONに含まれていない場合も空文字を返す
+      return "";
+    }
+    String value = doc[key].as<String>();
+    return value;
+  }
+  
+
+
 
 
 
@@ -166,7 +210,10 @@ void transcribeAudio() {
 
     client.stop();
 
+    JPresponse = getJsonValue(response,"text");
     Serial.println("API応答: " + response);
+
+    Serial.println("API応答: " + JPresponse);
 }
 
 

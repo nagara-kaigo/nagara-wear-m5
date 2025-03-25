@@ -155,8 +155,15 @@ String MyApi::foodTranscription(const String& transcription){
   jsonBody += "\"transcription\":\"" + transcription;
   jsonBody += "}";
 
-  String endpoint = "/residents/" + residentUid + "/food-records";
+  String endpoint = "/residents/" + residentUid + "/food-records/" + foodRecordUid + "/transcription";
+  return httpPostJson(endpoint, jsonBody, userToken);
+}
 
+
+//食事記録からの情報抽出
+String MyApi::mealRecordInfo(){
+  String jsonBody = "{}";
+  String endpoint = "/residents/" + residentUid + "/food-records/" + foodRecordUid + "/extract";
   return httpPostJson(endpoint, jsonBody, userToken);
 }
 

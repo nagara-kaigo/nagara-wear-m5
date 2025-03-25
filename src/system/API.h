@@ -17,6 +17,8 @@ public:
 
   String getResidentUid() const {return residentUid;};
 
+  String getFoodRecordUid() const {return foodRecordUid;};
+
 
   //セッター
   void setuserToken(const String Value) {userToken = Value;};
@@ -24,6 +26,8 @@ public:
   void settenantUid(const String Value) {tenantUid = Value;};
 
   void setresidentUid(const String Value) {residentUid = Value;};
+
+  void setfoodRecordUid(const String Value) {foodRecordUid = Value;};
 
   // コンストラクタ (API のベースURLを設定)
   MyApi(const String& baseUrl = "https://nagara-care-api.onrender.com");
@@ -42,6 +46,9 @@ public:
 
   //テナントレジデント取得
   String get_tenantResident(const String& token);
+
+  //食事記録からの情報抽出
+  String mealRecordInfo();
 
   //テナントレジデント作成
   // MyApiクラスに新しいシグネチャを追記する
@@ -88,6 +95,8 @@ private:
   String tenantUid;
 
   String residentUid;
+
+  String foodRecordUid;
 };
 
 #endif

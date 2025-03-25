@@ -6,6 +6,7 @@
 #include <string>
 #include <ArduinoJson.h>
 #include <M5Core2.h>
+#include "../system/API.h"
 
 
 //extern AudioRecorder recorder;
@@ -13,6 +14,9 @@ const char* API_KEY = OPENAI_API_KEY;
 
 //パース後のテキスト変数
 String JPresponse;
+
+//クラスの継承
+extern MyApi api;
 
 
 //日本語一文字取り出し関数
@@ -72,9 +76,7 @@ void drawWrappedText(const String& text ,int fontsize) {
   String currentLine = "";
   size_t index = 0;
   for (int i = 0; i < JPlength;) {
-    Serial.println("for loop first");
     for (x; x < maxlength;) {
-      Serial.println("for loop Second");
       String oneChar = getNextUtf8Char(text, index); // iが中で進む！
       M5.Lcd.drawString(oneChar, x, y, 1);
       x += 26;
@@ -292,6 +294,11 @@ void transcribeAudio() {
     Serial.println("API応答: " + response);
 
     Serial.println("パース後: " + JPresponse);
+
+    //APIに送信
+    String foodAPIresponse = api.foodTranscription(JPresponse);
+    Serial.println("foodAPIresponse:");
+    Serial.println(foodAPIresponse);
 
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);

@@ -90,6 +90,8 @@ private:
   // HTTP GET リクエストの共通関数
   String httpGet(const String& endpoint, const String& token = "");
 
+  String httpPatchJson(const String& endpoint, const String& jsonBody, const String& token = "");
+
   String userToken;
 
   String tenantUid;

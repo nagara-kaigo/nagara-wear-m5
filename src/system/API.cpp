@@ -150,14 +150,16 @@ String endpoint = "/residents/" + residentUid + "/food-records";
 return httpPostJson(endpoint, jsonBody, token);
 }
 
+//食事記録の追記
 String MyApi::foodTranscription(const String& transcription){
   String jsonBody = "{";
-  jsonBody += "\"transcription\":\"" + transcription;
+  jsonBody += "\"transcription\":\"" + transcription + "\"";
   jsonBody += "}";
 
   String endpoint = "/residents/" + residentUid + "/food-records/" + foodRecordUid + "/transcription";
-  return httpPostJson(endpoint, jsonBody, userToken);
+  return httpPatchJson(endpoint, jsonBody, userToken);
 }
+
 
 
 //食事記録からの情報抽出
@@ -226,3 +228,34 @@ String MyApi::httpGet(const String& endpoint, const String& token) {
 
   return payload;
 }
+
+//HTTP PATCHリクエストの共通処理
+String MyApi::httpPatchJson(const String& endpoint, const String& jsonBody, const String& token) {
+  WiFiClientSecure client;
+  client.setInsecure();
+  HTTPClient http;
+  String payload;
+  String url = _baseUrl + endpoint;
+  if (!http.begin(client, url)) {
+      payload = "[HTTP] Unable to connect " + url;
+  }
+
+  // ヘッダを付加
+  http.addHeader("Content-Type", "application/json");
+  if (token.length() > 0) {
+      http.addHeader("Authorization", "Bearer " + token);
+  }
+
+  // PATCHリクエストを発行
+  // sendRequest() 第1引数に "PATCH"
+  int httpCode = http.sendRequest("PATCH", (uint8_t*)jsonBody.c_str(), jsonBody.length());
+  if (httpCode > 0) {
+      payload = http.getString();
+  } else {
+      payload = "[HTTP] PATCH failed, error: " + String(http.errorToString(httpCode).c_str());
+  }
+
+  http.end();
+  return payload;
+}
+

@@ -134,7 +134,7 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
 
 
   //JSONから任意のパーツを取り出す
-  String getJsonValue(const String& response, const String& key) {
+  String getHTTPJsonValue(const String& response, const String& key) {
     // 1) HTTPレスポンス文字列中でヘッダーとボディを区切りにしている "\r\n\r\n" を探す
     int index = response.indexOf("\r\n\r\n");
     if (index == -1) {
@@ -288,7 +288,7 @@ void transcribeAudio() {
 
     client.stop();
 
-    JPresponse = getJsonValue(response,"text");
+    JPresponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
 
     Serial.println("パース後: " + JPresponse);

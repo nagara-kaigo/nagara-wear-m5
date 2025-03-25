@@ -150,6 +150,16 @@ String endpoint = "/residents/" + residentUid + "/food-records";
 return httpPostJson(endpoint, jsonBody, token);
 }
 
+String MyApi::foodTranscription(const String& transcription){
+  String jsonBody = "{";
+  jsonBody += "\"transcription\":\"" + transcription;
+  jsonBody += "}";
+
+  String endpoint = "/residents/" + residentUid + "/food-records";
+
+  return httpPostJson(endpoint, jsonBody, userToken);
+}
+
 
 
 

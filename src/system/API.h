@@ -68,6 +68,10 @@ String CreateFoodRecord(const String& token,
   int beverageVolume);
 
 
+//食事記録追記
+String foodTranscription(const String& transcription);
+
+
 
 
 private:

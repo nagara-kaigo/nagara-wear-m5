@@ -66,24 +66,5 @@ void initializeSystem() {
   Serial.println(result);
   */
 
-  //食事記録作成
-  /*
-  String response = api.CreateFoodRecord(
-    token,
-    residentUid,
-    "2024-03-20T12:00:00Z", // recordedAt
-    "ちょっと少なめに食べました", // notes
-    "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
-    80,                    // mainCoursePercentage
-    70,                    // sideDishPercentage
-    90,                    // soupPercentage
-    "WATER",               // beverageType
-    200                    // beverageVolume
-  );
-    
-  Serial.println("CreateFoodRecord response:");
-  Serial.println(response);
-  */
 
-  
 }

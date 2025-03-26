@@ -31,8 +31,12 @@ void showTranscriptionScreen(const AppState &state) {
     M5.Lcd.fillScreen(WHITE);
     M5.Lcd.setCursor(10, 10);
     M5.Lcd.setTextColor(BLACK);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.print("Transcribing...");
+    M5.Lcd.drawRect(100, 80, 120, 80, BLACK);
+    M5.Lcd.setTextDatum(4);
+    M5.Lcd.drawString("REC Stop", 160, 120);
+    showHeaderBar("レコーディング中");
+    showFooterBar(state);
+
 
     toggleRecording();
 }

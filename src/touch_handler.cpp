@@ -26,7 +26,7 @@ void handleTouchEvents() {
         break;
       case STANDBY:
         if (handleRecBtnTouch(touch, appState)) {
-          changeScreen(RECORDING);
+          changeScreen(TRANSCRIPTION);
         }
         break;
     }

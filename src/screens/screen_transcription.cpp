@@ -5,8 +5,10 @@
 #include "task_manager.h"
 #include "../audio/audio_recorder.h"
 
+extern AudioRecorder recorder;
+
 static String transcriptionText = "";
-static bool isRecording = false;
+static bool isRecording = recorder.isRecording();
 
 void updateTranscriptionText(const String& newText) {
     transcriptionText = newText;

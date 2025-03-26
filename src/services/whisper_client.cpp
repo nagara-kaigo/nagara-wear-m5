@@ -82,7 +82,7 @@ void drawWrappedText(const String& text ,int fontsize) {
       x += 26;
       i++;
     }
-    x = 0;
+    x = 10;
     y += 26;
     recorder.setCursol(y);
     recorder.setCursolx(x);

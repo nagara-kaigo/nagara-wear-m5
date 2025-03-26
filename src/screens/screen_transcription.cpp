@@ -3,6 +3,7 @@
 #include "../ui/header.h"
 #include "../ui/footer.h"
 #include "task_manager.h"
+#include "../audio/audio_recorder.h"
 
 static String transcriptionText = "";
 static bool isRecording = false;
@@ -31,11 +32,8 @@ void showTranscriptionScreen(const AppState &state) {
     M5.Lcd.fillScreen(WHITE);
     M5.Lcd.setCursor(10, 10);
     M5.Lcd.setTextColor(BLACK);
-    M5.Lcd.drawRect(100, 80, 120, 80, BLACK);
-    M5.Lcd.setTextDatum(4);
-    M5.Lcd.drawString("REC Stop", 160, 120);
     showHeaderBar("レコーディング中");
-    showFooterBar(state);
+    showFooterBarRecording(state);
 
 
     toggleRecording();

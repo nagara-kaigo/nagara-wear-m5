@@ -9,5 +9,6 @@
 //#include "../audio_recorder.h"
 
 void showTranscriptionScreen(const AppState &state);
+void toggleRecording();
 
 #endif

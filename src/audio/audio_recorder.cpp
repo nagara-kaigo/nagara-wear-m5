@@ -1,6 +1,7 @@
 #include "audio_recorder.h"
 #include "../services/whisper_client.h"
 #include "../system/API.h"
+#include <M5Core2.h>
 
 extern MyApi api;
 
@@ -120,7 +121,6 @@ void AudioRecorder::stopRecording() {
     if (recordingFile) {
         recordingFile.close();
     }
-
     Serial.println("[task0] Recording end");
     Serial.println(mealInfo);
 }

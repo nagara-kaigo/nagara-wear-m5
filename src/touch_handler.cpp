@@ -44,6 +44,6 @@ void handleFooterTouch(TouchPoint_t touch) {
   if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
     changeScreen(USER_PICKER);
   } else if (touch.x < FOOTER_HOME_MIN_X) {
-    changeScreen(TRANSCRIPTION);
+    popScreen();
   }
 }

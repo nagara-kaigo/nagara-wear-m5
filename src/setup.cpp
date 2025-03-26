@@ -19,6 +19,7 @@ void initializeSystem() {
   M5.Lcd.setFreeFont(&unicode_24px);
 
   appState.currentScreen = USER_PICKER;
+  appState.screenHistory.push(appState.currentScreen);
   showUserPickerScreen(appState);
 
   //SDカード初期化

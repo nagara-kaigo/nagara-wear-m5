@@ -10,8 +10,8 @@ void task0(void *parameter);
 void task1(void *parameter);
 
 void startBackgroundTasks() {
-    xTaskCreatePinnedToCore(task0, "AudioTask", 16384, &recorder, 2, &task0Handle, 1);
-    xTaskCreatePinnedToCore(task1, "NetworkTask", 16384, &recorder, 1, &task1Handle, 1);
+    xTaskCreatePinnedToCore(task0, "AudioTask", 32768, &recorder, 2, &task0Handle, 1);
+    xTaskCreatePinnedToCore(task1, "NetworkTask", 32768, &recorder, 1, &task1Handle, 1);
 }
 
 void stopBackgroundTasks() {

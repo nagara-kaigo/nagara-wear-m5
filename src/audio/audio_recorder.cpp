@@ -1,5 +1,8 @@
 #include "audio_recorder.h"
 #include "../services/whisper_client.h"
+#include "../system/API.h"
+
+extern MyApi api;
 
 AudioRecorder::AudioRecorder()
     : audioRingBuffer(nullptr), tempBuffer(nullptr), writeIndex(0), readIndex(0),
@@ -75,22 +78,36 @@ void AudioRecorder::initialize() {
 
 void AudioRecorder::startRecording() {
     if (recording || recordingTaskHandle != nullptr) return;
-    recording = true;
-    /*
-    recordingFile = SD.open("/recording.wav", FILE_WRITE);
-    if (!recordingFile) {
-        Serial.println("Failed to open file for recording");
-        recording = false;
-        return;
-    }
-    writeWavHeader(recordingFile,16000, 16, 1);
-    */
+    String token  = api.getuserToken();
+    String residentUid = api.getResidentUid();
+      //食事記録作成
+  
+    String response = api.CreateFoodRecord(
+        token,
+        residentUid,
+        "2024-03-20T12:00:00Z", // recordedAt
+        "ちょっと少なめに食べました", // notes
+        "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
+        80,                    // mainCoursePercentage
+        70,                    // sideDishPercentage
+        90,                    // soupPercentage
+        "WATER",               // beverageType
+        200                    // beverageVolume
+    );
+        
+    Serial.println("CreateFoodRecord response:");
+    Serial.println(response);
+    String foodRecordUid = getJsonValue(response,"uid");
+    api.setfoodRecordUid(foodRecordUid);
 
+  
+    recording = true;
     Serial.println("[task0] Recording start");
-    //xTaskCreatePinnedToCore(recordTask, "AudioRecordTask", 8192, this, 2, &recordingTaskHandle, 1);
 }
 
 void AudioRecorder::stopRecording() {
+    String token  = api.getuserToken();
+    String mealInfo = api.mealRecordInfo();
     if (!recording) return;
     recording = false; 
 
@@ -105,6 +122,7 @@ void AudioRecorder::stopRecording() {
     }
 
     Serial.println("[task0] Recording end");
+    Serial.println(mealInfo);
 }
 
 void AudioRecorder::recordTask(void* param) {

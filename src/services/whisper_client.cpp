@@ -3,9 +3,95 @@
 #include "SD.h"
 #include "config.h"
 #include "../task_manager.h"
+#include <string>
+#include <ArduinoJson.h>
+#include <M5Core2.h>
+#include "../system/API.h"
+
 
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
+
+//パース後のテキスト変数
+String JPresponse;
+
+//クラスの継承
+extern MyApi api;
+
+
+//日本語一文字取り出し関数
+String getNextUtf8Char(const String &text, size_t &index) {
+  if (index >= text.length()) return "";
+
+  uint8_t c = (uint8_t)text[index];
+  int charLen = 1;
+  if ((c & 0xE0) == 0xC0) charLen = 2;
+  else if ((c & 0xF0) == 0xE0) charLen = 3;
+  else if ((c & 0xF8) == 0xF0) charLen = 4;
+
+  if (index + charLen > text.length()) charLen = 1;
+
+  String oneChar = text.substring(index, index + charLen);
+  index += charLen;
+  return oneChar;
+}
+
+
+
+//日本語文字数カウント関数
+int JPcount(const String& text) {
+  int count = 0;
+  int i = 0;
+
+  while (i < text.length()) {
+    uint8_t c = (uint8_t)text[i];
+
+    int charLen = 1;
+    if ((c & 0xE0) == 0xC0) {         // 110xxxxx → 2バイト文字
+      charLen = 2;
+    } else if ((c & 0xF0) == 0xE0) {  // 1110xxxx → 3バイト文字
+      charLen = 3;
+    } else if ((c & 0xF8) == 0xF0) {  // 11110xxx → 4バイト文字（絵文字など）
+      charLen = 4;
+    }
+
+    i += charLen;
+    count++;
+  }
+
+  return count;
+}
+
+
+
+
+//画面折り返し用関数
+void drawWrappedText(const String& text ,int fontsize) {
+  size_t y = recorder.getCursol();
+  size_t x = recorder.getCursolX();
+  size_t JPlength = JPcount(text);
+  int maxlength = 24 * (M5.Lcd.width() / (fontsize + 2));
+  Serial.println(y);
+  Serial.println(JPlength);
+  String currentLine = "";
+  size_t index = 0;
+  for (int i = 0; i < JPlength;) {
+    for (x; x < maxlength;) {
+      String oneChar = getNextUtf8Char(text, index); // iが中で進む！
+      M5.Lcd.drawString(oneChar, x, y, 1);
+      x += 26;
+      i++;
+    }
+    x = 0;
+    y += 26;
+    recorder.setCursol(y);
+    recorder.setCursolx(x);
+  }
+}
+
+
+
+
 
 
 void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannels) {
@@ -46,6 +132,44 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
     file.seek(40);
     file.write((uint8_t *)&dataChunkSize, 4);
   }
+
+
+
+  //JSONから任意のパーツを取り出す
+  String getHTTPJsonValue(const String& response, const String& key) {
+    // 1) HTTPレスポンス文字列中でヘッダーとボディを区切りにしている "\r\n\r\n" を探す
+    int index = response.indexOf("\r\n\r\n");
+    if (index == -1) {
+      // ヘッダーらしきものが見つからない場合はエラー扱い
+      Serial.println("[Error] Could not find HTTP header delimiter.");
+      return "";
+    }
+  
+    // 2) JSONの部分を抜き出す
+    String jsonPart = response.substring(index + 4);
+  
+    // 3) JSON解析用のドキュメントを用意（バッファサイズは適宜拡大可能）
+    DynamicJsonDocument doc(1024);
+  
+    // 4) JSON文字列をdocにパース
+    DeserializationError error = deserializeJson(doc, jsonPart);
+    if (error) {
+      // パース失敗時はログを出して空文字を返す
+      Serial.println("[Error] Failed to parse JSON");
+      return "";
+    }
+  
+    // 5) doc[key] から値を取得し、String へ変換
+    if (doc[key].isNull()) {
+      // 指定したキーがJSONに含まれていない場合も空文字を返す
+      return "";
+    }
+    String value = doc[key].as<String>();
+    return value;
+  }
+  
+
+
 
 
 
@@ -166,7 +290,19 @@ void transcribeAudio() {
 
     client.stop();
 
+    JPresponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
+
+    Serial.println("パース後: " + JPresponse);
+
+    //APIに送信
+    String foodAPIresponse = api.foodTranscription(JPresponse);
+    Serial.println("foodAPIresponse:");
+    Serial.println(foodAPIresponse);
+
+      // 認識結果を表示
+    M5.Lcd.setTextSize(0.5);
+    drawWrappedText(JPresponse,24);
 }
 
 

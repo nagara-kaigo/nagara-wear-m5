@@ -137,12 +137,12 @@ void AudioRecorder::recordTask(void* param) {
     size_t bytesRead;
     esp_err_t result = i2s_read(I2S_PORT, buffer, sizeof(buffer), &bytesRead, portMAX_DELAY);
     if (result == ESP_OK && bytesRead > 0) {
-        /*
+        
         for (int i = 0; i < 10&&bytesRead; i++) {
             Serial.printf("%02x ", buffer[i]);
         }
-        recorder->recordingFile.write(buffer, bytesRead);
-        */
+        //recorder->recordingFile.write(buffer, bytesRead);
+        
         if (xSemaphoreTake(recorder->ringBufferMutex, (TickType_t)10) == pdTRUE) {
             for (size_t i = 0; i < bytesRead; i++) {
               recorder->audioRingBuffer[recorder->writeIndex] = buffer[i];

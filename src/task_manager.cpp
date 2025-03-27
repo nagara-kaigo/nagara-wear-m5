@@ -16,15 +16,6 @@ void startBackgroundTasks() {
 
 void stopBackgroundTasks() {
     recorder.stopRecording();
-
-    if (task0Handle) {
-        vTaskDelete(task0Handle);
-        task0Handle = NULL;
-    }
-    if (task1Handle) {
-        vTaskDelete(task1Handle);
-        task1Handle = NULL;
-    }
 }
 
 void task0(void *parameter) {
@@ -34,6 +25,8 @@ void task0(void *parameter) {
         recorder->recordTask(parameter);
         vTaskDelay(pdMS_TO_TICKS(30));
     }
+    vTaskDelete(NULL);
+    Serial.println("task0 vTaskDelete");
 }
 
 void task1(void *parameter) {
@@ -44,5 +37,9 @@ void task1(void *parameter) {
         transcribeAudio();  // ネットワーク経由で送信
         Serial.println("[task1] Transcription complete");
         vTaskDelay(pdMS_TO_TICKS(30));
+        if(!recorder->isRecording()){
+            vTaskDelete(NULL);
+            Serial.println("task1 vTaskDelete");
+        }
     }
 }

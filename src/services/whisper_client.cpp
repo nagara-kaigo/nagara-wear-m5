@@ -15,6 +15,7 @@ const char* API_KEY = OPENAI_API_KEY;
 //パース後のテキスト変数
 String JPresponse;
 
+
 //クラスの継承
 extern MyApi api;
 
@@ -82,6 +83,7 @@ void drawWrappedText(const String& text ,int fontsize) {
       x += 26;
       i++;
     }
+
     x = 10;
     y += 26;
     recorder.setCursol(y);
@@ -290,6 +292,7 @@ void transcribeAudio() {
 
     client.stop();
 
+  
     JPresponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
 

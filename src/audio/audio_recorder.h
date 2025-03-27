@@ -46,6 +46,7 @@ private:
     static const i2s_port_t I2S_PORT = I2S_NUM_0;
     size_t cursol = 40;
     size_t cursolx = 10;
+
 };
 
 #endif

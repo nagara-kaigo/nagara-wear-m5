@@ -10,5 +10,6 @@
 
 void showTranscriptionScreen(const AppState &state);
 void toggleRecording();
+void rebootTranscriptionScreen(const AppState &state);
 
 #endif

@@ -7,7 +7,8 @@
 #include <ArduinoJson.h>
 #include <M5Core2.h>
 #include "../system/API.h"
-
+#include "../screens/screen_transcription.h"
+#include <main.h>
 
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
@@ -17,6 +18,7 @@ String JPresponse;
 
 //クラスの継承
 extern MyApi api;
+extern AppState appState;
 
 
 //日本語一文字取り出し関数
@@ -66,7 +68,7 @@ int JPcount(const String& text) {
 
 
 //画面折り返し用関数
-void drawWrappedText(const String& text ,int fontsize) {
+void drawWrappedText(const String& text ,int fontsize, const AppState &appState) {
   size_t y = recorder.getCursol();
   size_t x = recorder.getCursolX();
   size_t JPlength = JPcount(text);
@@ -84,6 +86,10 @@ void drawWrappedText(const String& text ,int fontsize) {
     }
     x = 10;
     y += 26;
+    if(y > 200){
+      rebootTranscriptionScreen(appState);
+      y = 40;
+    }
     recorder.setCursol(y);
     recorder.setCursolx(x);
   }
@@ -302,14 +308,7 @@ void transcribeAudio() {
 
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);
-    drawWrappedText(JPresponse,24);
-
-
-    //食事記録を取得
-    String token  = api.getuserToken();
-    String mealInfo = api.mealRecordInfo();
-    Serial.println("After transcribe MealInfo is:");
-    Serial.println(mealInfo);
+    drawWrappedText(JPresponse,24,appState);
 }
 
 

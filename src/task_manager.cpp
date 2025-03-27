@@ -2,6 +2,8 @@
 #include "services/whisper_client.h"
 #include "audio/audio_recorder.h"
 #include "screen_manager.h"
+#include "system/API.h"
+extern MyApi api;
 
 TaskHandle_t task0Handle = NULL;
 TaskHandle_t task1Handle = NULL;
@@ -38,6 +40,11 @@ void task1(void *parameter) {
         transcribeAudio();  // ネットワーク経由で送信
         Serial.println("[task1] Transcription complete");
         Serial.println(recorder->isRecording());
+        //食事記録を取得
+        String token  = api.getuserToken();
+        String mealInfo = api.mealRecordInfo();
+        Serial.println("After transcribe MealInfo is:");
+        Serial.println(mealInfo);
         vTaskDelay(pdMS_TO_TICKS(30));
         if(!recorder->isRecording()){
             Serial.println("task1 vTaskDelete");

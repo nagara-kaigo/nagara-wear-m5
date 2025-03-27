@@ -5,7 +5,7 @@
 #include <driver/i2s.h>
 #include "../system/sd_handler.h"
 
-#define BUFFER_SIZE (16000 * 2 * 12)
+#define BUFFER_SIZE (16000 * 2 * 14)
 
 class AudioRecorder {
 public:

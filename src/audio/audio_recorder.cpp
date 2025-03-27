@@ -108,8 +108,8 @@ void AudioRecorder::startRecording() {
 }
 
 void AudioRecorder::stopRecording() {
-    String token  = api.getuserToken();
-    String mealInfo = api.mealRecordInfo();
+    //String token  = api.getuserToken();
+    //String mealInfo = api.mealRecordInfo();
     if (!recording) return;
     recording = false; 
 
@@ -123,7 +123,7 @@ void AudioRecorder::stopRecording() {
         recordingFile.close();
     }
     Serial.println("[task0] Recording end");
-    Serial.println(mealInfo);
+    //Serial.println(mealInfo);
 }
 
 void AudioRecorder::recordTask(void* param) {

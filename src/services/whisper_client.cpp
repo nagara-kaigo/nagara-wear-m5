@@ -303,6 +303,13 @@ void transcribeAudio() {
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);
     drawWrappedText(JPresponse,24);
+
+
+    //食事記録を取得
+    String token  = api.getuserToken();
+    String mealInfo = api.mealRecordInfo();
+    Serial.println("After transcribe MealInfo is:");
+    Serial.println(mealInfo);
 }
 
 

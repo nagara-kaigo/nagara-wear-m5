@@ -22,6 +22,7 @@ public:
   String getmealExtract() const {return mealExtract;};
 
 
+
   //セッター
   void setuserToken(const String Value) {userToken = Value;};
 
@@ -32,6 +33,7 @@ public:
   void setfoodRecordUid(const String Value) {foodRecordUid = Value;};
 
   void setmealExtract(const String Value) {mealExtract = Value;};
+
 
   // コンストラクタ (API のベースURLを設定)
   MyApi(const String& baseUrl = "https://nagara-care-api.onrender.com");

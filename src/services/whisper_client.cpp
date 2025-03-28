@@ -11,6 +11,7 @@
 #include <main.h>
 #include "../screens/screen_display_extract.h"
 
+
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
 
@@ -70,6 +71,7 @@ int JPcount(const String& text) {
 
 //画面折り返し用関数
 void drawWrappedText(const String& text ,int fontsize, const AppState &appState) {
+
   size_t y = recorder.getCursol();
   size_t x = recorder.getCursolX();
   size_t JPlength = JPcount(text);
@@ -91,6 +93,7 @@ void drawWrappedText(const String& text ,int fontsize, const AppState &appState)
       rebootTranscriptionScreen(appState);
       y = 40;
     }
+
     recorder.setCursol(y);
     recorder.setCursolx(x);
   }
@@ -310,6 +313,7 @@ void transcribeAudio() {
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);
     drawWrappedText(JPresponse,24,appState);
+
 }
 
 

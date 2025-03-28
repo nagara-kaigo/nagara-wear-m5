@@ -9,6 +9,7 @@
 #include "../system/API.h"
 #include "../screens/screen_transcription.h"
 #include <main.h>
+#include "../screens/screen_display_extract.h"
 
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;

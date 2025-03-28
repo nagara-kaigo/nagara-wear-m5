@@ -58,6 +58,8 @@ void handleFooterTouch(TouchPoint_t touch) {
       changeScreen(USER_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
       popScreen();
+    } else if (touch.x >= FOOTER_HOME_MAX_X){
+      changeScreen(MEAL_EXTRACT);
     }
   }
 }

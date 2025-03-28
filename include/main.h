@@ -15,6 +15,7 @@ enum Screen {
     RECORDING,
     FINAL_SCREEN,
     TRANSCRIPTION,
+    MEAL_EXTRACT
 };
 
 // アプリケーション全体で使用する状態管理構造体

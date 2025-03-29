@@ -5,7 +5,7 @@
 #include <driver/i2s.h>
 #include "../system/sd_handler.h"
 
-#define BUFFER_SIZE (16000 * 2 * 12)
+#define BUFFER_SIZE (16000 * 2 * 20)
 
 class AudioRecorder {
 public:
@@ -34,7 +34,6 @@ public:
     
 
 private:
-    
     uint8_t* audioRingBuffer;
     uint8_t* tempBuffer;
     volatile size_t writeIndex;
@@ -46,7 +45,6 @@ private:
     static const i2s_port_t I2S_PORT = I2S_NUM_0;
     size_t cursol = 40;
     size_t cursolx = 10;
-
 };
 
 #endif

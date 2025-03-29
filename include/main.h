@@ -5,6 +5,7 @@
 #define LCDHEIGHT 240
 
 #include <Arduino.h>
+#include <stack>
 
 // 画面を識別する列挙型
 enum Screen { 
@@ -20,7 +21,8 @@ enum Screen {
 struct AppState {
     String selectedUser;     // 選択されたユーザー名
     String selectedReceiver; // 選択された相手の名前
-    Screen currentScreen;
+    Screen currentScreen;    //現在のスクリーン
+    std::stack<Screen> screenHistory;//戻る用のスクリーンスタック
 };
 
 #endif

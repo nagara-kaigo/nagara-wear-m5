@@ -16,7 +16,6 @@ void startBackgroundTasks() {
 
 void stopBackgroundTasks() {
     recorder.stopRecording();
-
 }
 
 void task0(void *parameter) {

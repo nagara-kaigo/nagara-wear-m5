@@ -37,6 +37,5 @@ void showTranscriptionScreen(const AppState &state) {
     showHeaderBar("レコーディング中");
     showFooterBarRecording(state);
 
-
     toggleRecording();
 }

@@ -10,6 +10,7 @@
 #include "../screens/screen_transcription.h"
 #include <main.h>
 #include "../screens/screen_display_extract.h"
+
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
 
@@ -19,7 +20,6 @@ String JPresponse;
 //クラスの継承
 extern MyApi api;
 extern AppState appState;
-
 
 //日本語一文字取り出し関数
 String getNextUtf8Char(const String &text, size_t &index) {
@@ -69,7 +69,6 @@ int JPcount(const String& text) {
 
 //画面折り返し用関数
 void drawWrappedText(const String& text ,int fontsize, const AppState &appState) {
-
   size_t y = recorder.getCursol();
   size_t x = recorder.getCursolX();
   size_t JPlength = JPcount(text);
@@ -296,7 +295,6 @@ void transcribeAudio() {
     }
 
     client.stop();
-
     JPresponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
 

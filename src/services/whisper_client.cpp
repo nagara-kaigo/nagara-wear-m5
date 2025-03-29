@@ -300,7 +300,7 @@ void transcribeAudio() {
 
     client.stop();
 
-
+  
     JPresponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
 

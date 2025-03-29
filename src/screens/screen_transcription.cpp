@@ -36,8 +36,6 @@ void showTranscriptionScreen(const AppState &state) {
     M5.Lcd.setTextColor(BLACK);
     showHeaderBar("レコーディング中");
     showFooterBarRecording(state);
-
-
     toggleRecording();
 }
 

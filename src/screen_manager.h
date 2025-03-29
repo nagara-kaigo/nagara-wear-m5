@@ -8,6 +8,7 @@
 #include "screens/screen_standby.h"
 #include "screens/screen_recording.h"
 #include "screens/screen_transcription.h"
+#include "screens/screen_display_extract.h"
 
 
 void changeScreen(Screen newScreen, bool addStuck = true);

@@ -22,7 +22,7 @@ void handleTouchEvents() {
     switch (appState.currentScreen) {
       case USER_PICKER:
         if (handleUserPickerTouch(touch, appState)) {
-          changeScreen(STANDBY);
+          changeScreen(RECORD_TYPE_PICKER);
         }
         break;
       case STANDBY:

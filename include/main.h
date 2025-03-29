@@ -15,7 +15,8 @@ enum Screen {
     RECORDING,
     FINAL_SCREEN,
     TRANSCRIPTION,
-    MEAL_EXTRACT
+    MEAL_EXTRACT,
+    RECORD_TYPE_PICKER
 };
 
 // アプリケーション全体で使用する状態管理構造体
@@ -24,6 +25,7 @@ struct AppState {
     String selectedReceiver; // 選択された相手の名前
     Screen currentScreen;    //現在のスクリーン
     std::stack<Screen> screenHistory;//戻る用のスクリーンスタック
+    String selectRecordType;
 };
 
 #endif

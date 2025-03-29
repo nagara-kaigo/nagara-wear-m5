@@ -83,7 +83,8 @@ void drawWrappedText(const String& text ,int fontsize) {
       x += 26;
       i++;
     }
-    x = 0;
+
+    x = 10;
     y += 26;
     recorder.setCursol(y);
     recorder.setCursolx(x);
@@ -291,7 +292,7 @@ void transcribeAudio() {
 
     client.stop();
 
-
+  
     JPresponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
 

@@ -5,5 +5,6 @@
 #include "main.h" // AppState を参照
 
 void showFooterBar(const AppState &state);
+void showFooterBarRecording(const AppState &state);
 
 #endif

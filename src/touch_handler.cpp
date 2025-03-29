@@ -4,6 +4,7 @@
 #include <M5Core2.h>
 #include "touch_handler.h"
 #include "screen_manager.h"
+#include "screens/screen_transcription.h"
 
 extern AppState appState;
 
@@ -38,12 +39,25 @@ void handleTouchEvents() {
 }
 
 void handleFooterTouch(TouchPoint_t touch) {
-  M5.Axp.SetLDOEnable(3, true);
-  delay(75);
-  M5.Axp.SetLDOEnable(3, false);
-  if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
-    changeScreen(USER_PICKER);
-  } else if (touch.x < FOOTER_HOME_MIN_X) {
-    popScreen();
+  if(appState.currentScreen == TRANSCRIPTION){
+    Serial.println("currentScreen is TRANSCRIPTION");
+    M5.Axp.SetLDOEnable(3, true);
+    delay(75);
+    M5.Axp.SetLDOEnable(3, false);
+    if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
+      changeScreen(USER_PICKER);
+    } else if (touch.x < FOOTER_HOME_MIN_X) {
+      toggleRecording();
+    }
+  }
+  else{
+    M5.Axp.SetLDOEnable(3, true);
+    delay(75);
+    M5.Axp.SetLDOEnable(3, false);
+    if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
+      changeScreen(USER_PICKER);
+    } else if (touch.x < FOOTER_HOME_MIN_X) {
+      popScreen();
+    }
   }
 }

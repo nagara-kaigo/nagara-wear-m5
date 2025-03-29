@@ -1,20 +1,29 @@
 #include "screen_standby.h"
 
 
+String recordTypeToString(RecordType type) {
+    switch (type) {
+        case MEAL:       return "食事";
+        case DRINK:      return "水分";
+        case EXCRETION:  return "排泄";
+        case BATH:       return "入浴";
+        case EVERYDAY:   return "日常";
+        default:         return "";
+    }
+}
+
+
+
 void showStandbyScreen(const AppState &state) {
     M5.Lcd.clear();
     M5.Lcd.fillScreen(WHITE);
     M5.Lcd.setTextColor(BLACK, WHITE);
     String user = state.selectedUser;
-    showHeaderBar("利用者:" + user);
+    String type = recordTypeToString(state.selectedRecordType);
+    showHeaderBar("利用者:" + user + "  記録:" + type);
     M5.Lcd.setTextDatum(3);
 
 
-    int rectWidth  = 80;     // 幅
-    int rectHeight = 80;     // 高さ
-    int gap        = 10;     // 四角同士の間隔
-    int startX     = 40;     // 一番左の四角の描画開始X座標
-    int startY     = 80;     // 四角の描画開始Y座標
 
     // テキストを中央揃えするための Datum 設定
     M5.Lcd.setTextDatum(MC_DATUM); // 中心を基準にテキストを描画
@@ -40,11 +49,6 @@ void showStandbyScreen(const AppState &state) {
 
 bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state) {
     // ボタン共通のサイズと配置
-    int rectWidth  = 80;
-    int rectHeight = 80;
-    int gap        = 10;
-    int startX     = 40;
-    int startY     = 80;
 
     // 各ボタンの範囲
     int x1 = startX;
@@ -54,21 +58,21 @@ bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state) {
     // REC1 の判定
     if (touch.x > x1 && touch.x < x1 + rectWidth &&
         touch.y > startY && touch.y < startY + rectHeight) {
-        state.mealTime = "朝食";
+        state.mealTime = BREAKFAST;
         return true;
     }
 
     // REC2 の判定
     if (touch.x > x2 && touch.x < x2 + rectWidth &&
         touch.y > startY && touch.y < startY + rectHeight) {
-        state.mealTime = "昼食";
+        state.mealTime = LUNCH;
         return true;
     }
 
     // REC3 の判定
     if (touch.x > x3 && touch.x < x3 + rectWidth &&
         touch.y > startY && touch.y < startY + rectHeight) {
-        state.mealTime = "夕食";
+        state.mealTime = DINNER;
         return true;
     }
 

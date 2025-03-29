@@ -24,19 +24,19 @@ void showRecordTypeScreen(const AppState &state) {
 
 bool handleRecordTypeTouch(const TouchPoint_t &touch, AppState &state) {
     if (touch.x > 69 && touch.x < 69+86 && touch.y > 40 && touch.y < 40+75) {
-        state.selectRecordType = String("MEAL");
+        state.selectedRecordType = MEAL;
         return true;
     } else if (touch.x > 165 && touch.x < 165+86 && touch.y > 40 && touch.y < 40+75) {
-        state.selectedUser = String("DRINK");
+        state.selectedRecordType = DRINK;
         return true;
     }else if (touch.x > 21 && touch.x < 21+86 && touch.y > 125 && touch.y < 125+75) {
-        state.selectedUser = String("EXCRETION");
+        state.selectedRecordType = EXCRETION;
         return true;
     }else if (touch.x > 117 && touch.x < 117+86 && touch.y > 125 && touch.y < 125+75) {
-        state.selectedUser = String("BATH");
+        state.selectedRecordType = BATH;
         return true;
     }else if (touch.x > 213 && touch.x < 213+86 && touch.y > 125 && touch.y < 125+75) {
-        state.selectedUser = String("EVERYDAY");
+        state.selectedRecordType = EVERYDAY;
         return true;
     }
     return false;

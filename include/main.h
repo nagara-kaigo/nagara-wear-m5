@@ -25,7 +25,8 @@ struct AppState {
     String selectedReceiver; // 選択された相手の名前
     Screen currentScreen;    //現在のスクリーン
     std::stack<Screen> screenHistory;//戻る用のスクリーンスタック
-    String selectRecordType;
+    String selectRecordType; //選択された録音種類
+    String mealTime;
 };
 
 #endif

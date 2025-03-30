@@ -1,6 +1,7 @@
 #include "foodRecords.h"
 #include <ArduinoJson.h>
 #include "api.h"
+#include "general.h"
 
 //食事記録作成
 String createFoodRecord(
@@ -32,7 +33,7 @@ String createFoodRecord(
   String endpoint = "/residents/" + residentUid + "/food-records";
   
   // 3) POSTリクエストを送信 (httpPostJsonを利用)
-  return api.httpPostJson(endpoint, jsonBody, token);
+  return httpPostJson(api, endpoint, jsonBody, token);
   }
   
   //食事記録の追記
@@ -42,7 +43,7 @@ String createFoodRecord(
     jsonBody += "}";
   
     String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getFoodRecordUid() + "/transcription";
-    return api.httpPatchJson(endpoint, jsonBody, api.getuserToken());
+    return httpPatchJson(api,endpoint, jsonBody, api.getuserToken());
   }
   
   
@@ -51,5 +52,5 @@ String createFoodRecord(
   String foodRecordInfo(MyApi& api){
     String jsonBody = "{}";
     String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getFoodRecordUid() + "/extract";
-    return api.httpPostJson(endpoint, jsonBody, api.getuserToken());
+    return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
   }

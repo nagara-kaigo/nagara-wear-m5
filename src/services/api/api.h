@@ -17,6 +17,8 @@ public:
 
   String getmealExtract() const {return mealExtract;};
 
+  String getBaseUrl() const {return _baseUrl;};
+
   //セッター
   void setuserToken(const String Value) {userToken = Value;};
 
@@ -57,14 +59,6 @@ public:
     const String& gender,
     const String& admissionDate);
 
-
-    //HtTP POST　リクエストの共通関数
-    String httpPostJson(const String& endpoint, const String& jsonBody, const String& token = "");
-
-    // HTTP GET リクエストの共通関数
-    String httpGet(const String& endpoint, const String& token = "");
-
-    String httpPatchJson(const String& endpoint, const String& jsonBody, const String& token = "");
 
 
 

@@ -19,8 +19,6 @@ String mealTimeToString(MealTime mt) {
     }
 }
 
-
-
 void updateTranscriptionText(const String& newText) {
     transcriptionText = newText;
     M5.Lcd.fillScreen(WHITE);
@@ -47,8 +45,6 @@ void showTranscriptionScreen(const AppState &state) {
     Serial.println(state.mealTime);
     showHeaderBar(mealTimeToString(state.mealTime) + "レコーディング中");
     showFooterBarRecording(state);
-
-
     toggleRecording();
 }
 

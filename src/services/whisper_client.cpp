@@ -21,7 +21,6 @@ String JPresponse;
 extern MyApi api;
 extern AppState appState;
 
-
 //日本語一文字取り出し関数
 String getNextUtf8Char(const String &text, size_t &index) {
   if (index >= text.length()) return "";
@@ -296,7 +295,6 @@ void transcribeAudio() {
     }
 
     client.stop();
-
     JPresponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
 

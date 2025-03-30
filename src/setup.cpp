@@ -5,11 +5,16 @@
 #include "system/sd_handler.h"
 #include "system/wifi_manager.h"
 //#include "audio/audio_buffer.h"
-#include "system/API.h"
+#include "services/api/api.h"
+#include "tools/json.h"
+#include <WiFiClientSecure.h>
 
 AppState appState;
 
 MyApi api;  // `MyApi` クラスのインスタンスを作成
+
+// **HTTP リクエストの送信**
+WiFiClientSecure client;
 
 void initializeSystem() {
   //M5スタックイニシャライズ
@@ -29,6 +34,7 @@ void initializeSystem() {
   }
   //Wi-Fi接続
   connectToWiFi();
+  client.setInsecure();  // SSL 証明書の検証を無効化
   //ログイン
   String loginResponse = api.loginToApi("hardware-test", "password");
   Serial.println("Login Response:");
@@ -36,14 +42,14 @@ void initializeSystem() {
   String token = getJsonValue(loginResponse,"token");
   api.setuserToken(token);
   //ユーザ情報獲得
-  String userinfo = api.get_Me(token);
+  String userinfo = api.getMe(token);
   Serial.println("userinfo:");
   Serial.println(userinfo);
   String tenantUid = getJsonValue(userinfo,"tenantUid");
   api.settenantUid(tenantUid);
   Serial.println(tenantUid);
   //テナントレジデント一覧取得
-  String tenantResident = api.get_tenantResident(token);
+  String tenantResident = api.getTenantResident(token);
   Serial.println("tenantUser:");
   Serial.println(tenantResident);
   String residentUid = getValueInJson(tenantResident,"items","uid");

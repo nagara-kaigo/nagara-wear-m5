@@ -1,21 +1,24 @@
 #include "whisper_client.h"
-#include "network_handler.h"
 #include "SD.h"
 #include "config.h"
-#include "../task_manager.h"
+#include "../../task_manager.h"
 #include <string>
 #include <ArduinoJson.h>
 #include <M5Core2.h>
-#include "../system/API.h"
-#include "../screens/screen_transcription.h"
+#include "../../services/api/api.h"
+#include "../../screens/screen_transcription.h"
 #include <main.h>
-#include "../screens/screen_display_extract.h"
+#include "../../screens/screen_display_extract.h"
+#include "../api/foodRecords.h"
+#include <WiFiClientSecure.h>
 
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
 
 //パース後のテキスト変数
-String JPresponse;
+String jpResponse;
+
+extern WiFiClientSecure client;
 
 //クラスの継承
 extern MyApi api;
@@ -41,7 +44,7 @@ String getNextUtf8Char(const String &text, size_t &index) {
 
 
 //日本語文字数カウント関数
-int JPcount(const String& text) {
+int jpCount(const String& text) {
   int count = 0;
   int i = 0;
 
@@ -71,13 +74,13 @@ int JPcount(const String& text) {
 void drawWrappedText(const String& text ,int fontsize, const AppState &appState) {
   size_t y = recorder.getCursol();
   size_t x = recorder.getCursolX();
-  size_t JPlength = JPcount(text);
+  size_t jpLength = jpCount(text);
   int maxlength = 24 * (M5.Lcd.width() / (fontsize + 2));
   Serial.println(y);
-  Serial.println(JPlength);
+  Serial.println(jpLength);
   String currentLine = "";
   size_t index = 0;
-  for (int i = 0; i < JPlength;) {
+  for (int i = 0; i < jpLength;) {
     for (x; x < maxlength;) {
       String oneChar = getNextUtf8Char(text, index); // iが中で進む！
       M5.Lcd.drawString(oneChar, x, y, 1);
@@ -254,10 +257,6 @@ void transcribeAudio() {
         "Content-Length: " + String(contentLength) + "\r\n" +
         "Connection: close\r\n\r\n";
 
-    // **HTTP リクエストの送信**
-    NetworkHandler network;
-    WiFiClientSecure& client = network.getClient();  // `WiFiClientSecure` の取得
-
     if (!client.connect("api.openai.com", 443)) {
         Serial.println("APIサーバーに接続できませんでした");
         return;
@@ -295,19 +294,19 @@ void transcribeAudio() {
     }
 
     client.stop();
-    JPresponse = getHTTPJsonValue(response,"text");
+    jpResponse = getHTTPJsonValue(response,"text");
     Serial.println("API応答: " + response);
 
-    Serial.println("パース後: " + JPresponse);
+    Serial.println("パース後: " + jpResponse);
 
     //APIに送信
-    String foodAPIresponse = api.foodTranscription(JPresponse);
+    String foodAPIresponse = foodTranscription(api,jpResponse);
     Serial.println("foodAPIresponse:");
     Serial.println(foodAPIresponse);
 
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);
-    drawWrappedText(JPresponse,24,appState);
+    drawWrappedText(jpResponse,24,appState);
 }
 
 

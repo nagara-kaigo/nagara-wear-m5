@@ -1,8 +1,9 @@
 #include "task_manager.h"
-#include "services/whisper_client.h"
+#include "services/transcription/whisper_client.h"
 #include "audio/audio_recorder.h"
 #include "screen_manager.h"
-#include "system/API.h"
+#include "services/api/api.h"
+#include "services/api/foodRecords.h"
 extern MyApi api;
 
 TaskHandle_t task0Handle = NULL;
@@ -42,10 +43,10 @@ void task1(void *parameter) {
         Serial.println(recorder->isRecording());
         //食事記録を取得
         String token  = api.getuserToken();
-        String mealInfo = api.mealRecordInfo();
-        api.setmealExtract(mealInfo);
+        String foodInfo = foodRecordInfo(api);
+        api.setmealExtract(foodInfo);
         Serial.println("After transcribe MealInfo is:");
-        Serial.println(mealInfo);
+        Serial.println(foodInfo);
         vTaskDelay(pdMS_TO_TICKS(30));
         if(!recorder->isRecording()){
             Serial.println("task1 vTaskDelete");

@@ -1,7 +1,9 @@
 #include "audio_recorder.h"
-#include "../services/whisper_client.h"
-#include "../system/API.h"
+#include "../services/transcription/whisper_client.h"
+#include "../services/api/api.h"
 #include <M5Core2.h>
+#include "../tools/json.h"
+#include "../services/api/foodRecords.h"
 
 extern MyApi api;
 
@@ -83,8 +85,8 @@ void AudioRecorder::startRecording() {
     String token  = api.getuserToken();
     String residentUid = api.getResidentUid();
       //食事記録作成
-  
-    String response = api.CreateFoodRecord(
+    String response = createFoodRecord(
+        api,
         token,
         residentUid,
         "2024-03-20T12:00:00Z", // recordedAt

@@ -13,7 +13,7 @@
 // 画面を識別する列挙型
 enum Screen { 
     USER_PICKER, 
-    RECEIVER_PICKER, 
+    RESIDENT_PICKER, 
     STANDBY,
     RECORDING,
     FINAL_SCREEN,
@@ -39,7 +39,9 @@ enum MealTime{
 // アプリケーション全体で使用する状態管理構造体
 struct AppState {
     String selectedUser;     // 選択されたユーザー名
-    String selectedReceiver; // 選択された相手の名前
+    std::vector<String> selectedResidentId; // 選択されたレジデントのid
+    std::vector<String> selectedResidentFamilyName;// 選択されたレジデントの苗字
+    std::vector<String> selectedResidentGivenName;// 選択されたレジデントの名前
     Screen currentScreen;    //現在のスクリーン
     std::stack<Screen> screenHistory;//戻る用のスクリーンスタック
     RecordType selectedRecordType; //選択された録音種類

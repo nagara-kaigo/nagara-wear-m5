@@ -7,7 +7,7 @@
 #include "../ui/header.h"
 #include "../ui/footer.h"
 
-void showReceiverPickerScreen(const AppState &state);
-bool handleReceiverPickerTouch(const TouchPoint_t &touch, AppState &state);
+void showResidentPickerScreen(const AppState &state);
+bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state);
 
 #endif

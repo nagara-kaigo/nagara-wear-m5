@@ -25,9 +25,9 @@ void initializeSystem() {
   M5.Lcd.setTextFont(4);
   M5.Lcd.setFreeFont(&unicode_24px);
 
-  appState.currentScreen = USER_PICKER;
+  appState.currentScreen = RESIDENT_PICKER;
   appState.screenHistory.push(appState.currentScreen);
-  showUserPickerScreen(appState);
+  
 
   //SDカード初期化
   if (!initializeSD()) {
@@ -57,6 +57,15 @@ void initializeSystem() {
   //抽出する値の設定
   std::vector<String> fields = { "uid", "familyName", "givenName"};
   std::vector<Residents> residents = getValueAllInJson(tenantResident,"items",fields);
+  //抽出した値をappStateに代入
+  for (size_t i = 0; i < residents.size(); i++) {
+    //id代入
+    appState.selectedResidentId.push_back(residents[i].residentUid);
+    //苗字代入
+    appState.selectedResidentFamilyName.push_back(residents[i].familyName);
+    //名前代入
+    appState.selectedResidentGivenName.push_back(residents[i].givenName);
+  }
   // シリアルで中身を表示する例
   Serial.println("=== Residents List ===");
 
@@ -93,5 +102,7 @@ void initializeSystem() {
   Serial.println(result);
   */
 
+
+  showResidentPickerScreen(appState);
 
 }

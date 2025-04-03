@@ -1,24 +1,32 @@
 #include "screen_pick_receiver.h"
 
-void showReceiverPickerScreen(const AppState &state) {
+void showResidentPickerScreen(const AppState &state) {
     M5.Lcd.clear();
-    showHeaderBar("pick receiver");
+    M5.Lcd.fillScreen(WHITE);
+    M5.Lcd.setTextColor(BLACK, WHITE);
+    showHeaderBar("利用者を選んでください");
+    M5.Lcd.setTextDatum(3);
+    size_t j=0;
+    for(size_t i=0;i<state.selectedResidentGivenName.size();i++){
+        M5.Lcd.drawRect(20, 35+(56*i), 120, 50, BLACK);
+        M5.Lcd.drawRect(150, 35+(56*i), 120, 50, BLACK);
+        if((i%2) == 0){
+            M5.Lcd.drawString(state.selectedResidentGivenName[i], 30, 55+(56*j));
+        }
+        else{
+            M5.Lcd.drawString(state.selectedResidentGivenName[i], 160, 55+(56*j));
+            j=j+1;
+        }
+    }
     showFooterBar(state);
-    /*
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.print("User: " + state.selectedUser);
-    M5.Lcd.setCursor(10, 50);
-    M5.Lcd.print("Select Receiver:");
-    M5.Lcd.fillRect(10, 70, 300, 50, BLUE); // ボタン
-    M5.Lcd.setCursor(60, 160);
-    M5.Lcd.print("Receiver1");
-    */
 }
 
-bool handleReceiverPickerTouch(const TouchPoint_t &touch, AppState &state) {
-    if (touch.x > 10 && touch.x < 310 && touch.y > 70 && touch.y < 120) { // ボタン領域
-        state.selectedReceiver = String(CARE_RECEIVER_UUID_1);
+bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
+    if (touch.x > 20 && touch.x < 280 && touch.y > 40 && touch.y < 100) {
+        state.selectedUser = "こた";
+        return true;
+    } else if (touch.x > 20 && touch.x < 280 && touch.y > 110 && touch.y < 170) {
+        state.selectedUser = "ゆうせい";
         return true;
     }
     return false;

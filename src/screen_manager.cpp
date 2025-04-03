@@ -12,8 +12,8 @@ void changeScreen(Screen newScreen, bool addStuck) {
     appState.currentScreen = newScreen;
 
     switch (newScreen) {
-      case USER_PICKER:
-        showUserPickerScreen(appState);
+      case RESIDENT_PICKER:
+        showResidentPickerScreen(appState);
         break;
       case STANDBY:
         showStandbyScreen(appState);

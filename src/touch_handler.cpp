@@ -20,8 +20,8 @@ void handleTouchEvents() {
   // メインコンテンツのタッチ
   if (touch.y < 200) {
     switch (appState.currentScreen) {
-      case USER_PICKER:
-        if (handleUserPickerTouch(touch, appState)) {
+      case RESIDENT_PICKER:
+        if (handleResidentPickerTouch(touch, appState)) {
           changeScreen(RECORD_TYPE_PICKER);
         }
         break;

@@ -2,6 +2,7 @@
 #include "json.h"
 #include "../services/api/residents.h"
 #include <vector>
+
 //JSONパース関数(HTTPを考慮しない)
 //JSONから任意のパーツを取り出す
 String getJsonValue(const String& jsonText, const String& part) {
@@ -100,4 +101,3 @@ std::vector<Residents> getValueAllInJson(
 
     return residentsList;
 }
-

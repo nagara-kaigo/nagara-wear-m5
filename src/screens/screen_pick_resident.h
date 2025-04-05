@@ -1,5 +1,5 @@
-#ifndef SCREEN_PICK_RECEIVER_H
-#define SCREEN_PICK_RECEIVER_H
+#ifndef SCREEN_PICK_RESIDENT_H
+#define SCREEN_PICK_RESIDENT_H
 
 #include <M5Core2.h>
 #include "main.h" // AppState を参照

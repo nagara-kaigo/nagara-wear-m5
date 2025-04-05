@@ -1,4 +1,4 @@
-#include "screen_pick_receiver.h"
+#include "screen_pick_resident.h"
 
 void showResidentPickerScreen(AppState &state) {
     M5.Lcd.clear();

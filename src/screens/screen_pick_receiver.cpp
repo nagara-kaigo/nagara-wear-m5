@@ -6,28 +6,67 @@ void showResidentPickerScreen(const AppState &state) {
     M5.Lcd.setTextColor(BLACK, WHITE);
     showHeaderBar("利用者を選んでください");
     M5.Lcd.setTextDatum(3);
-    size_t j=0;
-    for(size_t i=0;i<state.selectedResidentGivenName.size();i++){
-        M5.Lcd.drawRect(20, 35+(56*i), 120, 50, BLACK);
-        M5.Lcd.drawRect(150, 35+(56*i), 120, 50, BLACK);
-        if((i%2) == 0){
-            M5.Lcd.drawString(state.selectedResidentGivenName[i], 30, 55+(56*j));
+
+    // 左矢印（画面左端中央）
+    M5.Lcd.fillTriangle(
+        ARROW_LEFT_X1, ARROW_Y_CENTER,
+        ARROW_LEFT_X2, ARROW_Y_TOP,
+        ARROW_LEFT_X2, ARROW_Y_BOTTOM,
+        BLACK
+    );
+
+    // 右矢印（画面右端中央）
+    M5.Lcd.fillTriangle(
+        ARROW_RIGHT_X1, ARROW_Y_CENTER,
+        ARROW_RIGHT_X2, ARROW_Y_TOP,
+        ARROW_RIGHT_X2, ARROW_Y_BOTTOM,
+        BLACK
+    );
+
+    size_t j = 0;
+    for(size_t i = 0; i < state.selectedResidentGivenName.size(); i++){
+        M5.Lcd.drawRect(BOX_LEFT_X, BOX_START_Y + (BOX_INTERVAL_Y * j), BOX_WIDTH, BOX_HEIGHT, BLACK);
+        M5.Lcd.drawRect(BOX_RIGHT_X, BOX_START_Y + (BOX_INTERVAL_Y * j), BOX_WIDTH, BOX_HEIGHT, BLACK);
+        if((i % 2) == 0){
+            M5.Lcd.drawString(state.selectedResidentGivenName[i], BOX_LEFT_X + TEXT_OFFSET_X, BOX_START_Y + TEXT_OFFSET_Y + (BOX_INTERVAL_Y * j));
         }
         else{
-            M5.Lcd.drawString(state.selectedResidentGivenName[i], 160, 55+(56*j));
-            j=j+1;
+            M5.Lcd.drawString(state.selectedResidentGivenName[i], BOX_RIGHT_X + TEXT_OFFSET_X, BOX_START_Y + TEXT_OFFSET_Y + (BOX_INTERVAL_Y * j));
+            j++;
         }
     }
     showFooterBar(state);
 }
 
 bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
-    if (touch.x > 20 && touch.x < 280 && touch.y > 40 && touch.y < 100) {
-        state.selectedUser = "こた";
-        return true;
-    } else if (touch.x > 20 && touch.x < 280 && touch.y > 110 && touch.y < 170) {
-        state.selectedUser = "ゆうせい";
-        return true;
+    size_t j = 0;
+
+    for(size_t i = 0; i < state.selectedResidentGivenName.size(); i++) {
+        int x1, y1, x2, y2;
+
+        if((i % 2) == 0) {
+            x1 = BOX_LEFT_X;
+            y1 = BOX_START_Y + (BOX_INTERVAL_Y * j);
+            x2 = x1 + BOX_WIDTH;
+            y2 = y1 + BOX_HEIGHT;
+        } else {
+            x1 = BOX_RIGHT_X;
+            y1 = BOX_START_Y + (BOX_INTERVAL_Y * j);
+            x2 = x1 + BOX_WIDTH;
+            y2 = y1 + BOX_HEIGHT;
+            j++;
+        }
+
+        if (touch.x >= x1 && touch.x <= x2 &&
+            touch.y >= y1 && touch.y <= y2) {
+            state.selectedUser = state.selectedResidentGivenName[i];
+            return true;
+        }
+        else if(touch.x >= ARROW_LEFT_X1 && touch.x <= ARROW_LEFT_X2 &&
+                touch.y >= ARROW_Y_TOP && touch.y <= ARROW_Y_BOTTOM){
+            Serial.println("back page");
+        }
     }
+
     return false;
 }

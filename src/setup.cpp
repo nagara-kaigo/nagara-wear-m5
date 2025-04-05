@@ -88,13 +88,13 @@ void initializeSystem() {
   String result = createResidents(
     api,
     token, 
-    "髙木",          // familyName
-    "透",          // givenName
-    "タカギ",        // familyNameFurigana
-    "トオル",        // givenNameFurigana
+    "赤松",          // familyName
+    "大和",          // givenName
+    "アカマツ",        // familyNameFurigana
+    "ヤマト",        // givenNameFurigana
     "2003-11-19",    // dateOfBirth
     "MALE",          // gender
-    "2025-04-02"     // admissionDate
+    "2025-04-02"     // admissionDate一輝一輝
   );
 
   // 結果確認

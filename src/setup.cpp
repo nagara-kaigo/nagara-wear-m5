@@ -51,12 +51,12 @@ void initializeSystem() {
   api.settenantUid(tenantUid);
   Serial.println(tenantUid);
   //テナントレジデント一覧取得
-  String tenantResident = getTenantResident(api,token);
+  String tenantResident = getTenantResidents(api,token);
   Serial.println("tenantUser:");
   Serial.println(tenantResident);
   //抽出する値の設定
   std::vector<String> fields = { "uid", "familyName", "givenName"};
-  std::vector<Residents> residents = getValueAllInJson(tenantResident,"items",fields);
+  std::vector<Resident> residents = getValueAllInJson(tenantResident,"items",fields);
   //抽出した値をappStateに代入
   for (size_t i = 0; i < residents.size(); i++) {
     //id代入
@@ -85,7 +85,7 @@ void initializeSystem() {
   //Serial.println(residentUid);
   //テナントレジデント作成
   /*
-  String result = createResidents(
+  String result = createResident(
     api,
     token, 
     "赤松",          // familyName

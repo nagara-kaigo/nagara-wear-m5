@@ -4,14 +4,14 @@
 #include "general.h"
 
 //テナントユーザ一覧を取得
-String getTenantResident(MyApi& api,const String& token){
+String getTenantResidents(MyApi& api,const String& token){
     return httpGet(api, "/tenants/" + api.getTenantUid() + "/residents", token);
   }
   
   //レジデント作成
   // MyApi.cpp
   
-String createResidents(
+String createResident(
     MyApi& api,
     const String& token,
     const String& familyName,

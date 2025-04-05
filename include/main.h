@@ -45,8 +45,10 @@ struct AppState {
     Screen currentScreen;    //現在のスクリーン
     std::stack<Screen> screenHistory;//戻る用のスクリーンスタック
     RecordType selectedRecordType; //選択された録音種類
-    MealTime mealTime;
-    std::vector<Residents> residentsList;
+    MealTime mealTime; //食事タイミング
+    std::vector<Residents> residentsList; //レジデントの構造体配列
+    size_t currentResidentPage = 0; // 現在のページ (0から)
+    size_t totalResidentPage = 1;  // 総ページ数  (1から)
 };
 
 #endif

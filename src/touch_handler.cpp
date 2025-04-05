@@ -59,7 +59,7 @@ void handleFooterTouch(TouchPoint_t touch) {
     delay(75);
     M5.Axp.SetLDOEnable(3, false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
-      changeScreen(USER_PICKER);
+      changeScreen(RESIDENT_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
       popScreen();
     } else if (touch.x >= FOOTER_HOME_MAX_X){

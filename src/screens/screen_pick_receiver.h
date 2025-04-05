@@ -25,7 +25,7 @@
 #define TEXT_OFFSET_X 10
 #define TEXT_OFFSET_Y 20
 
-void showResidentPickerScreen(const AppState &state);
+void showResidentPickerScreen(AppState &state);
 bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state);
 
 #endif

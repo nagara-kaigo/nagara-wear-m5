@@ -17,17 +17,6 @@ String createResident(
     const String& gender,
     const String& admissionDate);
 
-struct Resident {
-    String residentUid;
-    String familyName;
-    String givenName;
-    
-    // 引数ありコンストラクタ
-    Resident(const String& uid, const String& fam, const String& given)
-        : residentUid(uid), familyName(fam), givenName(given) {}
-    
-    // デフォルトコンストラクタも定義
-    Resident() : residentUid(""), familyName(""), givenName("") {}
-    };
+
     
 #endif

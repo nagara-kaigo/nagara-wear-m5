@@ -1,6 +1,6 @@
 #include <ArduinoJson.h>
 #include "json.h"
-#include "../services/api/residents.h"
+#include <main.h>
 #include <vector>
 //JSONパース関数(HTTPを考慮しない)
 //JSONから任意のパーツを取り出す

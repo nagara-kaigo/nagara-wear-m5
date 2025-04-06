@@ -56,28 +56,19 @@ void initializeSystem() {
   Serial.println(tenantResident);
   //抽出する値の設定
   std::vector<String> fields = { "uid", "familyName", "givenName"};
-  std::vector<Resident> residents = getValueAllInJson(tenantResident,"items",fields);
-  //抽出した値をappStateに代入
-  for (size_t i = 0; i < residents.size(); i++) {
-    //id代入
-    appState.selectedResidentId.push_back(residents[i].residentUid);
-    //苗字代入
-    appState.selectedResidentFamilyName.push_back(residents[i].familyName);
-    //名前代入
-    appState.selectedResidentGivenName.push_back(residents[i].givenName);
-  }
+  appState.residentsList = getValueAllInJson(tenantResident,"items",fields);
   // シリアルで中身を表示する例
   Serial.println("=== Residents List ===");
 
-  for (size_t i = 0; i < residents.size(); i++) {
+  for (size_t i = 0; i < appState.residentsList.size(); i++) {
     Serial.print("[" + String(i) + "] uid: ");
-    Serial.println(residents[i].residentUid);
+    Serial.println(appState.residentsList[i].residentUid);
 
     Serial.print("        familyName: ");
-    Serial.println(residents[i].familyName);
+    Serial.println(appState.residentsList[i].familyName);
 
     Serial.print("        givenName : ");
-    Serial.println(residents[i].givenName);
+    Serial.println(appState.residentsList[i].givenName);
 
     Serial.println("----------------------");
   }

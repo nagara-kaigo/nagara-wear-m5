@@ -7,7 +7,7 @@ void showResidentPickerScreen(AppState &state) {
     showHeaderBar("利用者を選んでください");
     M5.Lcd.setTextDatum(3);
 
-    size_t totalResidents = state.selectedResidentGivenName.size();
+    size_t totalResidents = state.residentsList.size();
     Serial.println(totalResidents);
     state.totalResidentPage = (totalResidents/6)+1;
     Serial.println(state.totalResidentPage);
@@ -16,16 +16,19 @@ void showResidentPickerScreen(AppState &state) {
     size_t j = 0;
 
     // 利用者をページ単位で表示
-    for(size_t i = startIdx; i < endIdx; i++){
-        if((i % 2) == 0){
-            M5.Lcd.drawRect(BOX_LEFT_X, BOX_START_Y + (BOX_INTERVAL_Y * j), BOX_WIDTH, BOX_HEIGHT, BLACK);
-            M5.Lcd.drawString(state.selectedResidentGivenName[i], BOX_LEFT_X + TEXT_OFFSET_X, BOX_START_Y + TEXT_OFFSET_Y + (BOX_INTERVAL_Y * j));
-        }
-        else{
-            M5.Lcd.drawRect(BOX_RIGHT_X, BOX_START_Y + (BOX_INTERVAL_Y * j), BOX_WIDTH, BOX_HEIGHT, BLACK);
-            M5.Lcd.drawString(state.selectedResidentGivenName[i], BOX_RIGHT_X + TEXT_OFFSET_X, BOX_START_Y + TEXT_OFFSET_Y + (BOX_INTERVAL_Y * j));
+    for(size_t i = startIdx; i < endIdx; i++) {
+        int x, y;
+        if((i % 2) == 0) {
+            x = BOX_LEFT_X;
+            y = BOX_START_Y + (BOX_INTERVAL_Y * j);
+        } else {
+            x = BOX_RIGHT_X;
+            y = BOX_START_Y + (BOX_INTERVAL_Y * j);
             j++;
         }
+    
+        M5.Lcd.drawRect(x, y, BOX_WIDTH, BOX_HEIGHT, BLACK);
+        M5.Lcd.drawString(state.residentsList[i].givenName, x + TEXT_OFFSET_X, y + TEXT_OFFSET_Y);
     }
 
     // ページに応じて矢印を表示
@@ -43,10 +46,14 @@ void showResidentPickerScreen(AppState &state) {
 }
 
 
+bool isTouchInBox(int touchX, int touchY, int boxX, int boxY, int width, int height) {
+    return touchX >= boxX && touchX <= boxX + width && touchY >= boxY && touchY <= boxY + height;
+}
+
 bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
     size_t j = 0;
 
-    size_t totalResidents = state.selectedResidentGivenName.size();
+    size_t totalResidents = state.residentsList.size();
     size_t startIdx = state.currentResidentPage * 6;
     size_t endIdx = min(startIdx + 6, totalResidents);
 
@@ -68,7 +75,7 @@ bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
 
         if (touch.x >= x1 && touch.x <= x2 &&
             touch.y >= y1 && touch.y <= y2) {
-            state.selectedUser = state.selectedResidentGivenName[i];
+            state.selectedResident = state.residentsList[i];
             return true;
         }
     }

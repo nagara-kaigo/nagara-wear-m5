@@ -16,7 +16,5 @@ String createResident(
     const String& dateOfBirth,
     const String& gender,
     const String& admissionDate);
-
-
     
 #endif

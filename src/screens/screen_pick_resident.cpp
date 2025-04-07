@@ -9,7 +9,7 @@ void showResidentPickerScreen(AppState &state) {
 
     size_t totalResidents = state.residentsList.size();
     Serial.println(totalResidents);
-    state.totalResidentPage = (totalResidents/6)+1;
+    state.totalResidentPage = (totalResidents+5/6)+1;
     Serial.println(state.totalResidentPage);
     size_t startIdx = state.currentResidentPage * 6;
     size_t endIdx = min(startIdx + 6, totalResidents);
@@ -58,24 +58,18 @@ bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
     size_t endIdx = min(startIdx + 6, totalResidents);
 
     for(size_t i = startIdx; i < endIdx; i++) {
-        int x1, y1, x2, y2;
-
-        if((i % 2) == 0) {
-            x1 = BOX_LEFT_X;
-            y1 = BOX_START_Y + (BOX_INTERVAL_Y * j);
-            x2 = x1 + BOX_WIDTH;
-            y2 = y1 + BOX_HEIGHT;
+        int x, y;
+        if (i % 2 == 0) {
+            x = BOX_LEFT_X;
+            y = BOX_START_Y + (BOX_INTERVAL_Y * j);
         } else {
-            x1 = BOX_RIGHT_X;
-            y1 = BOX_START_Y + (BOX_INTERVAL_Y * j);
-            x2 = x1 + BOX_WIDTH;
-            y2 = y1 + BOX_HEIGHT;
+            x = BOX_RIGHT_X;
+            y = BOX_START_Y + (BOX_INTERVAL_Y * j);
             j++;
         }
 
-        if (touch.x >= x1 && touch.x <= x2 &&
-            touch.y >= y1 && touch.y <= y2) {
-            state.selectedResident = state.residentsList[i];
+        if (isTouchInBox(touch.x, touch.y, x, y, BOX_WIDTH, BOX_HEIGHT)) {
+            state.selectedResident.givenName = state.residentsList[i].givenName;
             return true;
         }
     }

@@ -51,12 +51,12 @@ void initializeSystem() {
   api.settenantUid(tenantUid);
   Serial.println(tenantUid);
   //テナントレジデント一覧取得
-  String tenantResident = getTenantResidents(api,token);
+  String tenantResidents = getTenantResidents(api,token);
   Serial.println("tenantUser:");
-  Serial.println(tenantResident);
+  Serial.println(tenantResidents);
   //抽出する値の設定
   std::vector<String> fields = { "uid", "familyName", "givenName"};
-  appState.residentsList = getValueAllInJson(tenantResident,"items",fields);
+  appState.residentsList = getValueAllInJson(tenantResidents,"items",fields);
   // シリアルで中身を表示する例
   Serial.println("=== Residents List ===");
 

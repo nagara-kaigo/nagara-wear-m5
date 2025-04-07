@@ -42,7 +42,7 @@ void showMealRecordFromJson(const String &jsonString, const AppState &state) {
 
     // ヘッダー表示（タイトル）
     M5.Lcd.setTextColor(TITLE_COLOR, BACKGROUND_COLOR);
-    showHeaderBar("食事記録");   
+    showHeaderBar("食事記録" + state.selectedResident.givenName);   
     M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
     M5.Lcd.setCursor(0, 60);
 

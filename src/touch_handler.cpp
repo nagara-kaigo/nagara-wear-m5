@@ -20,8 +20,8 @@ void handleTouchEvents() {
   // メインコンテンツのタッチ
   if (touch.y < 200) {
     switch (appState.currentScreen) {
-      case USER_PICKER:
-        if (handleUserPickerTouch(touch, appState)) {
+      case RESIDENT_PICKER:
+        if (handleResidentPickerTouch(touch, appState)) {
           changeScreen(RECORD_TYPE_PICKER);
         }
         break;
@@ -59,7 +59,7 @@ void handleFooterTouch(TouchPoint_t touch) {
     delay(75);
     M5.Axp.SetLDOEnable(3, false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
-      changeScreen(USER_PICKER);
+      changeScreen(RESIDENT_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
       popScreen();
     } else if (touch.x >= FOOTER_HOME_MAX_X){

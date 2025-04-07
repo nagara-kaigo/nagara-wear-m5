@@ -25,9 +25,9 @@ void initializeSystem() {
   M5.Lcd.setTextFont(4);
   M5.Lcd.setFreeFont(&unicode_24px);
 
-  appState.currentScreen = USER_PICKER;
+  appState.currentScreen = RESIDENT_PICKER;
   appState.screenHistory.push(appState.currentScreen);
-  showUserPickerScreen(appState);
+  
 
   //SDカード初期化
   if (!initializeSD()) {
@@ -51,24 +51,24 @@ void initializeSystem() {
   api.settenantUid(tenantUid);
   Serial.println(tenantUid);
   //テナントレジデント一覧取得
-  String tenantResident = getTenantResident(api,token);
+  String tenantResidents = getTenantResidents(api,token);
   Serial.println("tenantUser:");
-  Serial.println(tenantResident);
+  Serial.println(tenantResidents);
   //抽出する値の設定
   std::vector<String> fields = { "uid", "familyName", "givenName"};
-  std::vector<Residents> residents = getValueAllInJson(tenantResident,"items",fields);
+  appState.residentsList = getValueAllInJson(tenantResidents,"items",fields);
   // シリアルで中身を表示する例
   Serial.println("=== Residents List ===");
 
-  for (size_t i = 0; i < residents.size(); i++) {
+  for (size_t i = 0; i < appState.residentsList.size(); i++) {
     Serial.print("[" + String(i) + "] uid: ");
-    Serial.println(residents[i].residentUid);
+    Serial.println(appState.residentsList[i].residentUid);
 
     Serial.print("        familyName: ");
-    Serial.println(residents[i].familyName);
+    Serial.println(appState.residentsList[i].familyName);
 
     Serial.print("        givenName : ");
-    Serial.println(residents[i].givenName);
+    Serial.println(appState.residentsList[i].givenName);
 
     Serial.println("----------------------");
   }
@@ -76,16 +76,16 @@ void initializeSystem() {
   //Serial.println(residentUid);
   //テナントレジデント作成
   /*
-  String result = createResidents(
+  String result = createResident(
     api,
     token, 
-    "髙木",          // familyName
-    "透",          // givenName
-    "タカギ",        // familyNameFurigana
-    "トオル",        // givenNameFurigana
+    "赤松",          // familyName
+    "大和",          // givenName
+    "アカマツ",        // familyNameFurigana
+    "ヤマト",        // givenNameFurigana
     "2003-11-19",    // dateOfBirth
     "MALE",          // gender
-    "2025-04-02"     // admissionDate
+    "2025-04-02"     // admissionDate一輝一輝
   );
 
   // 結果確認
@@ -93,5 +93,7 @@ void initializeSystem() {
   Serial.println(result);
   */
 
+
+  showResidentPickerScreen(appState);
 
 }

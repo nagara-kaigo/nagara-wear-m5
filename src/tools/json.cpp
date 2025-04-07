@@ -1,6 +1,6 @@
 #include <ArduinoJson.h>
 #include "json.h"
-#include "../services/api/residents.h"
+#include <main.h>
 #include <vector>
 
 //JSONパース関数(HTTPを考慮しない)
@@ -63,14 +63,13 @@ String getJsonValue(const String& jsonText, const String& part) {
 
 // すべての要素から field に対応する値を取得する関数
 // 第3引数の "fields" は、{ "uid", "familyName", "givenName" } のような配列・リストを想定
-std::vector<Residents> getValueAllInJson(
+std::vector<Resident> getValueAllInJson(
     const String& jsonStr,
     const String& arrayKey,
     const std::vector<String>& fields  // 例：["uid", "familyName", "givenName"]
 ) {
     // 戻り値用のコンテナ
-    std::vector<Residents> residentsList;
-
+    std::vector<Resident> residentsList;
     // ArduinoJsonでパース用のDynamicJsonDocumentを準備 (容量は適宜調整)
     DynamicJsonDocument doc(4096);
     DeserializationError err = deserializeJson(doc, jsonStr);
@@ -95,7 +94,7 @@ std::vector<Residents> getValueAllInJson(
         String gname = obj[fields[2]] | "";
 
         // Residents 構造体に入れてプッシュ
-        Residents r(uid, fname, gname);
+        Resident r(uid, fname, gname);
         residentsList.push_back(r);
     }
 

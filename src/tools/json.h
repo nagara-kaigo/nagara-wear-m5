@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 #include <vector>
-#include "../services/api/residents.h"
+#include <main.h>
 
 String getJsonValue(const String& jsonText, const String& part);
 String getValueInJson(const String& jsonText, const String& part, const String& field);
-std::vector<Residents> getValueAllInJson(const String& jsonStr,const String& arrayKey,const std::vector<String>& fields);
+std::vector<Resident> getValueAllInJson(const String& jsonStr,const String& arrayKey,const std::vector<String>& fields);
 
 #endif

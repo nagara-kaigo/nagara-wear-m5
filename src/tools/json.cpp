@@ -2,6 +2,7 @@
 #include "json.h"
 #include <main.h>
 #include <vector>
+
 //JSONパース関数(HTTPを考慮しない)
 //JSONから任意のパーツを取り出す
 String getJsonValue(const String& jsonText, const String& part) {
@@ -69,7 +70,6 @@ std::vector<Resident> getValueAllInJson(
 ) {
     // 戻り値用のコンテナ
     std::vector<Resident> residentsList;
-
     // ArduinoJsonでパース用のDynamicJsonDocumentを準備 (容量は適宜調整)
     DynamicJsonDocument doc(4096);
     DeserializationError err = deserializeJson(doc, jsonStr);
@@ -100,4 +100,3 @@ std::vector<Resident> getValueAllInJson(
 
     return residentsList;
 }
-

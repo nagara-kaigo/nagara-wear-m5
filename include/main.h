@@ -8,7 +8,6 @@
 #include <stack>
 #include <vector>
 
-
 //レジデントの情報を識別する構造体
 struct Resident {
     String residentUid;
@@ -22,7 +21,6 @@ struct Resident {
     // デフォルトコンストラクタも定義
     Resident() : residentUid(""), familyName(""), givenName("") {}
     };
-
 
 // 画面を識別する列挙型
 enum Screen { 

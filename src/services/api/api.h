@@ -13,7 +13,8 @@ public:
 
   String getResidentUid() const {return residentUid;};
 
-  String getFoodRecordUid() const {return foodRecordUid;};
+  //String getFoodRecordUid() const {return foodRecordUid;};
+  String getRecordUid() const {return recordUid;};
 
   String getmealExtract() const {return mealExtract;};
 
@@ -26,7 +27,8 @@ public:
 
   void setresidentUid(const String Value) {residentUid = Value;};
 
-  void setfoodRecordUid(const String Value) {foodRecordUid = Value;};
+  //void setfoodRecordUid(const String Value) {foodRecordUid = Value;};
+  void setRecordUid(const String Value) {recordUid = Value;};
 
   void setmealExtract(const String Value) {mealExtract = Value;};
 
@@ -72,7 +74,8 @@ private:
 
   String residentUid;
 
-  String foodRecordUid;
+  //String foodRecordUid;
+  String recordUid;
 
   String mealExtract;
 };

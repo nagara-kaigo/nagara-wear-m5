@@ -301,17 +301,17 @@ void transcribeAudio() {
     Serial.println("パース後: " + jpResponse);
 
     //APIに送信
-    String foodAPIresponse;
+    String apiResponse;
     switch (appState.selectedRecordType) {
     case MEAL:
-      foodAPIresponse = foodTranscription(api,jpResponse);
+      apiResponse = foodTranscription(api,jpResponse);
       break;
     case BATH:
-      foodAPIresponse = bathTranscription(api,jpResponse);
+      apiResponse = bathTranscription(api,jpResponse);
       break;
     }
-    Serial.println("foodAPIresponse:");
-    Serial.println(foodAPIresponse);
+    Serial.println("apiResponse:");
+    Serial.println(apiResponse);
 
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);

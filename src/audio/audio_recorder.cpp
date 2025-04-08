@@ -101,8 +101,8 @@ void AudioRecorder::startRecording() {
         
     Serial.println("CreateFoodRecord response:");
     Serial.println(response);
-    String foodRecordUid = getJsonValue(response,"uid");
-    api.setfoodRecordUid(foodRecordUid);
+    String recordUid = getJsonValue(response,"uid");
+    api.setRecordUid(recordUid);
 
   
     recording = true;

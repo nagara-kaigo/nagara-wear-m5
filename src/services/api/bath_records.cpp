@@ -3,7 +3,7 @@
 #include "api.h"
 #include "general.h"
 
-//食事記録作成
+//入浴記録作成
 String createBathRecord(
     MyApi& api,
     const String& token,

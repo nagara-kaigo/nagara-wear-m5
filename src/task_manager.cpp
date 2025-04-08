@@ -44,7 +44,7 @@ void task1(void *parameter) {
         //食事記録を取得
         String token  = api.getuserToken();
         String foodInfo = foodRecordInfo(api);
-        api.setmealExtract(foodInfo);
+        api.setRecordExtract(foodInfo);
         Serial.println("After transcribe MealInfo is:");
         Serial.println(foodInfo);
         vTaskDelay(pdMS_TO_TICKS(30));

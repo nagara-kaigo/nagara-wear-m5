@@ -87,7 +87,6 @@ void AudioRecorder::startRecording() {
       //食事記録作成
     String response = createFoodRecord(
         api,
-        token,
         residentUid,
         "2024-03-20T12:00:00Z", // recordedAt
         "ちょっと少なめに食べました", // notes

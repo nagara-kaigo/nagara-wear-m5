@@ -6,7 +6,6 @@
 //食事記録作成
 String createFoodRecord(
     MyApi& api,
-    const String& token,
     const String& residentUid,
     const String& recordedAt,
     const String& notes,
@@ -33,7 +32,7 @@ String createFoodRecord(
   String endpoint = "/residents/" + residentUid + "/food-records";
   
   // 3) POSTリクエストを送信 (httpPostJsonを利用)
-  return httpPostJson(api, endpoint, jsonBody, token);
+  return httpPostJson(api, endpoint, jsonBody);
   }
   
   //食事記録の追記
@@ -43,7 +42,7 @@ String createFoodRecord(
     jsonBody += "}";
   
     String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getFoodRecordUid() + "/transcription";
-    return httpPatchJson(api,endpoint, jsonBody, api.getuserToken());
+    return httpPatchJson(api,endpoint, jsonBody);
   }
   
   
@@ -52,5 +51,5 @@ String createFoodRecord(
   String foodRecordInfo(MyApi& api){
     String jsonBody = "{}";
     String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getFoodRecordUid() + "/extract";
-    return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+    return httpPostJson(api, endpoint, jsonBody);
   }

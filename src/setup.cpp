@@ -51,7 +51,7 @@ void initializeSystem() {
   api.settenantUid(tenantUid);
   Serial.println(tenantUid);
   //テナントレジデント一覧取得
-  String tenantResidents = getTenantResidents(api,token);
+  String tenantResidents = getTenantResidents(api);
   Serial.println("tenantUser:");
   Serial.println(tenantResidents);
   //抽出する値の設定
@@ -77,8 +77,7 @@ void initializeSystem() {
   //テナントレジデント作成
   /*
   String result = createResident(
-    api,
-    token, 
+    api, 
     "赤松",          // familyName
     "大和",          // givenName
     "アカマツ",        // familyNameFurigana

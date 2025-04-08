@@ -4,8 +4,8 @@
 #include "general.h"
 
 //テナントユーザ一覧を取得
-String getTenantResidents(MyApi& api,const String& token){
-    return httpGet(api, "/tenants/" + api.getTenantUid() + "/residents", token);
+String getTenantResidents(MyApi& api){
+    return httpGet(api, "/tenants/" + api.getTenantUid() + "/residents");
   }
   
   //レジデント作成
@@ -13,7 +13,6 @@ String getTenantResidents(MyApi& api,const String& token){
   
 String createResident(
     MyApi& api,
-    const String& token,
     const String& familyName,
     const String& givenName,
     const String& familyNameFurigana,
@@ -34,7 +33,7 @@ String createResident(
   jsonBody += "}";
   
   // 2) POSTリクエストを送る
-  return httpPostJson(api, "/tenants/" + api.getTenantUid() + "/residents", jsonBody, token);
+  return httpPostJson(api, "/tenants/" + api.getTenantUid() + "/residents", jsonBody);
   }
 
   

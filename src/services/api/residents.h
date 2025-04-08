@@ -4,11 +4,10 @@
 #include <Arduino.h>
 #include "api.h"
 
-String getTenantResidents(MyApi& api,const String& token);
+String getTenantResidents(MyApi& api);
 
 String createResident(
     MyApi& api,
-    const String& token,
     const String& familyName,
     const String& givenName,
     const String& familyNameFurigana,

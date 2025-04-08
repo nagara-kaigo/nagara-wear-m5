@@ -4,9 +4,10 @@
 #include <M5Core2.h>
 #include "../tools/json.h"
 #include "../services/api/foodRecords.h"
+#include "../services/api/bath_records.h"
 
 extern MyApi api;
-
+extern AppState appState;
 
 AudioRecorder::AudioRecorder()
     : audioRingBuffer(nullptr), tempBuffer(nullptr), writeIndex(0), readIndex(0),
@@ -84,22 +85,39 @@ void AudioRecorder::startRecording() {
     if (recording || recordingTaskHandle != nullptr) return;
     String token  = api.getuserToken();
     String residentUid = api.getResidentUid();
-      //食事記録作成
-    String response = createFoodRecord(
-        api,
-        token,
-        residentUid,
-        "2024-03-20T12:00:00Z", // recordedAt
-        "ちょっと少なめに食べました", // notes
-        "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
-        80,                    // mainCoursePercentage
-        70,                    // sideDishPercentage
-        90,                    // soupPercentage
-        "WATER",               // beverageType
-        200                    // beverageVolume
-    );
+    String response;
+    switch (appState.selectedRecordType) {
+    case MEAL:
+        //食事記録作成
+        response = createFoodRecord(
+            api,
+            token,
+            residentUid,
+            "2024-03-20T12:00:00Z", // recordedAt
+            "ちょっと少なめに食べました", // notes
+            "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
+            80,                    // mainCoursePercentage
+            70,                    // sideDishPercentage
+            90,                    // soupPercentage
+            "WATER",               // beverageType
+            200                    // beverageVolume
+        );
+        break;
+    
+    case BATH:
+        //入浴記録作成
+        response = createBathRecord(
+            api,
+            token,
+            residentUid,
+            "2024-03-20T12:00:00Z", // recordedAt
+            "",                     // notes
+            ""                      // bathMethod (例: BATH, SHOWER, etc)
+        );
+        break;
+    }
         
-    Serial.println("CreateFoodRecord response:");
+    Serial.println("CreateRecord response:");
     Serial.println(response);
     String recordUid = getJsonValue(response,"uid");
     api.setRecordUid(recordUid);

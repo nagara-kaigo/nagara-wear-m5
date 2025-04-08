@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <driver/i2s.h>
+#include <main.h>
 #include "../system/sd_handler.h"
 
 #define BUFFER_SIZE (16000 * 2 * 20)

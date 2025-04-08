@@ -12,7 +12,7 @@ public:
     AudioRecorder();
     ~AudioRecorder();
 
-    void startRecording();
+    void startRecording(RecordType recordType);
     void stopRecording();
     bool isRecording() const{return recording;};
     void initialize();

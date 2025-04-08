@@ -26,7 +26,7 @@ void stopBackgroundTasks() {
 
 void task0(void *parameter) {
     AudioRecorder* recorder = static_cast<AudioRecorder*>(parameter);
-    recorder->startRecording();
+    recorder->startRecording(appState.selectedRecordType);
     while(recorder->isRecording()){
         recorder->recordTask(parameter);
         vTaskDelay(pdMS_TO_TICKS(30));

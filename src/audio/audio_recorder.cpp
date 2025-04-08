@@ -7,7 +7,6 @@
 #include "../services/api/bath_records.h"
 
 extern MyApi api;
-extern AppState appState;
 
 AudioRecorder::AudioRecorder()
     : audioRingBuffer(nullptr), tempBuffer(nullptr), writeIndex(0), readIndex(0),
@@ -81,12 +80,12 @@ void AudioRecorder::initialize() {
     i2s_set_clk(I2S_PORT, 16000, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
 }
 
-void AudioRecorder::startRecording() {
+void AudioRecorder::startRecording(RecordType recordType) {
     if (recording || recordingTaskHandle != nullptr) return;
     String token  = api.getuserToken();
     String residentUid = api.getResidentUid();
     String response;
-    switch (appState.selectedRecordType) {
+    switch (recordType) {
     case MEAL:
         //食事記録作成
         response = createFoodRecord(

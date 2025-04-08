@@ -16,22 +16,22 @@ String MyApi::loginToApi(const String& ID, const String& password) {
 
 // テナント一覧ゲット
 String MyApi::getTenants(const String& token) {
-  return httpGet(*this, "/tenants", token);
+  return httpGet(*this, "/tenants");
 }
 
 //ログインユーザー情報ゲット
 String MyApi::getMe(const String& token) {
-    return httpGet(*this, "/auth/me", token);
+    return httpGet(*this, "/auth/me");
   }
 
 //チャット一覧ゲット
 String MyApi::getChats(const String& token){
-    return httpGet(*this, "/chats", token);
+    return httpGet(*this, "/chats");
 }
 
 //テナントユーザ一覧を取得
 String MyApi::getTenantResident(const String& token){
-  return httpGet(*this, "/tenants/" + tenantUid + "/residents", token);
+  return httpGet(*this, "/tenants/" + tenantUid + "/residents");
 }
 
 //レジデント作成
@@ -58,5 +58,5 @@ jsonBody += "\"admissionDate\":\"" + admissionDate + "\"";
 jsonBody += "}";
 
 // 2) POSTリクエストを送る
-return httpPostJson(*this, "/tenants/" + tenantUid + "/residents", jsonBody, token);
+return httpPostJson(*this, "/tenants/" + tenantUid + "/residents", jsonBody);
 }

@@ -3,89 +3,77 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 
+extern MyApi api;
+String accessToken = api.getuserToken();
 
-// HTTP POST リクエストの共通処理
-String httpPostJson(MyApi& api, const String& endpoint, const String& jsonBody, const String& token) {
-    WiFiClientSecure client;
-    client.setInsecure();
-    HTTPClient http;
-    String url = api.getBaseUrl() + endpoint;
-    String payload;
-  
-    if (http.begin(client, url)) {
-      http.addHeader("Content-Type", "application/json");
-      if (token.length() > 0) {
-        http.addHeader("Authorization", "Bearer " + token);
-      }
-  
-      int httpCode = http.POST(jsonBody);
-      if (httpCode > 0) {
-        payload = http.getString();
-      } else {
-        payload = "[HTTP] POST failed, error: " + String(http.errorToString(httpCode).c_str());
-      }
-      http.end();
-    } else {
-      payload = "[HTTP] Unable to connect " + url;
-    }
-  
-    return payload;
-  }
-  
-  // HTTP GET リクエストの共通処理
-  String httpGet(MyApi& api, const String& endpoint, const String& token) {
-    WiFiClientSecure client;
-    client.setInsecure();
-    HTTPClient http;
-    String url = api.getBaseUrl() + endpoint;
-    String payload;
-  
-    if (http.begin(client, url)) {
-      if (token.length() > 0) {
-        http.addHeader("Authorization", "Bearer " + token);
-      }
-  
-      int httpCode = http.GET();
-      if (httpCode > 0) {
-        payload = http.getString();
-      } else {
-        payload = "[HTTP] GET failed, error: " + String(http.errorToString(httpCode).c_str());
-      }
-      http.end();
-    } else {
-      payload = "[HTTP] Unable to connect " + url;
-    }
-  
-    return payload;
-  }
-  
-  //HTTP PATCHリクエストの共通処理
-  String httpPatchJson(MyApi& api, const String& endpoint, const String& jsonBody, const String& token) {
-    WiFiClientSecure client;
-    client.setInsecure();
-    HTTPClient http;
-    String payload;
-    String url = api.getBaseUrl() + endpoint;
-    if (!http.begin(client, url)) {
-        payload = "[HTTP] Unable to connect " + url;
-    }
-  
-    // ヘッダを付加
-    http.addHeader("Content-Type", "application/json");
-    if (token.length() > 0) {
-        http.addHeader("Authorization", "Bearer " + token);
-    }
-  
-    // PATCHリクエストを発行
-    // sendRequest() 第1引数に "PATCH"
-    int httpCode = http.sendRequest("PATCH", (uint8_t*)jsonBody.c_str(), jsonBody.length());
-    if (httpCode > 0) {
-        payload = http.getString();
-    } else {
-        payload = "[HTTP] PATCH failed, error: " + String(http.errorToString(httpCode).c_str());
-    }
-  
-    http.end();
-    return payload;
-  }
-  
+bool httpPostJson(const String& url, const String& jsonBody) {
+  HTTPClient https;
+  https.begin(url);
+  https.addHeader("Content-Type", "application/json");
+  https.addHeader("Authorization", "Bearer " + accessToken);
+
+  int httpCode = https.POST(jsonBody);
+  String payload = https.getString();
+  https.end();
+
+  Serial.printf("POST %s\n%d\n%s\n", url.c_str(), httpCode, payload.c_str());
+  return httpCode >= 200 && httpCode < 300;
+}
+
+bool httpPatchJson(const String& url, const String& jsonBody) {
+  HTTPClient https;
+  https.begin(url);
+  https.addHeader("Content-Type", "application/json");
+  https.addHeader("Authorization", "Bearer " + accessToken);
+
+  int httpCode = https.sendRequest("PATCH", jsonBody);
+  String payload = https.getString();
+  https.end();
+
+  Serial.printf("PATCH %s\n%d\n%s\n", url.c_str(), httpCode, payload.c_str());
+  return httpCode >= 200 && httpCode < 300;
+}
+
+String httpGet(const String& url) {
+  HTTPClient https;
+  https.begin(url);
+  https.addHeader("Authorization", "Bearer " + accessToken);
+
+  int httpCode = https.GET();
+  String payload = https.getString();
+  https.end();
+
+  Serial.printf("GET %s\n%d\n%s\n", url.c_str(), httpCode, payload.c_str());
+  return (httpCode >= 200 && httpCode < 300) ? payload : "";
+}
+
+bool httpDelete(const String& url) {
+  HTTPClient https;
+  https.begin(url);
+  https.addHeader("Authorization", "Bearer " + accessToken);
+
+  int httpCode = https.sendRequest("DELETE");
+  String payload = https.getString();
+  https.end();
+
+  Serial.printf("DELETE %s\n%d\n%s\n", url.c_str(), httpCode, payload.c_str());
+  return httpCode >= 200 && httpCode < 300;
+}
+
+// ---- レコード共通関数 ----
+
+bool createRecord(const String& baseUrl, const String& endpoint, const String& jsonBody) {
+  return httpPostJson(baseUrl + endpoint, jsonBody);
+}
+
+bool patchRecord(const String& baseUrl, const String& endpoint, const String& recordUid, const String& jsonBody) {
+  return httpPatchJson(baseUrl + endpoint + "/" + recordUid, jsonBody);
+}
+
+String getRecord(const String& baseUrl, const String& endpoint, const String& recordUid) {
+  return httpGet(baseUrl + endpoint + "/" + recordUid);
+}
+
+bool deleteRecord(const String& baseUrl, const String& endpoint, const String& recordUid) {
+  return httpDelete(baseUrl + endpoint + "/" + recordUid);
+}

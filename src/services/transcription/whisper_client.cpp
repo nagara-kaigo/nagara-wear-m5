@@ -10,6 +10,7 @@
 #include <main.h>
 #include "../../screens/screen_display_extract.h"
 #include "../api/foodRecords.h"
+#include "../api/bath_records.h"
 #include <WiFiClientSecure.h>
 
 //extern AudioRecorder recorder;
@@ -300,7 +301,15 @@ void transcribeAudio() {
     Serial.println("パース後: " + jpResponse);
 
     //APIに送信
-    String foodAPIresponse = foodTranscription(api,jpResponse);
+    String foodAPIresponse;
+    switch (appState.selectedRecordType) {
+    case MEAL:
+      foodAPIresponse = foodTranscription(api,jpResponse);
+      break;
+    case BATH:
+      foodAPIresponse = bathTranscription(api,jpResponse);
+      break;
+    }
     Serial.println("foodAPIresponse:");
     Serial.println(foodAPIresponse);
 

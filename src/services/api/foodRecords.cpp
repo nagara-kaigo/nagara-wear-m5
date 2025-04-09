@@ -42,7 +42,7 @@ String createFoodRecord(
     jsonBody += "\"transcription\":\"" + transcription + "\"";
     jsonBody += "}";
   
-    String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getFoodRecordUid() + "/transcription";
+    String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getRecordUid() + "/transcription";
     return httpPatchJson(api,endpoint, jsonBody, api.getuserToken());
   }
   
@@ -51,6 +51,6 @@ String createFoodRecord(
   //食事記録からの情報抽出
   String foodRecordInfo(MyApi& api){
     String jsonBody = "{}";
-    String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getFoodRecordUid() + "/extract";
+    String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getRecordUid() + "/extract";
     return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
   }

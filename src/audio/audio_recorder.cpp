@@ -4,9 +4,9 @@
 #include <M5Core2.h>
 #include "../tools/json.h"
 #include "../services/api/foodRecords.h"
+#include "../services/api/bath_records.h"
 
 extern MyApi api;
-
 
 AudioRecorder::AudioRecorder()
     : audioRingBuffer(nullptr), tempBuffer(nullptr), writeIndex(0), readIndex(0),
@@ -80,29 +80,46 @@ void AudioRecorder::initialize() {
     i2s_set_clk(I2S_PORT, 16000, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
 }
 
-void AudioRecorder::startRecording() {
+void AudioRecorder::startRecording(RecordType recordType) {
     if (recording || recordingTaskHandle != nullptr) return;
     String token  = api.getuserToken();
     String residentUid = api.getResidentUid();
-      //食事記録作成
-    String response = createFoodRecord(
-        api,
-        token,
-        residentUid,
-        "2024-03-20T12:00:00Z", // recordedAt
-        "ちょっと少なめに食べました", // notes
-        "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
-        80,                    // mainCoursePercentage
-        70,                    // sideDishPercentage
-        90,                    // soupPercentage
-        "WATER",               // beverageType
-        200                    // beverageVolume
-    );
+    String response;
+    switch (recordType) {
+    case MEAL:
+        //食事記録作成
+        response = createFoodRecord(
+            api,
+            token,
+            residentUid,
+            "2024-03-20T12:00:00Z", // recordedAt
+            "ちょっと少なめに食べました", // notes
+            "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
+            80,                    // mainCoursePercentage
+            70,                    // sideDishPercentage
+            90,                    // soupPercentage
+            "WATER",               // beverageType
+            200                    // beverageVolume
+        );
+        break;
+    
+    case BATH:
+        //入浴記録作成
+        response = createBathRecord(
+            api,
+            token,
+            residentUid,
+            "2024-03-20T12:00:00Z", // recordedAt
+            "",                     // notes
+            ""                      // bathMethod (例: BATH, SHOWER, etc)
+        );
+        break;
+    }
         
-    Serial.println("CreateFoodRecord response:");
+    Serial.println("CreateRecord response:");
     Serial.println(response);
-    String foodRecordUid = getJsonValue(response,"uid");
-    api.setfoodRecordUid(foodRecordUid);
+    String recordUid = getJsonValue(response,"uid");
+    api.setRecordUid(recordUid);
 
   
     recording = true;

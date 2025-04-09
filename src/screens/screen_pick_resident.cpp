@@ -69,6 +69,7 @@ bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
         }
 
         if (isTouchInBox(touch.x, touch.y, x, y, BOX_WIDTH, BOX_HEIGHT)) {
+            state.selectedResident.residentUid = state.residentsList[i].residentUid;
             state.selectedResident.givenName = state.residentsList[i].givenName;
             return true;
         }

@@ -16,14 +16,15 @@ void changeScreen(Screen newScreen, bool addStuck) {
         showResidentPickerScreen(appState);
         break;
       case STANDBY:
+        api.setresidentUid(appState.selectedResident.residentUid);
         showStandbyScreen(appState);
         break;
       case TRANSCRIPTION:
         showTranscriptionScreen(appState);//これがレコーディングスタート関数
         break;
       case MEAL_EXTRACT:{
-        String mealExtract = api.getmealExtract();
-        showMealRecordFromJson(mealExtract, appState);
+        String recordExtract = api.getRecordExtract();
+        showMealRecordFromJson(recordExtract, appState);
         break;
       }
       case RECORD_TYPE_PICKER:

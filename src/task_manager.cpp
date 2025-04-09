@@ -4,7 +4,9 @@
 #include "screen_manager.h"
 #include "services/api/api.h"
 #include "services/api/foodRecords.h"
+#include "services/api/bath_records.h"
 extern MyApi api;
+extern AppState appState;
 
 TaskHandle_t task0Handle = NULL;
 TaskHandle_t task1Handle = NULL;
@@ -24,7 +26,7 @@ void stopBackgroundTasks() {
 
 void task0(void *parameter) {
     AudioRecorder* recorder = static_cast<AudioRecorder*>(parameter);
-    recorder->startRecording();
+    recorder->startRecording(appState.selectedRecordType);
     while(recorder->isRecording()){
         recorder->recordTask(parameter);
         vTaskDelay(pdMS_TO_TICKS(30));
@@ -41,12 +43,20 @@ void task1(void *parameter) {
         transcribeAudio();  // ネットワーク経由で送信
         Serial.println("[task1] Transcription complete");
         Serial.println(recorder->isRecording());
-        //食事記録を取得
+        // 各記録を取得
         String token  = api.getuserToken();
-        String foodInfo = foodRecordInfo(api);
-        api.setmealExtract(foodInfo);
-        Serial.println("After transcribe MealInfo is:");
-        Serial.println(foodInfo);
+        String recordInfo;
+        switch (appState.selectedRecordType) {
+            case MEAL:
+                recordInfo = foodRecordInfo(api);
+                break;
+            case BATH:
+                recordInfo = bathRecordInfo(api);
+                break;
+        }
+        api.setRecordExtract(recordInfo);
+        Serial.println("After transcribe info is:");
+        Serial.println(recordInfo);
         vTaskDelay(pdMS_TO_TICKS(30));
         if(!recorder->isRecording()){
             Serial.println("task1 vTaskDelete");

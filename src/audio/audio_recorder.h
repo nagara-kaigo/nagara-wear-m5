@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <driver/i2s.h>
+#include <main.h>
 #include "../system/sd_handler.h"
 
 #define BUFFER_SIZE (16000 * 2 * 20)
@@ -12,7 +13,7 @@ public:
     AudioRecorder();
     ~AudioRecorder();
 
-    void startRecording();
+    void startRecording(RecordType recordType);
     void stopRecording();
     bool isRecording() const{return recording;};
     void initialize();

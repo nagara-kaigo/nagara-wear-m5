@@ -18,9 +18,6 @@ void changeScreen(Screen newScreen, bool addStuck) {
       case STANDBY:
         showStandbyScreen(appState);
         break;
-      case RECORDING:
-        showRecordingScreen(appState);
-        break;
       case TRANSCRIPTION:
         showTranscriptionScreen(appState);//これがレコーディングスタート関数
         break;

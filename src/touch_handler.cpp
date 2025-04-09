@@ -63,7 +63,7 @@ void handleFooterTouch(TouchPoint_t touch) {
     } else if (touch.x < FOOTER_HOME_MIN_X) {
       popScreen();
     } else if (touch.x >= FOOTER_HOME_MAX_X){
-      changeScreen(MEAL_EXTRACT);
+      changeScreen(EXTRACT);
     }
   }
 }

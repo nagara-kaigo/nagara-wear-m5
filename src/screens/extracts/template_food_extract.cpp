@@ -1,34 +1,8 @@
-#include "screen_food_extract.h"
+#include "template_food_extract.h"
 #include "screen_manager.h"
 #include <M5Core2.h>      
-#include <ArduinoJson.h>  
 
-
-#define BACKGROUND_COLOR WHITE
-#define TEXT_COLOR       BLACK
-#define TITLE_COLOR      RED
-
-void showMealRecordFromJson(const String &jsonString, const AppState &state) {
-    
-    StaticJsonDocument<512> doc;
-
-    // JSON文字列をパース
-    DeserializationError error = deserializeJson(doc, jsonString);
-    if (error) {
-        // パースエラー時の画面表示
-        M5.Lcd.clear();
-        M5.Lcd.fillScreen(BACKGROUND_COLOR);
-        M5.Lcd.setTextColor(TITLE_COLOR, BACKGROUND_COLOR);
-        showHeaderBar("Error");
-        M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
-        M5.Lcd.setCursor(0, 60);
-        M5.Lcd.println("Failed to parse JSON:");
-        M5.Lcd.println(error.c_str());
-        showFooterBar(state);
-        return;
-    }
-
-    
+void showFoodRecordFromJson(const JsonDocument& doc) {
     int  mainCourse = doc["mainCoursePercentage"] | -1;
     int  sideDish   = doc["sideDishPercentage"]   | -1;
     int  soup       = doc["soupPercentage"]       | -1;
@@ -36,13 +10,6 @@ void showMealRecordFromJson(const String &jsonString, const AppState &state) {
     int  beverageVolume      = doc["beverageVolume"] | -1;
     const char* notes        = doc["notes"]          | "";
 
-    // 画面クリア
-    M5.Lcd.clear();
-    M5.Lcd.fillScreen(BACKGROUND_COLOR);
-
-    // ヘッダー表示（タイトル）
-    M5.Lcd.setTextColor(TITLE_COLOR, BACKGROUND_COLOR);
-    showHeaderBar("食事記録" + state.selectedResident.givenName);   
     M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
     M5.Lcd.setCursor(0, 60);
 
@@ -109,7 +76,4 @@ void showMealRecordFromJson(const String &jsonString, const AppState &state) {
     } else {
         M5.Lcd.println("なし");
     }
-
-    // フッター表示
-    showFooterBar(state);
 }

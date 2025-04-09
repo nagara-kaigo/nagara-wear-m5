@@ -41,6 +41,17 @@ enum RecordType{
     EVERYDAY
 };
 
+inline String recordTypeToString(RecordType type) {
+    switch (type) {
+        case MEAL:       return "食事";
+        case DRINK:      return "飲料";
+        case EXCRETION:  return "排泄";
+        case BATH:       return "入浴";
+        case EVERYDAY:   return "日常";
+        default:         return "";
+    }
+}
+
 enum MealTime{
     BREAKFAST,
     LUNCH,

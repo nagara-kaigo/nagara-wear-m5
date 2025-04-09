@@ -32,10 +32,18 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
 
     // ヘッダー表示（タイトル）
     M5.Lcd.setTextColor(TITLE_COLOR, BACKGROUND_COLOR);
-    showHeaderBar("食事記録" + state.selectedResident.givenName);   
+    showHeaderBar(
+        recordTypeToString(state.selectedRecordType) + "の記録"
+        + state.selectedResident.givenName);   
 
-    showFoodRecordFromJson(doc);
-
+    switch ( state.selectedRecordType ) {
+    case MEAL:
+        showFoodRecordFromJson(doc);
+        break;
+    case BATH:
+        // showBathRecordFromJson(doc);
+        break;
+    }
     // フッター表示
     showFooterBar(state);
 }

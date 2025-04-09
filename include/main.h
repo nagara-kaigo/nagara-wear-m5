@@ -29,7 +29,7 @@ enum Screen {
     STANDBY,
     FINAL_SCREEN,
     TRANSCRIPTION,
-    MEAL_EXTRACT,
+    EXTRACT,
     RECORD_TYPE_PICKER
 };
 

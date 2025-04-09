@@ -1,17 +1,17 @@
 #include "template_food_extract.h"
 #include "screen_manager.h"
 #include <M5Core2.h>      
-#include <ArduinoJson.h>  
 
-void showFoodRecordFromJson() {
-    StaticJsonDocument<512> doc;
-    
+void showFoodRecordFromJson(const JsonDocument& doc) {
     int  mainCourse = doc["mainCoursePercentage"] | -1;
     int  sideDish   = doc["sideDishPercentage"]   | -1;
     int  soup       = doc["soupPercentage"]       | -1;
     const char* beverageType = doc["beverageType"] | "UNKNOWN";
     int  beverageVolume      = doc["beverageVolume"] | -1;
     const char* notes        = doc["notes"]          | "";
+
+    M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
+    M5.Lcd.setCursor(0, 60);
 
     // 主食
     M5.Lcd.print("主食: ");

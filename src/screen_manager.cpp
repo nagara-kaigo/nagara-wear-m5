@@ -22,7 +22,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
       case TRANSCRIPTION:
         showTranscriptionScreen(appState);//これがレコーディングスタート関数
         break;
-      case MEAL_EXTRACT:{
+      case EXTRACT:{
         String recordExtract = api.getRecordExtract();
         showRecordFromJson(recordExtract, appState);
         break;

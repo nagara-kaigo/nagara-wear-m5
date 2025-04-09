@@ -14,9 +14,9 @@ touch config.env
 echo "WIFI_SSID=[wifi_ssid]" >> config.env
 echo "WIFI_PASSWORD=[wifi_password]" >> config.env
 echo "OPENAI_API_KEY=[openai_api_key]" >> config.env
-echo 'API_LOGIN_ID=[api_login_id]>> config.env
-echo 'API_PASSWORD=[api_password] >> config.env
-echo 'API_BASE_URL=[api_base_url] >> config.env
+echo "API_LOGIN_ID=[api_login_id]" >> config.env
+echo "API_PASSWORD=[api_password]" >> config.env
+echo "API_BASE_URL=[api_base_url]" >> config.env
 ```
 3. config.h の作成
 ```

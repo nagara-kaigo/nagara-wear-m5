@@ -14,14 +14,9 @@ touch config.env
 echo "WIFI_SSID=[wifi_ssid]" >> config.env
 echo "WIFI_PASSWORD=[wifi_password]" >> config.env
 echo "OPENAI_API_KEY=[openai_api_key]" >> config.env
-echo "SERVER_URL=[server_url]" >> config.env
-echo "DEFAULT_USER_UUID=[default_user_uuid]" >> config.env
-echo "CARE_RECEIVER_UUID_1=[care_receiver_uuid]" >> config.env
-echo "CARE_RECEIVER_UUID_2=[care_receiver_uuid]" >> config.env
-echo "CARE_RECEIVER_UUID_3=[care_receiver_uuid]" >> config.env
 ```
 3. config.h の作成
 ```
 python generate_config.py
 ```
-4. Arduino IDE で `src/main.ino`を開いて転送
+4. PlatformIOにてビルド＆転送

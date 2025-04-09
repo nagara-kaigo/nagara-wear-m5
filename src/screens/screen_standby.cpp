@@ -13,54 +13,127 @@ void showStandbyScreen(const AppState &state) {
     // テキストを中央揃えするための Datum 設定
     M5.Lcd.setTextDatum(MC_DATUM); // 中心を基準にテキストを描画
 
-    // 1つ目の四角
-    int x1 = STARTX;
-    M5.Lcd.drawRect(x1, STARTY, RECTWIDTH, RECTHEIGHT, BLACK);
-    M5.Lcd.drawString("朝食", x1 + RECTWIDTH/2, STARTY + RECTHEIGHT/2);
+    switch (state.selectedRecordType)
+    {
+    case MEAL:{
+        // 1つ目の四角
+        int x1 = MEALTIME_STARTX;
+        M5.Lcd.drawRect(x1, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("朝食", x1 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
 
-    // 2つ目の四角
-    int x2 = x1 + RECTWIDTH + GAP;
-    M5.Lcd.drawRect(x2, STARTY, RECTWIDTH, RECTHEIGHT, BLACK);
-    M5.Lcd.drawString("昼食", x2 + RECTWIDTH/2, STARTY + RECTHEIGHT/2);
+        // 2つ目の四角
+        int x2 = x1 + MEALTIME_RECTWIDTH + GAP;
+        M5.Lcd.drawRect(x2, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("昼食", x2 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
 
-    // 3つ目の四角
-    int x3 = x2 + RECTWIDTH + GAP;
-    M5.Lcd.drawRect(x3, STARTY, RECTWIDTH, RECTHEIGHT, BLACK);
-    M5.Lcd.drawString("夕食", x3 + RECTWIDTH/2, STARTY + RECTHEIGHT/2);
+        // 3つ目の四角
+        int x3 = x2 + MEALTIME_RECTWIDTH + GAP;
+        M5.Lcd.drawRect(x3, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("夕食", x3 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
+        break;
+    }
+    
+    case DRINK:{
+        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        break;
+    }
 
+    case EXCRETION:{
+        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        break;
+    }
 
+    case BATH:{
+        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        break;
+    }
+
+    case EVERYDAY:{
+        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        break;
+    }
+    default:{
+        Serial.println("error::RECORDTYPE is undefined");
+        break;
+    }
+    }
     showFooterBar(state);
 }
 
 bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state) {
-    // ボタン共通のサイズと配置
+    switch (state.selectedRecordType)
+    {
+    case MEAL:{
+        // 各ボタンの範囲
+        int x1 = MEALTIME_STARTX;
+        int x2 = x1 + MEALTIME_RECTWIDTH + GAP;
+        int x3 = x2 + MEALTIME_RECTWIDTH + GAP;
 
-    // 各ボタンの範囲
-    int x1 = STARTX;
-    int x2 = x1 + RECTWIDTH + GAP;
-    int x3 = x2 + RECTWIDTH + GAP;
+        // REC1 の判定
+        if (touch.x > x1 && touch.x < x1 + MEALTIME_RECTWIDTH &&
+            touch.y > MEALTIME_STARTY && touch.y < MEALTIME_STARTY + MEALTIME_RECTHEIGHT) {
+            state.mealTime = BREAKFAST;
+            return true;
+        }
 
-    // REC1 の判定
-    if (touch.x > x1 && touch.x < x1 + RECTWIDTH &&
-        touch.y > STARTY && touch.y < STARTY + RECTHEIGHT) {
-        state.mealTime = BREAKFAST;
-        return true;
+        // REC2 の判定
+        if (touch.x > x2 && touch.x < x2 + MEALTIME_RECTWIDTH &&
+            touch.y > MEALTIME_STARTY && touch.y < MEALTIME_STARTY + MEALTIME_RECTHEIGHT) {
+            state.mealTime = LUNCH;
+            return true;
+        }
+
+        // REC3 の判定
+        if (touch.x > x3 && touch.x < x3 + MEALTIME_RECTWIDTH &&
+            touch.y > MEALTIME_STARTY && touch.y < MEALTIME_STARTY + MEALTIME_RECTHEIGHT) {
+            state.mealTime = DINNER;
+            return true;
+        }
+
+        // どのボタンも押されていない
+        return false;
+    }
+    
+    case DRINK:{
+       if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
+           touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+           return true;
+           }
+        return false;
     }
 
-    // REC2 の判定
-    if (touch.x > x2 && touch.x < x2 + RECTWIDTH &&
-        touch.y > STARTY && touch.y < STARTY + RECTHEIGHT) {
-        state.mealTime = LUNCH;
-        return true;
+    case EXCRETION:{
+        if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
+            touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+            return true;
+            }
+        return false;
     }
 
-    // REC3 の判定
-    if (touch.x > x3 && touch.x < x3 + RECTWIDTH &&
-        touch.y > STARTY && touch.y < STARTY + RECTHEIGHT) {
-        state.mealTime = DINNER;
-        return true;
+    case BATH:{
+        if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
+            touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+            return true;
+            }
+        return false;
     }
 
-    // どのボタンも押されていない
-    return false;
+    case EVERYDAY:{
+        if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
+            touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+            return true;
+            }
+        return false;
+    }
+    default:{
+        Serial.println("error::RECORDTYPE is undefined");
+        return false;
+    }
+    }
+
+    
 }

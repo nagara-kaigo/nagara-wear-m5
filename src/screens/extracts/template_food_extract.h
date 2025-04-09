@@ -4,6 +4,10 @@
 #include <Arduino.h>
 #include "screen_manager.h"
 
-void showMealRecordFromJson(const String &jsonString, const AppState &state);
+#define BACKGROUND_COLOR WHITE
+#define TEXT_COLOR       BLACK
+#define TITLE_COLOR      RED
+
+void showMealRecordFromJson();
 
 #endif // SCREEN_DISPLAY_EXTRACT_H

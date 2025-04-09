@@ -7,7 +7,7 @@
 #include "screens/screen_pick_resident.h"
 #include "screens/screen_standby.h"
 #include "screens/screen_transcription.h"
-#include "screens/extracts/screen_food_extract.h"
+#include "screens/screen_display_extract.h"
 #include "screens/screen_pick_record_type.h"
 
 void changeScreen(Screen newScreen, bool addStuck = true);

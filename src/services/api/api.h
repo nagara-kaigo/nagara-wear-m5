@@ -2,6 +2,7 @@
 #define MY_API_H
 
 #include <Arduino.h>
+#include <config.h>
 
 
 class MyApi {
@@ -33,7 +34,7 @@ public:
   void setRecordExtract(const String Value) { recordExtract = Value;};
 
   // コンストラクタ (API のベースURLを設定)
-  MyApi(const String& baseUrl = "https://nagara-care-api.onrender.com");
+  MyApi(const String& baseUrl = API_BASE_URL);
 
   //ログイン
   String loginToApi(const String& ID, const String& password);

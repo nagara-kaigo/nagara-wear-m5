@@ -38,7 +38,7 @@ void initializeSystem() {
   connectToWiFi();
   client.setInsecure();  // SSL 証明書の検証を無効化
   //ログイン
-  String loginResponse = api.loginToApi("hardware-test", "password");
+  String loginResponse = api.loginToApi(API_LOGIN_ID, API_PASSWORD);
   Serial.println("Login Response:");
   Serial.println(loginResponse);
   String token = getJsonValue(loginResponse,"token");

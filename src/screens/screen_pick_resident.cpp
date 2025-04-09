@@ -9,7 +9,7 @@ void showResidentPickerScreen(AppState &state) {
 
     size_t totalResidents = state.residentsList.size();
     Serial.println(totalResidents);
-    state.totalResidentPage = (totalResidents+5/6)+1;
+    state.totalResidentPage = ((totalResidents+5)/6);
     Serial.println(state.totalResidentPage);
     size_t startIdx = state.currentResidentPage * 6;
     size_t endIdx = min(startIdx + 6, totalResidents);

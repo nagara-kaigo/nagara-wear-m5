@@ -5,7 +5,8 @@ void showStandbyScreen(const AppState &state) {
     M5.Lcd.fillScreen(WHITE);
     M5.Lcd.setTextColor(BLACK, WHITE);
     String type = recordTypeToString(state.selectedRecordType);
-    showHeaderBar("利用者:" + state.selectedResident.givenName + "  記録:" + type);
+    String title = state.selectedResident.familyName + state.selectedResident.givenName + "の" + type + "を記録";
+    showHeaderBar(title);
     M5.Lcd.setTextDatum(3);
 
 

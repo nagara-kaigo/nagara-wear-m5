@@ -4,11 +4,11 @@
 #include <Arduino.h>
 #include "../api.h"
 
-//食事記録からの情報抽出
+// 排泄記録からの情報抽出
 String eliminationRecordInfo(MyApi& api);
 
 
-//食事記録作成
+// 排泄記録作成
 String createEliminationRecord(
   MyApi& api,
   const String& recordedAt,
@@ -25,7 +25,7 @@ String createEliminationRecord(
 );
 
 
-//食事記録追記
+// 排泄記録追記
 String eliminationTranscription(MyApi& api, const String& transcription);
 
 #endif

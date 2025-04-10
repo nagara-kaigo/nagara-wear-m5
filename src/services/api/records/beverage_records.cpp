@@ -2,7 +2,7 @@
 #include <ArduinoJson.h>
 #include "../general.h"
 
-//入浴記録作成
+// 飲料記録作成
 String createBeverageRecord(
   MyApi& api,
   const String& recordedAt,
@@ -23,7 +23,7 @@ String createBeverageRecord(
   return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
 }
   
-// 入浴記録の追記
+// 飲料記録の追記
 String beverageTranscription(MyApi& api, const String& transcription){
   StaticJsonDocument<128> doc;
   doc["transcription"] = transcription;
@@ -35,7 +35,7 @@ String beverageTranscription(MyApi& api, const String& transcription){
   return httpPatchJson(api, endpoint, jsonBody, api.getuserToken());
 }
   
-// 入浴記録からの情報抽出
+// 飲料記録からの情報抽出
 String beverageRecordInfo(MyApi& api){
   String jsonBody = "{}";
   String endpoint = "/residents/" + api.getResidentUid() + "/beverage-records/" + api.getRecordUid() + "/extract";

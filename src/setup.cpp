@@ -10,6 +10,7 @@
 #include <WiFiClientSecure.h>
 #include "services/api/residents.h"
 #include <vector>
+#include "screens/screen_roading.h"
 
 AppState appState;
 
@@ -34,6 +35,8 @@ void initializeSystem() {
     Serial.println("SD Card init failed!");
     return;
   }
+
+  showRoadingScreen(appState);
   //Wi-Fi接続
   connectToWiFi();
   client.setInsecure();  // SSL 証明書の検証を無効化

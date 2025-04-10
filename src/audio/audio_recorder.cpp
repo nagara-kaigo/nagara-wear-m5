@@ -6,6 +6,9 @@
 #include "../tools/json.h"
 #include "../services/api/records/food_records.h"
 #include "../services/api/records/bath_records.h"
+#include "../services/api/records/elimination_records.h"
+#include "../services/api/records/beverage_records.h"
+#include "../services/api/records/daily_records.h"
 
 extern MyApi api;
 
@@ -108,6 +111,43 @@ void AudioRecorder::startRecording(AppState &state) {
             recordedAt,
             "",                     // notes
             ""                      // bathMethod (例: BATH, SHOWER, etc)
+        );
+        break;
+
+    case EXCRETION: 
+        //排泄記録作成
+        response = createEliminationRecord(
+            api,
+            recordedAt,
+            "",                     // notes
+            "",              // eliminationMethod (例: TOILET, BEDPAN, etc)
+            false,                 // hasFeces
+            false,                 // fecalIncontinence
+            "",                    // fecesAppearance (例: NORMAL, LIQUID, etc)
+            0,                     // fecesVolume
+            false,                 // hasUrine
+            false,                 // urineIncontinence
+            "",                    // urineAppearance (例: NORMAL, CLOUDY, etc)
+            0                      // urineVolume
+        );
+        break;
+    case DRINK: 
+        //飲水記録作成
+        response = createBeverageRecord(
+            api,
+            recordedAt,
+            "",                     // notes
+            "WATER",               // beverageType (例: WATER, TEE, etc)
+            0                      // volume
+        );
+        break;
+    case EVERYDAY:
+        //日常記録作成
+        response = createDailyRecord(
+            api,
+            recordedAt,
+            "",                     // notes
+            "NORMAL"               // dailyStatus (例: NORMAL, WARNING, ALERT)
         );
         break;
     }

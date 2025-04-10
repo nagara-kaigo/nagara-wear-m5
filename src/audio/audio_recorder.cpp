@@ -83,8 +83,6 @@ void AudioRecorder::initialize() {
 
 void AudioRecorder::startRecording(RecordType recordType) {
     if (recording || recordingTaskHandle != nullptr) return;
-    //String token  = api.getuserToken();
-    //String residentUid = api.getResidentUid();
     String recordedAt = getFormattedTime();
     String response;
     switch (recordType) {
@@ -92,8 +90,6 @@ void AudioRecorder::startRecording(RecordType recordType) {
         //食事記録作成
         response = createFoodRecord(
             api,
-            //token,
-            //residentUid,
             recordedAt,
             "ちょっと少なめに食べました", // notes
             "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
@@ -109,8 +105,6 @@ void AudioRecorder::startRecording(RecordType recordType) {
         //入浴記録作成
         response = createBathRecord(
             api,
-            //token,
-            //residentUid,
             recordedAt,
             "",                     // notes
             ""                      // bathMethod (例: BATH, SHOWER, etc)
@@ -122,8 +116,9 @@ void AudioRecorder::startRecording(RecordType recordType) {
     Serial.println("CreateRecord response:");
     Serial.println(response);
     String recordUid = getJsonValue(response,"uid");
+    Serial.println(recordUid);
     api.setRecordUid(recordUid);
-
+    Serial.println(api.getRecordUid());
   
     recording = true;
     Serial.println("[task0] Recording start");

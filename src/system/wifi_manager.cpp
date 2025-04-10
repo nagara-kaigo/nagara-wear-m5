@@ -7,9 +7,9 @@ const char* ssid = WIFI_SSID;
 const char* password = WIFI_PASSWORD;
 
 void connectToWiFi() {
-    WiFi.begin(ssid, password);
     M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
-    M5.Lcd.drawString("ネットワーク通信中", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+    M5.Lcd.drawString("ネットワーク通信中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+    WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
     }

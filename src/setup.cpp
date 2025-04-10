@@ -45,8 +45,12 @@ void initializeSystem() {
   client.setInsecure();  // SSL 証明書の検証を無効化
   M5.Lcd.setTextDatum(MC_DATUM);
   // 現在時刻取得
+  M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
+  M5.Lcd.drawString("現在時刻取得中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
   initializeTime();
   //ログイン
+  M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
+  M5.Lcd.drawString("ログイン中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
   String loginResponse = api.loginToApi(API_LOGIN_ID, API_PASSWORD);
   Serial.println("Login Response:");
   Serial.println(loginResponse);
@@ -56,16 +60,21 @@ void initializeSystem() {
   String userinfo = api.getMe(token);
   Serial.println("userinfo:");
   Serial.println(userinfo);
+  String givenName = getJsonValue(userinfo,"givenName");
+  M5.Lcd.drawString("こんにちは " + givenName, M5.Lcd.width() / 2, M5.Lcd.height() * 1 / 4);
   String tenantUid = getJsonValue(userinfo,"tenantUid");
   api.settenantUid(tenantUid);
-  Serial.println(tenantUid);
   //テナントレジデント一覧取得
+  M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
+  M5.Lcd.drawString("利用者さんを取得中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
   String tenantResidents = getTenantResidents(api,token);
   Serial.println("tenantUser:");
   Serial.println(tenantResidents);
   //抽出する値の設定
   std::vector<String> fields = { "uid", "familyName", "givenName"};
   appState.residentsList = getValueAllInJson(tenantResidents,"items",fields);
+
+  /*
   // シリアルで中身を表示する例
   Serial.println("=== Residents List ===");
 
@@ -81,6 +90,8 @@ void initializeSystem() {
 
     Serial.println("----------------------");
   }
+  */
+
   //api.setresidentUid(residentUid);
   //Serial.println(residentUid);
   //テナントレジデント作成

@@ -81,23 +81,23 @@ void AudioRecorder::initialize() {
     i2s_set_clk(I2S_PORT, 16000, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
 }
 
-void AudioRecorder::startRecording(RecordType recordType) {
+void AudioRecorder::startRecording(AppState &state) {
     if (recording || recordingTaskHandle != nullptr) return;
     String recordedAt = getFormattedTime();
     String response;
-    switch (recordType) {
+    switch (state.selectedRecordType) {
     case MEAL:
         //食事記録作成
         response = createFoodRecord(
             api,
             recordedAt,
-            "ちょっと少なめに食べました", // notes
-            "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
-            80,                    // mainCoursePercentage
-            70,                    // sideDishPercentage
-            90,                    // soupPercentage
-            "WATER",               // beverageType
-            200                    // beverageVolume
+            "", // notes
+            mealTimeToString(state.mealTime),
+            0,                    // mainCoursePercentage
+            0,                    // sideDishPercentage
+            0,                    // soupPercentage
+            "WATER",               // beverageType(WATER, TEE, OTHER)
+            0                    // beverageVolume
         );
         break;
     

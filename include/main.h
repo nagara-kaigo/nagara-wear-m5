@@ -59,6 +59,15 @@ enum MealTime{
     DINNER
 };
 
+inline String mealTimeToString(MealTime time) {
+    switch (time) {
+        case BREAKFAST:  return "BREAKFAST";
+        case LUNCH:      return "LUNCH";
+        case DINNER:     return "DINNER";
+        default:         return "UNKNOWN";
+    }
+}
+
 // アプリケーション全体で使用する状態管理構造体
 struct AppState {
     String selectedUser;     // 選択されたユーザー名

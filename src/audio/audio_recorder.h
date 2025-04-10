@@ -13,7 +13,7 @@ public:
     AudioRecorder();
     ~AudioRecorder();
 
-    void startRecording(RecordType recordType);
+    void startRecording(AppState &state);
     void stopRecording();
     bool isRecording() const{return recording;};
     void initialize();
@@ -29,9 +29,6 @@ public:
     void setCursol(size_t value) {cursol = value;};
     size_t getCursolX() const {return cursolx;};
     void setCursolx(size_t value) {cursolx = value;};
-    
-
-
     
 
 private:

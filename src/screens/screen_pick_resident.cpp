@@ -28,7 +28,7 @@ void showResidentPickerScreen(AppState &state) {
         }
     
         M5.Lcd.drawRect(x, y, BOX_WIDTH, BOX_HEIGHT, BLACK);
-        M5.Lcd.drawString(state.residentsList[i].givenName, x + TEXT_OFFSET_X, y + TEXT_OFFSET_Y);
+        M5.Lcd.drawString(state.residentsList[i].familyName, x + TEXT_OFFSET_X, y + TEXT_OFFSET_Y);
     }
 
     // ページに応じて矢印を表示
@@ -69,8 +69,7 @@ bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
         }
 
         if (isTouchInBox(touch.x, touch.y, x, y, BOX_WIDTH, BOX_HEIGHT)) {
-            state.selectedResident.residentUid = state.residentsList[i].residentUid;
-            state.selectedResident.givenName = state.residentsList[i].givenName;
+            state.selectedResident = state.residentsList[i];
             return true;
         }
     }

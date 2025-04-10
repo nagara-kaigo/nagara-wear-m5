@@ -28,6 +28,8 @@ void initializeSystem() {
 
   appState.currentScreen = RESIDENT_PICKER;
   appState.screenHistory.push(appState.currentScreen);
+
+  showRoadingScreen(appState);
   
 
   //SDカード初期化
@@ -35,8 +37,6 @@ void initializeSystem() {
     Serial.println("SD Card init failed!");
     return;
   }
-
-  showRoadingScreen(appState);
   //Wi-Fi接続
   connectToWiFi();
   client.setInsecure();  // SSL 証明書の検証を無効化

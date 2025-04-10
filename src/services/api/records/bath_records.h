@@ -11,8 +11,6 @@ String bathRecordInfo(MyApi& api);
 //食事記録作成
 String createBathRecord(
   MyApi& api,
-  //const String& token,
-  //const String& residentUid,
   const String& recordedAt,
   const String& notes,
   const String& bathMethod

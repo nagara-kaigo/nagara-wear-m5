@@ -5,8 +5,8 @@
 //入浴記録作成
 String createBathRecord(
   MyApi& api,
-  const String& token,
-  const String& residentUid,
+  //const String& token,
+  //const String& residentUid,
   const String& recordedAt,
   const String& notes,
   const String& bathMethod
@@ -19,8 +19,8 @@ doc["bathMethod"] = bathMethod;
 String jsonBody;
 serializeJson(doc, jsonBody);
 
-String endpoint = "/residents/" + residentUid + "/bath-records";
-return httpPostJson(api, endpoint, jsonBody, token);
+String endpoint = "/residents/" + api.getResidentUid() + "/bath-records";
+return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
 }
   
 // 入浴記録の追記

@@ -82,16 +82,16 @@ void AudioRecorder::initialize() {
 
 void AudioRecorder::startRecording(RecordType recordType) {
     if (recording || recordingTaskHandle != nullptr) return;
-    String token  = api.getuserToken();
-    String residentUid = api.getResidentUid();
+    //String token  = api.getuserToken();
+    //String residentUid = api.getResidentUid();
     String response;
     switch (recordType) {
     case MEAL:
         //食事記録作成
         response = createFoodRecord(
             api,
-            token,
-            residentUid,
+            //token,
+            //residentUid,
             "2024-03-20T12:00:00Z", // recordedAt
             "ちょっと少なめに食べました", // notes
             "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
@@ -107,8 +107,8 @@ void AudioRecorder::startRecording(RecordType recordType) {
         //入浴記録作成
         response = createBathRecord(
             api,
-            token,
-            residentUid,
+            //token,
+            //residentUid,
             "2024-03-20T12:00:00Z", // recordedAt
             "",                     // notes
             ""                      // bathMethod (例: BATH, SHOWER, etc)

@@ -6,8 +6,8 @@
 // 食事記録作成
 String createFoodRecord(
     MyApi& api,
-    const String& token,
-    const String& residentUid,
+    //const String& token,
+    //const String& residentUid,
     const String& recordedAt,
     const String& notes,
     const String& mealTime,
@@ -31,8 +31,8 @@ String createFoodRecord(
   String jsonBody;
   serializeJson(doc, jsonBody);
 
-  String endpoint = "/residents/" + residentUid + "/food-records";
-  return httpPostJson(api, endpoint, jsonBody, token);
+  String endpoint = "/residents/" + api.getResidentUid() + "/food-records";
+  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
 }
 
 // 食事記録の追記

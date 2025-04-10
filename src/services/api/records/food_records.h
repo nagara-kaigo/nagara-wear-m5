@@ -11,8 +11,8 @@ String foodRecordInfo(MyApi& api);
 //食事記録作成
 String createFoodRecord(
   MyApi& api,
-  const String& token,
-  const String& residentUid,
+  //const String& token,
+  //const String& residentUid,
   const String& recordedAt,
   const String& notes,
   const String& mealTime,

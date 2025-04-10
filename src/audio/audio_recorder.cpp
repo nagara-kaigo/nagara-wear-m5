@@ -1,6 +1,7 @@
 #include "audio_recorder.h"
 #include "../services/transcription/whisper_client.h"
 #include "../services/api/api.h"
+#include "../system/time_manager.h"
 #include <M5Core2.h>
 #include "../tools/json.h"
 #include "../services/api/records/food_records.h"
@@ -84,6 +85,7 @@ void AudioRecorder::startRecording(RecordType recordType) {
     if (recording || recordingTaskHandle != nullptr) return;
     //String token  = api.getuserToken();
     //String residentUid = api.getResidentUid();
+    String recordedAt = getFormattedTime();
     String response;
     switch (recordType) {
     case MEAL:
@@ -92,7 +94,7 @@ void AudioRecorder::startRecording(RecordType recordType) {
             api,
             //token,
             //residentUid,
-            "2024-03-20T12:00:00Z", // recordedAt
+            recordedAt,
             "ちょっと少なめに食べました", // notes
             "LUNCH",               // mealTime (例: LUNCH, DINNER, etc)
             80,                    // mainCoursePercentage
@@ -109,13 +111,14 @@ void AudioRecorder::startRecording(RecordType recordType) {
             api,
             //token,
             //residentUid,
-            "2024-03-20T12:00:00Z", // recordedAt
+            recordedAt,
             "",                     // notes
             ""                      // bathMethod (例: BATH, SHOWER, etc)
         );
         break;
     }
         
+    Serial.println(recordedAt);
     Serial.println("CreateRecord response:");
     Serial.println(response);
     String recordUid = getJsonValue(response,"uid");

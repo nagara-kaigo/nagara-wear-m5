@@ -4,6 +4,7 @@
 #include "screen_manager.h"
 #include "system/sd_handler.h"
 #include "system/wifi_manager.h"
+#include "system/time_manager.h"
 //#include "audio/audio_buffer.h"
 #include "services/api/api.h"
 #include "tools/json.h"
@@ -43,6 +44,8 @@ void initializeSystem() {
   connectToWiFi();
   client.setInsecure();  // SSL 証明書の検証を無効化
   M5.Lcd.setTextDatum(MC_DATUM);
+  // 現在時刻取得
+  initializeTime();
   //ログイン
   String loginResponse = api.loginToApi(API_LOGIN_ID, API_PASSWORD);
   Serial.println("Login Response:");

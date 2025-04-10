@@ -3,6 +3,10 @@
 #include <M5Core2.h>      
 #include <ArduinoJson.h>  
 #include "extracts/template_food_extract.h"
+//#include "extracts/template_bath_extract.h"
+//#include "extracts/template_beverage_extract.h"
+//#include "extracts/template_elimination_extract.h"
+//#include "extracts/template_daily_extract.h"
 
 
 #define BACKGROUND_COLOR WHITE
@@ -10,7 +14,9 @@
 #define TITLE_COLOR      RED
 
 void showRecordFromJson(const String &jsonString, const AppState &state) {
-    StaticJsonDocument<512> doc;
+    //StaticJsonDocument<512> doc;
+    DynamicJsonDocument doc(1024); // 動的メモリ割り当てを使用
+    Serial.println(jsonString);
     // JSON文字列をパース
     DeserializationError error = deserializeJson(doc, jsonString);
 
@@ -19,6 +25,8 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
     M5.Lcd.fillScreen(BACKGROUND_COLOR);
 
     if (error) {
+        Serial.print("JSON parse error: ");
+        Serial.println(error.c_str());  // エラーメッセージをシリアルモニタに表示
         // パースエラー時の画面表示
         M5.Lcd.clear();
         M5.Lcd.fillScreen(BACKGROUND_COLOR);
@@ -31,19 +39,34 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
     }
 
     // ヘッダー表示（タイトル）
-    M5.Lcd.setTextColor(TITLE_COLOR, BACKGROUND_COLOR);
-    showHeaderBar(
-        recordTypeToString(state.selectedRecordType) + "の記録"
-        + state.selectedResident.givenName);   
+    M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
 
     switch ( state.selectedRecordType ) {
     case MEAL:
         showFoodRecordFromJson(doc);
         break;
+    /*
     case BATH:
-        // showBathRecordFromJson(doc);
+        showBathRecordFromJson(doc);
         break;
+    case DRINK:
+        showDrinkRecordFromJson(doc);
+        break;
+    case EXCRETION:
+        showExcretionRecordFromJson(doc);
+        break;
+    case EVERYDAY:
+        showEverydayRecordFromJson(doc);
+        break;
+    */
     }
+
+    /*
+    showHeaderBar(
+        recordTypeToString(state.selectedRecordType) + "の記録"
+        + state.selectedResident.givenName);   
+    */
+
     // フッター表示
-    showFooterBar(state);
+    //showFooterBar(state);
 }

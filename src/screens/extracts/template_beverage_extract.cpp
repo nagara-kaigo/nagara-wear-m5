@@ -1,8 +1,8 @@
-#include "template_food_extract.h"
+#include "template_beverage_extract.h"
 #include "screen_manager.h"
 #include <M5Core2.h>      
 
-void showFoodRecordFromJson(const JsonDocument& doc) {
+void showBeverageRecordFromJson(const JsonDocument& doc) {
     // JSONデータから必要な値を取得
     int mainCoursePercentage = doc["mainCoursePercentage"];
     int sideDishPercentage = doc["sideDishPercentage"];
@@ -12,8 +12,8 @@ void showFoodRecordFromJson(const JsonDocument& doc) {
     String notes = doc["notes"].as<String>();
  
     // データを画面に表示
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setTextColor(BLACK);
+    M5.Lcd.fillScreen(BLACK);  // 背景を黒く塗りつぶし
+    M5.Lcd.setTextColor(WHITE);
     M5.Lcd.setTextSize(2);
      
     M5.Lcd.setCursor(10, 10);

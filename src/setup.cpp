@@ -35,11 +35,14 @@ void initializeSystem() {
   //SDカード初期化
   if (!initializeSD()) {
     Serial.println("SD Card init failed!");
+    M5.Lcd.drawString("メモリーカードが確認できませんでした", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
     return;
   }
+  M5.Lcd.drawString("メモリーカードを確認しました", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
   //Wi-Fi接続
   connectToWiFi();
   client.setInsecure();  // SSL 証明書の検証を無効化
+  M5.Lcd.setTextDatum(MC_DATUM);
   //ログイン
   String loginResponse = api.loginToApi(API_LOGIN_ID, API_PASSWORD);
   Serial.println("Login Response:");

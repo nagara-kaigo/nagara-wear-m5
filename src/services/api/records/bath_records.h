@@ -2,7 +2,7 @@
 #define BATH_RECORDS_H
 
 #include <Arduino.h>
-#include "api.h"
+#include "../api.h"
 
 //食事記録からの情報抽出
 String bathRecordInfo(MyApi& api);

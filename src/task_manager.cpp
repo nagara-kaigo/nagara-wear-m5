@@ -3,8 +3,7 @@
 #include "audio/audio_recorder.h"
 #include "screen_manager.h"
 #include "services/api/api.h"
-#include "services/api/food_records.h"
-#include "services/api/bath_records.h"
+#include "services/api/records.h"
 extern MyApi api;
 extern AppState appState;
 
@@ -45,15 +44,7 @@ void task1(void *parameter) {
         Serial.println(recorder->isRecording());
         // 各記録を取得
         String token  = api.getuserToken();
-        String recordInfo;
-        switch (appState.selectedRecordType) {
-            case MEAL:
-                recordInfo = foodRecordInfo(api);
-                break;
-            case BATH:
-                recordInfo = bathRecordInfo(api);
-                break;
-        }
+        String recordInfo = fetchRecordInfo(api, appState.selectedRecordType);
         api.setRecordExtract(recordInfo);
         Serial.println("After transcribe info is:");
         Serial.println(recordInfo);

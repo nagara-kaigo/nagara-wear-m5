@@ -1,7 +1,7 @@
 #include "food_records.h"
 #include <ArduinoJson.h>
-#include "api.h"
-#include "general.h"
+#include "../api.h"
+#include "../general.h"
 
 //食事記録作成
 String createFoodRecord(

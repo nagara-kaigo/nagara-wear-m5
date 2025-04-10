@@ -10,6 +10,7 @@
 #include <WiFiClientSecure.h>
 #include "services/api/residents.h"
 #include <vector>
+#include "screens/screen_roading.h"
 
 AppState appState;
 
@@ -27,6 +28,8 @@ void initializeSystem() {
 
   appState.currentScreen = RESIDENT_PICKER;
   appState.screenHistory.push(appState.currentScreen);
+
+  showRoadingScreen(appState);
   
 
   //SDカード初期化

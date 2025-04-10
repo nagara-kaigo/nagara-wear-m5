@@ -30,7 +30,8 @@ enum Screen {
     FINAL_SCREEN,
     TRANSCRIPTION,
     EXTRACT,
-    RECORD_TYPE_PICKER
+    RECORD_TYPE_PICKER,
+    ROADING
 };
 
 enum RecordType{

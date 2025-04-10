@@ -32,6 +32,7 @@ void initializeSystem() {
 
   showRoadingScreen(appState);
   
+  String ssid, password;
 
   //SDカード初期化
   if (!initializeSD()) {
@@ -40,8 +41,31 @@ void initializeSystem() {
     return;
   }
   M5.Lcd.drawString("メモリーカードを確認しました", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+  // SSIDとパスワードの取得
+  File configFile = SD.open("/wifi.env");
+  if (!configFile) {
+    Serial.println("Failed to open config.env file");
+    M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
+    M5.Lcd.drawString("有効なネットワーク情報がありません", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+    return;
+  }
+  // ファイルの内容を読み取り
+  while (configFile.available()) {
+    String line = configFile.readStringUntil('\n');
+    // 環境変数を処理
+    if (line.startsWith("SSID=")) {
+      ssid = line.substring(5);
+      ssid.trim(); // 余分な空白を削除
+      Serial.println("SSID: " + ssid);
+    } else if (line.startsWith("PASSWORD=")) {
+      password = line.substring(9);
+      password.trim();
+      Serial.println("Password: " + password);
+    }
+  }
+  configFile.close();
   //Wi-Fi接続
-  connectToWiFi();
+  connectToWiFi(ssid, password);
   client.setInsecure();  // SSL 証明書の検証を無効化
   M5.Lcd.setTextDatum(MC_DATUM);
   // 現在時刻取得

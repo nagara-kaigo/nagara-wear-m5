@@ -185,11 +185,13 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
 
 
 void transcribeAudio() {
-    File recordingFile = SD.open("/recording.wav", FILE_READ);
+    //File recordingFile = SD.open("/recording.wav", FILE_READ);
+    /*
     if (!recordingFile) {
         Serial.println("録音ファイルを開けませんでした");
         return;
     }
+    */
 
     if (recorder.isRecording()) {
         Serial.println("task1 isRecording: reading from ring buffer");
@@ -217,7 +219,7 @@ void transcribeAudio() {
         }
         Serial.println("open SD");
         SD.remove("/recording.wav");
-        recordingFile = SD.open("/recording.wav", FILE_WRITE);
+        File recordingFile = SD.open("/recording.wav", FILE_WRITE);
         writeWavHeader(recordingFile, 16000, 16, 1);
         recordingFile.write(recorder.gettempBuffer(), available);
         updateWavHeader(recordingFile);
@@ -225,7 +227,7 @@ void transcribeAudio() {
         recordingFile.close();
     }
     Serial.println("complete reccording.wav");
-    recordingFile = SD.open("/recording.wav", FILE_READ);
+    File recordingFile = SD.open("/recording.wav", FILE_READ);
     Serial.println("open SDcard for Reading");
 
 

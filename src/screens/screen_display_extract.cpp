@@ -14,8 +14,8 @@
 #define TITLE_COLOR      RED
 
 void showRecordFromJson(const String &jsonString, const AppState &state) {
-    //StaticJsonDocument<512> doc;
-    DynamicJsonDocument doc(1024); // 動的メモリ割り当てを使用
+    StaticJsonDocument<512> doc;
+    //DynamicJsonDocument doc(1024); // 動的メモリ割り当てを使用
     Serial.println(jsonString);
     // JSON文字列をパース
     DeserializationError error = deserializeJson(doc, jsonString);
@@ -61,12 +61,10 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
     */
     }
 
-    /*
     showHeaderBar(
         recordTypeToString(state.selectedRecordType) + "の記録"
         + state.selectedResident.givenName);   
-    */
 
     // フッター表示
-    //showFooterBar(state);
+    showFooterBar(state);
 }

@@ -45,14 +45,14 @@ void handleTouchEvents() {
 void handleFooterTouch(TouchPoint_t touch) {
   if(appState.currentScreen == TRANSCRIPTION){
     Serial.println("currentScreen is TRANSCRIPTION");
-    ESP.restart();
-    /*
+    M5.Axp.SetLDOEnable(3, true);
+    delay(75);
+    M5.Axp.SetLDOEnable(3, false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
       changeScreen(USER_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
       toggleRecording();
     }
-    */
   }
   else{
     M5.Axp.SetLDOEnable(3, true);

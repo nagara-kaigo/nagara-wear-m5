@@ -1,5 +1,6 @@
 #include "sd_handler.h"
 #include <Arduino.h>
+#include <SD.h>
 
 bool initializeSD() {
     return SD.begin();

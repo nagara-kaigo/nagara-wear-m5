@@ -1,7 +1,7 @@
 #ifndef TASK_MANAGER_H
 #define TASK_MANAGER_H
 
-#include "audio/audio_recorder.h"
+class AudioRecorder; // 前方宣言
 extern AudioRecorder recorder;
 
 void startBackgroundTasks();

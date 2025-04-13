@@ -51,7 +51,7 @@ void task1(void *parameter) {
         vTaskDelay(pdMS_TO_TICKS(30));
         if(!recorder->isRecording()){
             Serial.println("task1 vTaskDelete");
-            changeScreen(STANDBY);
+            changeScreen(EXTRACT);
             vTaskDelete(NULL);
         }
     }

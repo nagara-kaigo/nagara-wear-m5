@@ -3,35 +3,59 @@
 #include <M5Core2.h>      
 
 void showEliminationRecordFromJson(const JsonDocument& doc) {
-    // JSONデータから必要な値を取得
-    int mainCoursePercentage = doc["mainCoursePercentage"];
-    int sideDishPercentage = doc["sideDishPercentage"];
-    int soupPercentage = doc["soupPercentage"];
-    String beverageType = doc["beverageType"].as<String>();
-    int beverageVolume = doc["beverageVolume"];
-    String notes = doc["notes"].as<String>();
- 
-    // データを画面に表示
-    M5.Lcd.fillScreen(BLACK);  // 背景を黒く塗りつぶし
-    M5.Lcd.setTextColor(WHITE);
-    M5.Lcd.setTextSize(2);
-     
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.print("Main Course %: ");
-    M5.Lcd.println(mainCoursePercentage);
- 
-    M5.Lcd.print("Side Dish %: ");
-    M5.Lcd.println(sideDishPercentage);
- 
-    M5.Lcd.print("Soup %: ");
-    M5.Lcd.println(soupPercentage);
- 
-    M5.Lcd.print("Beverage Type: ");
-    M5.Lcd.println(beverageType);
- 
-    M5.Lcd.print("Beverage Volume: ");
-    M5.Lcd.println(beverageVolume);
- 
-    M5.Lcd.print("Notes: ");
-    M5.Lcd.println(notes);
+    const char* eliminationMethod = doc["eliminationMethod"] | "UNKNOWN";
+    bool hasFeces = doc["hasFeces"] | false;
+    bool fecalIncontinence = doc["fecalIncontinence"] | false;
+    const char* fecesAppearance = doc["fecesAppearance"] | "UNKNOWN";
+    int fecesVolume = doc["fecesVolume"] | -1;
+    bool hasUrine = doc["hasUrine"] | false;
+    bool urinaryIncontinence = doc["fecalIncontinence"] | false;
+    const char* urineAppearance = doc["fecesAppearance"] | "UNKNOWN";
+    int urineVolume = doc["urineVolume"] | -1;
+    const char* notes = doc["notes"] | "";
+
+    M5.Lcd.setTextColor(BLACK);
+    M5.Lcd.setCursor(0, 60);
+
+    M5.Lcd.print("方法: ");
+    M5.Lcd.println(eliminationMethod);
+
+    if (hasFeces) {
+        M5.Lcd.print("便: ");
+        if (fecalIncontinence) {
+            M5.Lcd.println("失禁");
+        } else {
+            M5.Lcd.print("量: ");
+            if (fecesVolume >= 0) {
+                M5.Lcd.printf("%d g\n", fecesVolume);
+            } else {
+                M5.Lcd.println("不明");
+            }
+            M5.Lcd.print("外観: ");
+            M5.Lcd.println(fecesAppearance);
+        }
+    }
+
+    if (hasUrine) {
+        M5.Lcd.print("尿: ");
+        if (urinaryIncontinence) {
+            M5.Lcd.println("失禁");
+        } else {
+            M5.Lcd.print("量: ");
+            if (urineVolume >= 0) {
+                M5.Lcd.printf("%d ml\n", urineVolume);
+            } else {
+                M5.Lcd.println("不明");
+            }
+            M5.Lcd.print("外観: ");
+            M5.Lcd.println(urineAppearance);
+        }
+    }
+
+    M5.Lcd.print("特記事項: ");
+    if (strlen(notes) > 0) {
+        M5.Lcd.println(notes);
+    } else {
+        M5.Lcd.println("なし");
+    }
 }

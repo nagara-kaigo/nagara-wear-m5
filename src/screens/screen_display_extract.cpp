@@ -5,7 +5,7 @@
 #include "extracts/template_food_extract.h"
 #include "extracts/template_bath_extract.h"
 #include "extracts/template_beverage_extract.h"
-//#include "extracts/template_elimination_extract.h"
+#include "extracts/template_elimination_extract.h"
 #include "extracts/template_daily_extract.h"
 #include "../ui/header.h"
 #include "../ui/footer.h"
@@ -52,9 +52,9 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
     case DRINK:
         showBeverageRecordFromJson(doc);
         break;
-    //case EXCRETION:
-    //    showExcretionRecordFromJson(doc);
-    //    break;
+    case EXCRETION:
+        showEliminationRecordFromJson(doc);
+        break;
     case EVERYDAY:
         showDailyRecordFromJson(doc);
         break;

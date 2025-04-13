@@ -6,7 +6,7 @@
 #include "extracts/template_bath_extract.h"
 #include "extracts/template_beverage_extract.h"
 //#include "extracts/template_elimination_extract.h"
-//#include "extracts/template_daily_extract.h"
+#include "extracts/template_daily_extract.h"
 #include "../ui/header.h"
 #include "../ui/footer.h"
 
@@ -55,9 +55,9 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
     //case EXCRETION:
     //    showExcretionRecordFromJson(doc);
     //    break;
-    //case EVERYDAY:
-    //    showEverydayRecordFromJson(doc);
-    //    break;
+    case EVERYDAY:
+        showDailyRecordFromJson(doc);
+        break;
     }
 
     showHeaderBar(

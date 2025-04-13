@@ -3,10 +3,11 @@
 
 #include <Arduino.h>
 #include <driver/i2s.h>
-#include <main.h>
-#include "../system/sd_handler.h"
+#include <SD.h>
 
 #define BUFFER_SIZE (16000 * 2 * 20)
+
+struct AppState; // 前方宣言
 
 class AudioRecorder {
 public:

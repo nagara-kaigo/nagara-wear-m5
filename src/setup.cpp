@@ -85,8 +85,10 @@ void initializeSystem() {
   String userinfo = api.getMe(token);
   Serial.println("userinfo:");
   Serial.println(userinfo);
+  String familyName = getJsonValue(userinfo,"familyName");
   String givenName = getJsonValue(userinfo,"givenName");
   M5.Lcd.drawString("こんにちは " + givenName, M5.Lcd.width() / 2, M5.Lcd.height() * 1 / 4);
+  appState.userName = familyName + " " + givenName;
   String tenantUid = getJsonValue(userinfo,"tenantUid");
   api.setTenantUid(tenantUid);
   //テナントレジデント一覧取得

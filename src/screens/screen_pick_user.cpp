@@ -20,10 +20,10 @@ void showUserPickerScreen(const AppState &state) {
 
 bool handleUserPickerTouch(const TouchPoint_t &touch, AppState &state) {
     if (touch.x > 20 && touch.x < 280 && touch.y > 40 && touch.y < 100) {
-        state.selectedUser = "こた";
+        state.userName = "こた";
         return true;
     } else if (touch.x > 20 && touch.x < 280 && touch.y > 110 && touch.y < 170) {
-        state.selectedUser = "ゆうせい";
+        state.userName = "ゆうせい";
         return true;
     }
     return false;

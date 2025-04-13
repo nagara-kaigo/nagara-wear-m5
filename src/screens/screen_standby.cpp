@@ -35,26 +35,26 @@ void showStandbyScreen(const AppState &state) {
     }
     
     case DRINK:{
-        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
 
     case EXCRETION:{
-        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
 
     case BATH:{
-        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
 
     case EVERYDAY:{
-        M5.Lcd.drawRect(RECORD_STARTX, RECORD_STARTY, RECORD_RECTWIDTH, RECORD_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",RECORD_STARTX + RECORD_RECTWIDTH/2, RECORD_STARTY + RECORD_RECTHEIGHT/2);
+        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
+        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
     default:{
@@ -100,32 +100,32 @@ bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state) {
     }
     
     case DRINK:{
-       if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
-           touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+       if (touch.x > CENTER_STARTX && touch.x < CENTER_STARTX + CENTER_RECTWIDTH &&
+           touch.y > CENTER_STARTY && touch.y < CENTER_STARTY + CENTER_RECTHEIGHT){
            return true;
            }
         return false;
     }
 
     case EXCRETION:{
-        if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
-            touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+        if (touch.x > CENTER_STARTX && touch.x < CENTER_STARTX + CENTER_RECTWIDTH &&
+            touch.y > CENTER_STARTY && touch.y < CENTER_STARTY + CENTER_RECTHEIGHT){
             return true;
             }
         return false;
     }
 
     case BATH:{
-        if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
-            touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+        if (touch.x > CENTER_STARTX && touch.x < CENTER_STARTX + CENTER_RECTWIDTH &&
+            touch.y > CENTER_STARTY && touch.y < CENTER_STARTY + CENTER_RECTHEIGHT){
             return true;
             }
         return false;
     }
 
     case EVERYDAY:{
-        if (touch.x > RECORD_STARTX && touch.x < RECORD_STARTX + RECORD_RECTWIDTH &&
-            touch.y > RECORD_STARTY && touch.y < RECORD_STARTY + RECORD_RECTHEIGHT){
+        if (touch.x > CENTER_STARTX && touch.x < CENTER_STARTX + CENTER_RECTWIDTH &&
+            touch.y > CENTER_STARTY && touch.y < CENTER_STARTY + CENTER_RECTHEIGHT){
             return true;
             }
         return false;

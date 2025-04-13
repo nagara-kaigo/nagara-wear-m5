@@ -3,9 +3,12 @@
 #include "main.h" // AppState を参照
 #include "screen_display_extract.h"
 #include "extracts/template_food_extract.h"
+#include "extracts/template_bath_extract.h"
+#include "extracts/template_beverage_extract.h"
+#include "extracts/template_elimination_extract.h"
+#include "extracts/template_daily_extract.h"
 #include "../ui/header.h"
 #include "../ui/footer.h"
-
 
 #define BACKGROUND_COLOR WHITE
 #define TEXT_COLOR       BLACK
@@ -17,7 +20,6 @@ void showRecordFromJson(const AppState &state, const String &jsonString) {
     // 画面クリア
     M5.Lcd.clear();
     M5.Lcd.fillScreen(BACKGROUND_COLOR);
-
 
     if (!jsonString.isEmpty()) {
         // JSON文字列をパース
@@ -33,22 +35,33 @@ void showRecordFromJson(const AppState &state, const String &jsonString) {
             showFooterBar(state);
             return;
         }
-    } 
+    }
 
     // ヘッダー表示（タイトル）
-    M5.Lcd.setTextColor(TITLE_COLOR, BACKGROUND_COLOR);
-    showHeaderBar(
-        recordTypeToString(state.selectedRecordType) + "の記録"
-        + state.selectedResident.givenName);   
+    M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
 
     switch ( state.selectedRecordType ) {
     case MEAL:
         showFoodRecordFromJson(doc);
         break;
     case BATH:
-        // showBathRecordFromJson(doc);
+        showBathRecordFromJson(doc);
+        break;
+    case DRINK:
+        showBeverageRecordFromJson(doc);
+        break;
+    case EXCRETION:
+        showEliminationRecordFromJson(doc);
+        break;
+    case EVERYDAY:
+        showDailyRecordFromJson(doc);
         break;
     }
+
+    showHeaderBar(
+        recordTypeToString(state.selectedRecordType) + "の記録"
+        + state.selectedResident.givenName);   
+
     // フッター表示
     if(state.currentScreen == EXTRACT){
         showFooterBar(state);

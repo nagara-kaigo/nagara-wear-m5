@@ -4,7 +4,7 @@
 #include "screen_display_extract.h"
 #include "extracts/template_food_extract.h"
 //#include "extracts/template_bath_extract.h"
-//#include "extracts/template_beverage_extract.h"
+#include "extracts/template_beverage_extract.h"
 //#include "extracts/template_elimination_extract.h"
 //#include "extracts/template_daily_extract.h"
 #include "../ui/header.h"
@@ -46,20 +46,18 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
     case MEAL:
         showFoodRecordFromJson(doc);
         break;
-    /*
-    case BATH:
-        showBathRecordFromJson(doc);
-        break;
+    //case BATH:
+    //    showBathRecordFromJson(doc);
+    //    break;
     case DRINK:
-        showDrinkRecordFromJson(doc);
+        showBeverageRecordFromJson(doc);
         break;
-    case EXCRETION:
-        showExcretionRecordFromJson(doc);
-        break;
-    case EVERYDAY:
-        showEverydayRecordFromJson(doc);
-        break;
-    */
+    //case EXCRETION:
+    //    showExcretionRecordFromJson(doc);
+    //    break;
+    //case EVERYDAY:
+    //    showEverydayRecordFromJson(doc);
+    //    break;
     }
 
     showHeaderBar(

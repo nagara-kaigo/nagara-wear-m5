@@ -24,7 +24,6 @@ struct Resident {
 
 // 画面を識別する列挙型
 enum Screen { 
-    USER_PICKER, 
     RESIDENT_PICKER, 
     STANDBY,
     FINAL_SCREEN,

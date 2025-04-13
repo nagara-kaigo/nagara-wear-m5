@@ -64,7 +64,7 @@ void showRecordFromJson(const AppState &state, const String &jsonString) {
 
     // フッター表示
     if(state.currentScreen == EXTRACT){
-        showFooterBar(state);
+        showFooterBarCompleted(state);
     }else if (state.currentScreen == TRANSCRIPTION){
         showFooterBarRecording(state);
     }

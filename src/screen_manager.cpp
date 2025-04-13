@@ -31,7 +31,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
         break;
       case EXTRACT:{
         String recordExtract = api.getRecordExtract();
-        showRecordFromJson(recordExtract, appState);
+        showRecordFromJson(appState, recordExtract);
         break;
       }
       case RECORD_TYPE_PICKER:

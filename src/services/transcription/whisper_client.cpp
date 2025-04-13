@@ -312,7 +312,7 @@ void transcribeAudio() {
 
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);
-    drawWrappedText(jpResponse,24,appState);
+    //drawWrappedText(jpResponse,24,appState);
 }
 
 

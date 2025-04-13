@@ -5,8 +5,11 @@
 #include "../ui/footer.h"
 #include "task_manager.h"
 #include "../audio/audio_recorder.h"
+#include "screen_display_extract.h"
+#include "../services/api/api.h"
 
 extern AudioRecorder recorder;
+extern MyApi api;
 
 static String transcriptionText = "";
 static bool isRecording = recorder.isRecording();
@@ -36,6 +39,7 @@ void showTranscriptionScreen(const AppState &state) {
     M5.Lcd.setCursor(10, 10);
     Serial.println(state.mealTime);
     showHeaderBar(recordTypeToString(state.selectedRecordType) + "のレコーディング中");
+    showRecordFromJson(state, api.getRecordExtract());
     showFooterBarRecording(state);
     toggleRecording();
 }

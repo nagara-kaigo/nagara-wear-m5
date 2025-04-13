@@ -4,6 +4,7 @@
 #include "screen_manager.h"
 #include "services/api/api.h"
 #include "services/api/records.h"
+#include "screens/screen_display_extract.h"
 extern MyApi api;
 extern AppState appState;
 
@@ -48,10 +49,11 @@ void task1(void *parameter) {
         api.setRecordExtract(recordInfo);
         Serial.println("After transcribe info is:");
         Serial.println(recordInfo);
+        showRecordFromJson(appState, recordInfo);
         vTaskDelay(pdMS_TO_TICKS(30));
         if(!recorder->isRecording()){
             Serial.println("task1 vTaskDelete");
-            changeScreen(STANDBY);
+            changeScreen(EXTRACT);
             vTaskDelete(NULL);
         }
     }

@@ -5,6 +5,6 @@
 
 struct AppState; // 前方宣言
 
-void showRecordFromJson(const String &jsonString, const AppState &state);
+void showRecordFromJson(const AppState &state, const String &jsonString = "");
 
 #endif // SCREEN_DISPLAY_EXTRACT_H

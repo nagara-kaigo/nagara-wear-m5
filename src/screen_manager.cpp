@@ -13,7 +13,7 @@ extern MyApi api;
 
 void changeScreen(Screen newScreen, bool addStuck) {
   if (appState.currentScreen != newScreen) {
-    if(addStuck){
+    if(addStuck && appState.currentScreen != TRANSCRIPTION){
       appState.screenHistory.push(appState.currentScreen);
     }
     appState.currentScreen = newScreen;

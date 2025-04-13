@@ -20,7 +20,6 @@ void showBeverageRecordFromJson(const JsonDocument& doc) {
         M5.Lcd.println("不明");
     }
 
-    // 特記事項
     M5.Lcd.print("特記事項: ");
     if (strlen(notes) > 0) {
         M5.Lcd.println(notes);

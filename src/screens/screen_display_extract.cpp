@@ -3,7 +3,7 @@
 #include "main.h" // AppState を参照
 #include "screen_display_extract.h"
 #include "extracts/template_food_extract.h"
-//#include "extracts/template_bath_extract.h"
+#include "extracts/template_bath_extract.h"
 #include "extracts/template_beverage_extract.h"
 //#include "extracts/template_elimination_extract.h"
 //#include "extracts/template_daily_extract.h"
@@ -46,9 +46,9 @@ void showRecordFromJson(const String &jsonString, const AppState &state) {
     case MEAL:
         showFoodRecordFromJson(doc);
         break;
-    //case BATH:
-    //    showBathRecordFromJson(doc);
-    //    break;
+    case BATH:
+        showBathRecordFromJson(doc);
+        break;
     case DRINK:
         showBeverageRecordFromJson(doc);
         break;

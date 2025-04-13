@@ -30,7 +30,7 @@ String createFoodRecord(
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/food-records";
-  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPostJson(api, endpoint, jsonBody, api.getUserToken());
 }
 
 // 食事記録の追記
@@ -42,12 +42,12 @@ String foodTranscription(MyApi& api, const String& transcription){
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getRecordUid() + "/transcription";
-  return httpPatchJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPatchJson(api, endpoint, jsonBody, api.getUserToken());
 }
 
 // 食事記録からの情報抽出
 String foodRecordInfo(MyApi& api){
   String jsonBody = "{}";
   String endpoint = "/residents/" + api.getResidentUid() + "/food-records/" + api.getRecordUid() + "/extract";
-  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPostJson(api, endpoint, jsonBody, api.getUserToken());
 }

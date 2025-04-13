@@ -23,7 +23,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
         showResidentPickerScreen(appState);
         break;
       case STANDBY:
-        api.setresidentUid(appState.selectedResident.residentUid);
+        api.setResidentUid(appState.selectedResident.residentUid);
         showStandbyScreen(appState);
         break;
       case TRANSCRIPTION:

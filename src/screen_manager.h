@@ -2,7 +2,6 @@
 #define SCREEN_MANAGER_H
 
 #include "main.h"
-#include "config.h"
 
 void changeScreen(Screen newScreen, bool addStuck = true);
 void popScreen();

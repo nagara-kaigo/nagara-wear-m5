@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <vector>
-#include "main.h"
+#include "main.h" // vector<Resident>を使うために必要
 
 String getJsonValue(const String& jsonText, const String& part);
 String getValueInJson(const String& jsonText, const String& part, const String& field);

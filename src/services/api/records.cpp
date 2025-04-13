@@ -4,7 +4,7 @@
 #include "records/beverage_records.h"
 #include "records/daily_records.h"
 #include <ArduinoJson.h>
-#include <main.h>
+#include "main.h"
 #include "api.h"
 #include "general.h"
 
@@ -19,7 +19,7 @@ String createRecord(
   // TODO: 食事記録の詳細情報を引数として受け取るようにする
   }
 */
-  
+
 
 //食事記録の追記
 String patchRecordTranscription(
@@ -42,13 +42,13 @@ String patchRecordTranscription(
     case EVERYDAY:
       return dailyTranscription(api,transcription);
       break;
-    default: 
+    default:
       return "error";
       break;
   }
 }
-  
-  
+
+
 //食事記録からの情報抽出
 String fetchRecordInfo(MyApi& api, RecordType recordType){
   switch (recordType) {

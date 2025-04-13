@@ -1,4 +1,7 @@
 #include "screen_pick_resident.h"
+#include "main.h" // AppState を参照
+#include "../ui/header.h"
+#include "../ui/footer.h"
 
 void showResidentPickerScreen(AppState &state) {
     M5.Lcd.clear();

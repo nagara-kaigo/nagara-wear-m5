@@ -1,6 +1,7 @@
 #include "bath_records.h"
 #include <ArduinoJson.h>
 #include "../general.h"
+#include "../api.h"
 
 //入浴記録作成
 String createBathRecord(

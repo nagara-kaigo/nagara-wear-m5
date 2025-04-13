@@ -1,6 +1,7 @@
 #include "beverage_records.h"
 #include <ArduinoJson.h>
 #include "../general.h"
+#include "../api.h"
 
 // 飲料記録作成
 String createBeverageRecord(

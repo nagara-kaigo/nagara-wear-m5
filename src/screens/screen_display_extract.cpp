@@ -1,8 +1,10 @@
-#include "screen_display_extract.h"
-#include "screen_manager.h"
 #include <M5Core2.h>      
 #include <ArduinoJson.h>  
+#include "main.h" // AppState を参照
+#include "screen_display_extract.h"
 #include "extracts/template_food_extract.h"
+#include "../ui/header.h"
+#include "../ui/footer.h"
 
 
 #define BACKGROUND_COLOR WHITE

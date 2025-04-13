@@ -2,7 +2,7 @@
 #define BEVERAGE_RECORDS_H
 
 #include <Arduino.h>
-#include "../api.h"
+class MyApi; // 前方宣言
 
 //食事記録からの情報抽出
 String beverageRecordInfo(MyApi& api);

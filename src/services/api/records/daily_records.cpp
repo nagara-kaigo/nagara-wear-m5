@@ -1,6 +1,7 @@
 #include "daily_records.h"
 #include <ArduinoJson.h>
 #include "../general.h"
+#include "../api.h"
 
 // 日常記録作成
 String createDailyRecord(

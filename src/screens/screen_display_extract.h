@@ -2,7 +2,8 @@
 #define SCREEN_DISPLAY_EXTRACT_H
 
 #include <Arduino.h>
-#include "screen_manager.h"
+
+struct AppState; // 前方宣言
 
 void showRecordFromJson(const String &jsonString, const AppState &state);
 

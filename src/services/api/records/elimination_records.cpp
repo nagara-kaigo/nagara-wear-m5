@@ -1,6 +1,7 @@
 #include "elimination_records.h"
 #include <ArduinoJson.h>
 #include "../general.h"
+#include "../api.h"
 
 // 排泄記録作成
 String createEliminationRecord(

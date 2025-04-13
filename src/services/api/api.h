@@ -2,13 +2,12 @@
 #define MY_API_H
 
 #include <Arduino.h>
-#include <config.h>
-
+#include "config.h" // Base URL
 
 class MyApi {
 public:
   //ゲッター
-  String getuserToken() const {return userToken;};
+  String getUserToken() const {return userToken;};
 
   String getTenantUid() const {return tenantUid;};
 
@@ -22,13 +21,12 @@ public:
   String getBaseUrl() const {return _baseUrl;};
 
   //セッター
-  void setuserToken(const String Value) {userToken = Value;};
+  void setUserToken(const String Value) {userToken = Value;};
 
-  void settenantUid(const String Value) {tenantUid = Value;};
+  void setTenantUid(const String Value) {tenantUid = Value;};
 
-  void setresidentUid(const String Value) {residentUid = Value;};
+  void setResidentUid(const String Value) {residentUid = Value;};
 
-  //void setfoodRecordUid(const String Value) {foodRecordUid = Value;};
   void setRecordUid(const String Value) {recordUid = Value;};
 
   void setRecordExtract(const String Value) { recordExtract = Value;};
@@ -37,7 +35,7 @@ public:
   MyApi(const String& baseUrl = API_BASE_URL);
 
   //ログイン
-  String loginToApi(const String& ID, const String& password);
+  String loginToApi(const String& id, const String& password);
 
   // テナント一覧（権限ないから実行できない）
   String getTenants(const String& token);
@@ -63,9 +61,6 @@ public:
     const String& admissionDate);
 
 
-
-
-
 private:
   String _baseUrl;
 
@@ -75,7 +70,6 @@ private:
 
   String residentUid;
 
-  //String foodRecordUid;
   String recordUid;
 
   String recordExtract;

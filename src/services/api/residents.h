@@ -2,7 +2,8 @@
 #define RESIDENTS_H
 
 #include <Arduino.h>
-#include "api.h"
+
+class MyApi; // 前方宣言
 
 String getTenantResidents(MyApi& api,const String& token);
 

@@ -2,10 +2,7 @@
 #define SCREEN_PICK_RECORD_TYPE_H
 
 #include <M5Core2.h>
-#include "main.h" // AppState を参照
-#include "config.h"
-#include "../ui/header.h"
-#include "../ui/footer.h"
+struct AppState; // 前方宣言
 
 void showRecordTypeScreen(const AppState &state);
 bool handleRecordTypeTouch(const TouchPoint_t &touch, AppState &state);

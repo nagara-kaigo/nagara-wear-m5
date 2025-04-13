@@ -1,4 +1,7 @@
 #include "screen_pick_record_type.h"
+#include "main.h" // AppState を参照
+#include "../ui/header.h"
+#include "../ui/footer.h"
 
 void showRecordTypeScreen(const AppState &state) {
     M5.Lcd.clear();

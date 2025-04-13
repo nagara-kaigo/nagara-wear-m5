@@ -7,7 +7,7 @@
 #include <M5Core2.h>
 #include "../../services/api/api.h"
 #include "../../screens/screen_transcription.h"
-#include <main.h>
+#include "main.h"
 #include "../../screens/screen_display_extract.h"
 #include "../api/records.h"
 #include <WiFiClientSecure.h>
@@ -106,7 +106,7 @@ void drawWrappedText(const String& text ,int fontsize, const AppState &appState)
 void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannels) {
     uint32_t fileSize = 0; // 後で更新
     uint32_t dataChunkSize = 0;
-  
+
     uint8_t wavHeader[44] = {
       'R','I','F','F',
       (uint8_t)(fileSize      ), (uint8_t)(fileSize >> 8 ), (uint8_t)(fileSize >>16 ), (uint8_t)(fileSize >>24 ),
@@ -126,7 +126,7 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
       (uint8_t)(dataChunkSize      ), (uint8_t)(dataChunkSize >> 8 ),
       (uint8_t)(dataChunkSize >>16 ), (uint8_t)(dataChunkSize >>24 )
     };
-  
+
     file.write(wavHeader, 44);
   }
 
@@ -134,10 +134,10 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
     if (!file) return;
     uint32_t fileSize = file.size();
     uint32_t dataChunkSize = fileSize - 44; // 実際のデータサイズ
-  
+
     file.seek(4);
     file.write((uint8_t *)&fileSize, 4);
-  
+
     file.seek(40);
     file.write((uint8_t *)&dataChunkSize, 4);
   }
@@ -153,13 +153,13 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
       Serial.println("[Error] Could not find HTTP header delimiter.");
       return "";
     }
-  
+
     // 2) JSONの部分を抜き出す
     String jsonPart = response.substring(index + 4);
-  
+
     // 3) JSON解析用のドキュメントを用意（バッファサイズは適宜拡大可能）
     DynamicJsonDocument doc(1024);
-  
+
     // 4) JSON文字列をdocにパース
     DeserializationError error = deserializeJson(doc, jsonPart);
     if (error) {
@@ -167,7 +167,7 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
       Serial.println("[Error] Failed to parse JSON");
       return "";
     }
-  
+
     // 5) doc[key] から値を取得し、String へ変換
     if (doc[key].isNull()) {
       // 指定したキーがJSONに含まれていない場合も空文字を返す
@@ -176,7 +176,7 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
     String value = doc[key].as<String>();
     return value;
   }
-  
+
 
 
 
@@ -185,15 +185,17 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
 
 
 void transcribeAudio() {
-    File recordingFile = SD.open("/recording.wav", FILE_READ);
+    //File recordingFile = SD.open("/recording.wav", FILE_READ);
+    /*
     if (!recordingFile) {
         Serial.println("録音ファイルを開けませんでした");
         return;
     }
+    */
 
     if (recorder.isRecording()) {
         Serial.println("task1 isRecording: reading from ring buffer");
-  
+
         // リングバッファから未処理分を読み取る
         size_t available = 0;
         if (xSemaphoreTake(recorder.getRingBufferMutex(), (TickType_t)100) == pdTRUE) {
@@ -201,7 +203,7 @@ void transcribeAudio() {
           size_t currentWriteIndex = recorder.getwriteIndex();
           // (writeIndex - readIndex + BUFFER_SIZE) % BUFFER_SIZE が未読バイト数
           available = (currentWriteIndex + BUFFER_SIZE - recorder.getreadIndex()) % BUFFER_SIZE;
-  
+
           // 大きすぎると chunkFile が巨大になるので、必要なら制限
           // ここではとりあえず全部読み出す
           for (size_t i = 0; i < available; i++) {
@@ -211,13 +213,13 @@ void transcribeAudio() {
           }
           xSemaphoreGive(recorder.getRingBufferMutex());
         }
-  
+
         if (available == 0) {
           Serial.println("No new data in ring buffer");
         }
         Serial.println("open SD");
         SD.remove("/recording.wav");
-        recordingFile = SD.open("/recording.wav", FILE_WRITE);
+        File recordingFile = SD.open("/recording.wav", FILE_WRITE);
         writeWavHeader(recordingFile, 16000, 16, 1);
         recordingFile.write(recorder.gettempBuffer(), available);
         updateWavHeader(recordingFile);
@@ -225,13 +227,13 @@ void transcribeAudio() {
         recordingFile.close();
     }
     Serial.println("complete reccording.wav");
-    recordingFile = SD.open("/recording.wav", FILE_READ);
+    File recordingFile = SD.open("/recording.wav", FILE_READ);
     Serial.println("open SDcard for Reading");
 
 
 
     String boundary = "----M5StackBoundary";
-    
+
     // `model` のパート
     String partModel = "--" + boundary + "\r\n" +
                        "Content-Disposition: form-data; name=\"model\"\r\n\r\n" +

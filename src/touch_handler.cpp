@@ -6,6 +6,13 @@
 #include "screen_manager.h"
 #include "screens/screen_transcription.h"
 
+#include "screens/screen_pick_user.h"
+#include "screens/screen_pick_resident.h"
+#include "screens/screen_standby.h"
+#include "screens/screen_transcription.h"
+#include "screens/screen_display_extract.h"
+#include "screens/screen_pick_record_type.h"
+
 extern AppState appState;
 
 void handleTouchEvents() {
@@ -52,6 +59,11 @@ void handleFooterTouch(TouchPoint_t touch) {
       changeScreen(USER_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
       toggleRecording();
+      Serial.println("delay 700");
+      M5.Lcd.fillRect(CENTER_STARTX-15, CENTER_STARTY, CENTER_RECTWIDTH + 30, CENTER_RECTHEIGHT + 20, WHITE);
+      M5.Lcd.drawRect(CENTER_STARTX-15, CENTER_STARTY, CENTER_RECTWIDTH + 30, CENTER_RECTHEIGHT + 20, BLACK);
+      M5.Lcd.drawString("おまちください",CENTER_STARTX - 10, CENTER_STARTY + (CENTER_RECTHEIGHT + 20) / 2);
+      delay(700);
     }
   }
   else{

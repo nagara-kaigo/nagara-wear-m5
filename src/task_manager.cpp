@@ -43,7 +43,7 @@ void task1(void *parameter) {
         Serial.println("[task1] Transcription complete");
         Serial.println(recorder->isRecording());
         // 各記録を取得
-        String token  = api.getuserToken();
+        String token  = api.getUserToken();
         String recordInfo = fetchRecordInfo(api, appState.selectedRecordType);
         api.setRecordExtract(recordInfo);
         Serial.println("After transcribe info is:");

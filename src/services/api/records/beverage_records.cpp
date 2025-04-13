@@ -1,6 +1,7 @@
 #include "beverage_records.h"
 #include <ArduinoJson.h>
 #include "../general.h"
+#include "../api.h"
 
 // 飲料記録作成
 String createBeverageRecord(
@@ -20,7 +21,7 @@ String createBeverageRecord(
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/beverage-records";
-  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPostJson(api, endpoint, jsonBody, api.getUserToken());
 }
   
 // 飲料記録の追記
@@ -32,12 +33,12 @@ String beverageTranscription(MyApi& api, const String& transcription){
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/beverage-records/" + api.getRecordUid() + "/transcription";
-  return httpPatchJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPatchJson(api, endpoint, jsonBody, api.getUserToken());
 }
   
 // 飲料記録からの情報抽出
 String beverageRecordInfo(MyApi& api){
   String jsonBody = "{}";
   String endpoint = "/residents/" + api.getResidentUid() + "/beverage-records/" + api.getRecordUid() + "/extract";
-  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPostJson(api, endpoint, jsonBody, api.getUserToken());
 }

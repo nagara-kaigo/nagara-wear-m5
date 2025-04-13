@@ -1,4 +1,5 @@
 #include "footer.h"
+#include <M5Core2.h>
 
 void showFooterBar(const AppState &state) {
     M5.Lcd.fillRect(0, 200, 320, 40, WHITE);

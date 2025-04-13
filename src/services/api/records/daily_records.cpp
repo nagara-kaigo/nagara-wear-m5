@@ -1,6 +1,7 @@
 #include "daily_records.h"
 #include <ArduinoJson.h>
 #include "../general.h"
+#include "../api.h"
 
 // 日常記録作成
 String createDailyRecord(
@@ -18,7 +19,7 @@ String createDailyRecord(
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/daily-records";
-  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPostJson(api, endpoint, jsonBody, api.getUserToken());
 }
   
 // 日常記録の追記
@@ -30,11 +31,11 @@ String dailyTranscription(MyApi& api, const String& transcription){
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/daily-records/" + api.getRecordUid() + "/transcription";
-  return httpPatchJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPatchJson(api, endpoint, jsonBody, api.getUserToken());
 }
   
 // 日常記録からの情報抽出
 String dailyRecordInfo(MyApi& api){
   String endpoint = "/residents/" + api.getResidentUid() + "/daily-records/" + api.getRecordUid() + "/extract";
-  return httpGet(api, endpoint, api.getuserToken());
+  return httpGet(api, endpoint, api.getUserToken());
 }

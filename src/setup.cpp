@@ -1,17 +1,18 @@
 #include <M5Core2.h>
+#include <WiFiClientSecure.h>
+#include <vector>
 #include "setup.h"
 #include "config.h"
 #include "screen_manager.h"
 #include "system/sd_handler.h"
 #include "system/wifi_manager.h"
 #include "system/time_manager.h"
-//#include "audio/audio_buffer.h"
 #include "services/api/api.h"
-#include "tools/json.h"
-#include <WiFiClientSecure.h>
 #include "services/api/residents.h"
-#include <vector>
 #include "screens/screen_roading.h"
+#include "tools/json.h"
+
+#include "screens/screen_pick_resident.h"
 
 AppState appState;
 
@@ -79,7 +80,7 @@ void initializeSystem() {
   Serial.println("Login Response:");
   Serial.println(loginResponse);
   String token = getJsonValue(loginResponse,"token");
-  api.setuserToken(token);
+  api.setUserToken(token);
   //ユーザ情報獲得
   String userinfo = api.getMe(token);
   Serial.println("userinfo:");
@@ -87,7 +88,7 @@ void initializeSystem() {
   String givenName = getJsonValue(userinfo,"givenName");
   M5.Lcd.drawString("こんにちは " + givenName, M5.Lcd.width() / 2, M5.Lcd.height() * 1 / 4);
   String tenantUid = getJsonValue(userinfo,"tenantUid");
-  api.settenantUid(tenantUid);
+  api.setTenantUid(tenantUid);
   //テナントレジデント一覧取得
   M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
   M5.Lcd.drawString("利用者さんを取得中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);

@@ -9,8 +9,8 @@
 MyApi::MyApi(const String& baseUrl) : _baseUrl(baseUrl) {}
 
 // ログイン
-String MyApi::loginToApi(const String& ID, const String& password) {
-  String jsonBody = "{ \"loginId\": \"" + ID + "\", \"password\": \"" + password + "\" }";
+String MyApi::loginToApi(const String& id, const String& password) {
+  String jsonBody = "{ \"loginId\": \"" + id + "\", \"password\": \"" + password + "\" }";
   return httpPostJson(*this, "/auth/login", jsonBody);
 }
 

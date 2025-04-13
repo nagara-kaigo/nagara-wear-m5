@@ -35,7 +35,7 @@ String createEliminationRecord(
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/elimination-records";
-  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPostJson(api, endpoint, jsonBody, api.getUserToken());
 }
   
 // 排泄記録の追記
@@ -47,12 +47,12 @@ String eliminationTranscription(MyApi& api, const String& transcription){
   serializeJson(doc, jsonBody);
 
   String endpoint = "/residents/" + api.getResidentUid() + "/elimination-records/" + api.getRecordUid() + "/transcription";
-  return httpPatchJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPatchJson(api, endpoint, jsonBody, api.getUserToken());
 }
   
 // 排泄記録からの情報抽出
 String eliminationRecordInfo(MyApi& api){
   String jsonBody = "{}";
   String endpoint = "/residents/" + api.getResidentUid() + "/elimination-records/" + api.getRecordUid() + "/extract";
-  return httpPostJson(api, endpoint, jsonBody, api.getuserToken());
+  return httpPostJson(api, endpoint, jsonBody, api.getUserToken());
 }

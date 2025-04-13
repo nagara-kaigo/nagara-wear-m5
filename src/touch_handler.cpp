@@ -6,6 +6,13 @@
 #include "screen_manager.h"
 #include "screens/screen_transcription.h"
 
+#include "screens/screen_pick_user.h"
+#include "screens/screen_pick_resident.h"
+#include "screens/screen_standby.h"
+#include "screens/screen_transcription.h"
+#include "screens/screen_display_extract.h"
+#include "screens/screen_pick_record_type.h"
+
 extern AppState appState;
 
 void handleTouchEvents() {

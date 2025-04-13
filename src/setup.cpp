@@ -12,6 +12,8 @@
 #include "screens/screen_roading.h"
 #include "tools/json.h"
 
+#include "screens/screen_pick_resident.h"
+
 AppState appState;
 
 MyApi api;  // `MyApi` クラスのインスタンスを作成

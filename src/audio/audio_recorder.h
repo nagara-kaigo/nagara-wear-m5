@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <driver/i2s.h>
-#include <main.h>
+#include "main.h"
 #include "../system/sd_handler.h"
 
 #define BUFFER_SIZE (16000 * 2 * 20)
@@ -29,7 +29,7 @@ public:
     void setCursol(size_t value) {cursol = value;};
     size_t getCursolX() const {return cursolx;};
     void setCursolx(size_t value) {cursolx = value;};
-    
+
 
 private:
     uint8_t* audioRingBuffer;

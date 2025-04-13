@@ -1,8 +1,7 @@
+#include <M5Core2.h>      
 #include "template_food_extract.h"
-#include "screen_manager.h"
 #include "../../ui/header.h"
 #include "../../ui/footer.h"
-#include <M5Core2.h>      
 
 void showFoodRecordFromJson(const JsonDocument& doc) {
     int  mainCourse = doc["mainCoursePercentage"] | -1;

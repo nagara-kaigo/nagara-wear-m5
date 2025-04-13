@@ -1,11 +1,8 @@
 #ifndef SCREEN_STANDBY_H
 #define SCREEN_STANDBY_H
 
-#include <M5Core2.h>
-#include "main.h" // AppState を参照
-#include "config.h"
-#include "../ui/header.h"
-#include "../ui/footer.h"
+#include <M5Core2.h> // touchPoint_t
+struct AppState;
 
 #define MEALTIME_RECTWIDTH 80     // 幅
 #define MEALTIME_RECTHEIGHT 80     // 高さ

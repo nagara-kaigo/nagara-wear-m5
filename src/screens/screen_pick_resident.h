@@ -2,10 +2,7 @@
 #define SCREEN_PICK_RESIDENT_H
 
 #include <M5Core2.h>
-#include "main.h" // AppState を参照
-#include "config.h"
-#include "../ui/header.h"
-#include "../ui/footer.h"
+struct AppState; // 前方宣言
 
 #define ARROW_LEFT_X1 10
 #define ARROW_LEFT_X2 30

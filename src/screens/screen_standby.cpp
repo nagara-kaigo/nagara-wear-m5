@@ -1,4 +1,7 @@
 #include "screen_standby.h"
+#include "main.h"
+#include "../ui/header.h"
+#include "../ui/footer.h"
 
 void showStandbyScreen(const AppState &state) {
     M5.Lcd.clear();

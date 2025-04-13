@@ -1,4 +1,7 @@
 #include "screen_pick_user.h"
+#include "main.h" // AppState を参照
+#include "../ui/header.h"
+#include "../ui/footer.h"
 
 void showUserPickerScreen(const AppState &state) {
     M5.Lcd.clear();

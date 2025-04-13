@@ -1,8 +1,7 @@
 #ifndef SCREEN_ROADING_H
 #define SCREEN_ROADING_H
 
-#include <M5Core2.h>
-#include "main.h"
+struct AppState; // 前方宣言
 
 void showRoadingScreen(const AppState &state);
 

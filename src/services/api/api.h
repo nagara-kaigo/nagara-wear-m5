@@ -2,8 +2,7 @@
 #define MY_API_H
 
 #include <Arduino.h>
-#include <config.h>
-
+#include "config.h" // Base URL
 
 class MyApi {
 public:
@@ -61,9 +60,6 @@ public:
     const String& dateOfBirth,
     const String& gender,
     const String& admissionDate);
-
-
-
 
 
 private:

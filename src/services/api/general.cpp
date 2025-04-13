@@ -3,16 +3,18 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 
+extern WiFiClientSecure client;
 
 // HTTP POST リクエストの共通処理
 String httpPostJson(MyApi& api, const String& endpoint, const String& jsonBody, const String& token) {
-    WiFiClientSecure client;
+    //WiFiClientSecure client;
     client.setInsecure();
     HTTPClient http;
     String url = api.getBaseUrl() + endpoint;
     String payload;
   
     if (http.begin(client, url)) {
+      http.setTimeout(20000); 
       http.addHeader("Content-Type", "application/json");
       if (token.length() > 0) {
         http.addHeader("Authorization", "Bearer " + token);
@@ -34,13 +36,14 @@ String httpPostJson(MyApi& api, const String& endpoint, const String& jsonBody, 
   
   // HTTP GET リクエストの共通処理
   String httpGet(MyApi& api, const String& endpoint, const String& token) {
-    WiFiClientSecure client;
+    //WiFiClientSecure client;
     client.setInsecure();
     HTTPClient http;
     String url = api.getBaseUrl() + endpoint;
     String payload;
   
     if (http.begin(client, url)) {
+      http.setTimeout(20000);
       if (token.length() > 0) {
         http.addHeader("Authorization", "Bearer " + token);
       }
@@ -61,14 +64,16 @@ String httpPostJson(MyApi& api, const String& endpoint, const String& jsonBody, 
   
   //HTTP PATCHリクエストの共通処理
   String httpPatchJson(MyApi& api, const String& endpoint, const String& jsonBody, const String& token) {
-    WiFiClientSecure client;
+    //WiFiClientSecure client;
     client.setInsecure();
     HTTPClient http;
     String payload;
     String url = api.getBaseUrl() + endpoint;
     if (!http.begin(client, url)) {
+      http.setTimeout(20000);
         payload = "[HTTP] Unable to connect " + url;
     }
+    http.setTimeout(20000);
   
     // ヘッダを付加
     http.addHeader("Content-Type", "application/json");

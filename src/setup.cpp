@@ -1,17 +1,18 @@
 #include <M5Core2.h>
+#include <WiFiClientSecure.h>
+#include <vector>
 #include "setup.h"
 #include "config.h"
 #include "screen_manager.h"
 #include "system/sd_handler.h"
 #include "system/wifi_manager.h"
 #include "system/time_manager.h"
-//#include "audio/audio_buffer.h"
 #include "services/api/api.h"
-#include "tools/json.h"
-#include <WiFiClientSecure.h>
 #include "services/api/residents.h"
-#include <vector>
 #include "screens/screen_roading.h"
+#include "tools/json.h"
+
+#include "screens/screen_pick_resident.h"
 
 AppState appState;
 

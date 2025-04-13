@@ -3,6 +3,8 @@
 #include <M5Core2.h>      
 #include <ArduinoJson.h>  
 #include "extracts/template_food_extract.h"
+#include "../ui/header.h"
+#include "../ui/footer.h"
 
 
 #define BACKGROUND_COLOR WHITE

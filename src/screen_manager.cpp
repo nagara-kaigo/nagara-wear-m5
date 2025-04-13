@@ -27,6 +27,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
         showStandbyScreen(appState);
         break;
       case TRANSCRIPTION:
+        api.setRecordExtract(""); // 介護記録の初期化
         showTranscriptionScreen(appState);//これがレコーディングスタート関数
         break;
       case EXTRACT:{

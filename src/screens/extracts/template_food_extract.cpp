@@ -4,35 +4,77 @@
 #include "../../ui/footer.h"
 
 void showFoodRecordFromJson(const JsonDocument& doc) {
-    // JSONデータから必要な値を取得
-    int mainCoursePercentage = doc["mainCoursePercentage"];
-    int sideDishPercentage = doc["sideDishPercentage"];
-    int soupPercentage = doc["soupPercentage"];
-    String beverageType = doc["beverageType"].as<String>();
-    int beverageVolume = doc["beverageVolume"];
-    String notes = doc["notes"].as<String>();
- 
-    // データを画面に表示
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setTextColor(BLACK);
-    M5.Lcd.setTextSize(2);
-     
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.print("Main Course %: ");
-    M5.Lcd.println(mainCoursePercentage);
- 
-    M5.Lcd.print("Side Dish %: ");
-    M5.Lcd.println(sideDishPercentage);
- 
-    M5.Lcd.print("Soup %: ");
-    M5.Lcd.println(soupPercentage);
- 
-    M5.Lcd.print("Beverage Type: ");
+    int  mainCourse = doc["mainCoursePercentage"] | -1;
+    int  sideDish   = doc["sideDishPercentage"]   | -1;
+    int  soup       = doc["soupPercentage"]       | -1;
+    const char* beverageType = doc["beverageType"] | "UNKNOWN";
+    int  beverageVolume      = doc["beverageVolume"] | -1;
+    const char* notes        = doc["notes"]          | "";
+
+    M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
+    M5.Lcd.setCursor(0, 60);
+
+    // 主食
+    M5.Lcd.print("主食: ");
+    if (mainCourse >= 0) {
+        M5.Lcd.print("|");
+        int barLength = mainCourse / 10;  // 100% なら =10個
+        for (int i = 0; i < barLength; i++) {
+            M5.Lcd.print("=");
+        }
+        M5.Lcd.print("| ");
+        M5.Lcd.printf("(%d%%)\n", mainCourse);
+        M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
+    } else {
+        M5.Lcd.println("不明");
+    }
+
+    // 副菜
+    M5.Lcd.print("副菜: ");
+    if (sideDish >= 0) {
+        M5.Lcd.print("|");
+        int barLength = sideDish / 10;
+        for (int i = 0; i < barLength; i++) {
+            M5.Lcd.print("=");
+        }
+        M5.Lcd.print("| ");
+        M5.Lcd.printf("(%d%%)\n", sideDish);
+        M5.Lcd.setTextColor(TEXT_COLOR, BACKGROUND_COLOR);
+    } else {
+        M5.Lcd.println("不明");
+    }
+
+    // 汁物
+    M5.Lcd.print("汁物: ");
+    if (soup >= 0) {
+        M5.Lcd.print("|");
+        int barLength = soup / 10;
+        for (int i = 0; i < barLength; i++) {
+            M5.Lcd.print("=");
+        }
+        M5.Lcd.print("| ");
+        M5.Lcd.printf("(%d%%)\n", soup);
+    } else {
+        M5.Lcd.println("不明");
+    }
+
+    // 飲み物の種類
+    M5.Lcd.print("飲み物種類: ");
     M5.Lcd.println(beverageType);
- 
-    M5.Lcd.print("Beverage Volume: ");
-    M5.Lcd.println(beverageVolume);
- 
-    M5.Lcd.print("Notes: ");
-    M5.Lcd.println(notes);
+
+    // 飲んだ量
+    M5.Lcd.print("飲んだ量: ");
+    if (beverageVolume >= 0) {
+        M5.Lcd.printf("%d ml\n", beverageVolume);
+    } else {
+        M5.Lcd.println("不明");
+    }
+
+    // 特記事項
+    M5.Lcd.print("特記事項: ");
+    if (strlen(notes) > 0) {
+        M5.Lcd.println(notes);
+    } else {
+        M5.Lcd.println("なし");
+    }
 }

@@ -30,11 +30,10 @@ void changeScreen(Screen newScreen, bool addStuck) {
         api.setRecordExtract(""); // 介護記録の初期化
         showTranscriptionScreen(appState);//これがレコーディングスタート関数
         break;
-      case EXTRACT:{
-        String recordExtract = api.getRecordExtract();
-        showRecordFromJson(appState, recordExtract);
+      case EXTRACT:
+        appState.screenHistory = std::stack<Screen>(); // 履歴をクリア
+        showRecordFromJson(appState, api.getRecordExtract());
         break;
-      }
       case RECORD_TYPE_PICKER:
         showRecordTypeScreen(appState);
         break;

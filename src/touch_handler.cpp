@@ -49,27 +49,35 @@ void handleTouchEvents() {
   }
 }
 
+// フッター部分のタッチイベント処理
 void handleFooterTouch(TouchPoint_t touch) {
-  if(appState.currentScreen == TRANSCRIPTION){
-    Serial.println("currentScreen is TRANSCRIPTION");
     M5.Axp.SetLDOEnable(3, true);
     delay(75);
     M5.Axp.SetLDOEnable(3, false);
+  if(appState.currentScreen == TRANSCRIPTION){
+    Serial.println("currentScreen is TRANSCRIPTION");
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
-      changeScreen(USER_PICKER);
+      toggleRecording();
+      Serial.println("delay 700");
+      M5.Lcd.fillRect(CENTER_STARTX-15, CENTER_STARTY, CENTER_RECTWIDTH + 30, CENTER_RECTHEIGHT + 20, WHITE);
+      M5.Lcd.drawRect(CENTER_STARTX-15, CENTER_STARTY, CENTER_RECTWIDTH + 30, CENTER_RECTHEIGHT + 20, BLACK);
+      M5.Lcd.drawString("保存しています",CENTER_STARTX - 10, CENTER_STARTY + (CENTER_RECTHEIGHT + 20) / 2);
+      delay(700);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
       toggleRecording();
       Serial.println("delay 700");
       M5.Lcd.fillRect(CENTER_STARTX-15, CENTER_STARTY, CENTER_RECTWIDTH + 30, CENTER_RECTHEIGHT + 20, WHITE);
       M5.Lcd.drawRect(CENTER_STARTX-15, CENTER_STARTY, CENTER_RECTWIDTH + 30, CENTER_RECTHEIGHT + 20, BLACK);
-      M5.Lcd.drawString("おまちください",CENTER_STARTX - 10, CENTER_STARTY + (CENTER_RECTHEIGHT + 20) / 2);
+      M5.Lcd.drawString("取消しています",CENTER_STARTX - 10, CENTER_STARTY + (CENTER_RECTHEIGHT + 20) / 2);
       delay(700);
+      changeScreen(RESIDENT_PICKER);
     }
   }
+  else if (appState.currentScreen == EXTRACT){
+    Serial.println("currentScreen is EXTRACT");
+    changeScreen(RESIDENT_PICKER);
+  }
   else{
-    M5.Axp.SetLDOEnable(3, true);
-    delay(75);
-    M5.Axp.SetLDOEnable(3, false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
       changeScreen(RESIDENT_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {

@@ -24,7 +24,6 @@ struct Resident {
 
 // 画面を識別する列挙型
 enum Screen { 
-    USER_PICKER, 
     RESIDENT_PICKER, 
     STANDBY,
     FINAL_SCREEN,
@@ -70,7 +69,7 @@ inline String mealTimeToString(MealTime time) {
 
 // アプリケーション全体で使用する状態管理構造体
 struct AppState {
-    String selectedUser;     // 選択されたユーザー名
+    String userName;     // 選択されたユーザー名
     Resident selectedResident; //選択されたレジデントの情報を保持
     Screen currentScreen;    //現在のスクリーン
     std::stack<Screen> screenHistory;//戻る用のスクリーンスタック

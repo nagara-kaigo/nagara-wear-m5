@@ -8,6 +8,6 @@ struct AppState; // 前方宣言
 #define WIFI_POPUP_STARTX  30
 #define WIFI_POPUP_STARTY  80
 
-void showWifiPopup(const AppState &state);
+void showWifiDisconectionPopup(const AppState &state);
 
 #endif

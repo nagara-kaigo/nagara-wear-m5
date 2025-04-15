@@ -17,3 +17,28 @@ void connectToWiFi(String ssid, String password) {
     Serial.println("WiFi Connected!");
     M5.Lcd.drawString("ネットワーク通信成功", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
 }
+
+bool wifiDisconnectionObserve(){
+    switch (WiFi.status())
+    {
+    case WL_NO_SHIELD:
+        return false;
+    
+    case WL_CONNECTED:
+        return true;
+
+    case WL_NO_SSID_AVAIL:
+        return false;
+    
+    case WL_CONNECT_FAILED:
+        return false;
+    
+    case WL_CONNECTION_LOST:
+        return false;
+    
+    case WL_DISCONNECTED:
+        return false;
+    default:
+        return false;
+    }
+}

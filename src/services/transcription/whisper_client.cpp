@@ -225,9 +225,6 @@ void transcribeAudio() {
         updateWavHeader(recordingFile);
         recordingFile.flush();
         recordingFile.close();
-        File recordCheck = SD.open("/audioCheck.wav",FILE_WRITE);
-        updateWavHeader(recordCheck);
-        recordCheck.close();
     }
     Serial.println("complete reccording.wav");
     File recordingFile = SD.open("/recording.wav", FILE_READ);

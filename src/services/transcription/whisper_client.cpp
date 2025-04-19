@@ -11,6 +11,7 @@
 #include "../../screens/screen_display_extract.h"
 #include "../api/records.h"
 #include <WiFiClientSecure.h>
+#include "../../system/sd_handler.h"
 
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
@@ -218,12 +219,12 @@ void transcribeAudio() {
           Serial.println("No new data in ring buffer");
         }
         Serial.println("open SD");
-        SD.remove("/recording.wav");
-        File recordingFile = SD.open("/recording.wav", FILE_WRITE);
-        writeWavHeader(recordingFile, 16000, 16, 1);
+        initializeRecordFile();
+        File recordingFile = SD.open("/recording.wav", FILE_APPEND);
         recordingFile.write(recorder.gettempBuffer(), available);
+        recordingFile.close();
+        recordingFile = SD.open("/recording.wav", "r+");
         updateWavHeader(recordingFile);
-        recordingFile.flush();
         recordingFile.close();
     }
     Serial.println("complete reccording.wav");

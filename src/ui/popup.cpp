@@ -1,6 +1,6 @@
 #include "popup.h"
 #include <M5Core2.h>
-void showWifiDisconnectionPopup(const AppState &state){
+void showWifiDisconnectedPopup(const AppState &state){
     M5.Lcd.setTextDatum(MC_DATUM);
     M5.Lcd.fillRect(WIFI_POPUP_STARTX, WIFI_POPUP_STARTY, WIFI_POPUP_WIDTH, WIFI_POPUP_HEIGHT, WHITE);
     M5.Lcd.drawRect(WIFI_POPUP_STARTX, WIFI_POPUP_STARTY, WIFI_POPUP_WIDTH, WIFI_POPUP_HEIGHT, BLACK);

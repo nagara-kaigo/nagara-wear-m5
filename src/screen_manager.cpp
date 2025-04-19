@@ -52,17 +52,18 @@ void popScreen() {
 }
 
 void wifiDisconnectionPopup(){
-  static bool currentStatus = false;
+  static bool isPopupVisible = false;
+  bool isConnected = wifiDisconnectionObserve();
 
-  if(!wifiDisconnectionObserve() && !currentStatus){
+  if(!isConnected && !isPopupVisible){
     Serial.println("ネットワークから切断されました");
-    showWifiPopup(appState);
-    currentStatus = true;
+    showWifiDisconectedPopup(appState);
+    isPopupVisible = true;
   }
 
-  if (wifiDisconnectionObserve() && currentStatus) {
+  if (isConnected && isPopupVisible) {
     Serial.println("ネットワークに再接続しました");
-    currentStatus = false;
+    isPopupVisible = false;
     showResidentPickerScreen(appState);
   }
 }

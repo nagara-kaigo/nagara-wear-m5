@@ -56,7 +56,7 @@ void AudioRecorder::initialize() {
 
     i2s_config_t i2s_config = {
         .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_PDM),
-        .sample_rate = 16000,
+        .sample_rate = 44100,
         .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
         .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
         .communication_format = I2S_COMM_FORMAT_I2S,
@@ -81,7 +81,7 @@ void AudioRecorder::initialize() {
 
     //i2s_driver_install(I2S_PORT, &i2s_config, 0, NULL);
     i2s_set_pin(I2S_PORT, &pin_config); // 内蔵マイク使用
-    i2s_set_clk(I2S_PORT, 16000, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
+    i2s_set_clk(I2S_PORT, 44100, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
 }
 
 void AudioRecorder::startRecording(AppState &state) {
@@ -195,10 +195,13 @@ void AudioRecorder::recordTask(void* param) {
     esp_err_t result = i2s_read(I2S_PORT, buffer, sizeof(buffer), &bytesRead, portMAX_DELAY);
     if (result == ESP_OK && bytesRead > 0) {
         
-        //for (int i = 0; i < 10&&bytesRead; i++) {
-        //    Serial.printf("%02x ", buffer[i]);
-        //}
-        //recorder->recordingFile.write(buffer, bytesRead);
+        for (int i = 0; i < 10&&bytesRead; i++) {
+            Serial.printf("%02x ", buffer[i]);
+        }
+        File recordCheck = SD.open("/audioCheck.wav",FILE_APPEND);
+        recordCheck.write(buffer, bytesRead);
+        recordCheck.flush();
+        recordCheck.close();
         
         if (xSemaphoreTake(recorder->ringBufferMutex, (TickType_t)10) == pdTRUE) {
             for (size_t i = 0; i < bytesRead; i++) {

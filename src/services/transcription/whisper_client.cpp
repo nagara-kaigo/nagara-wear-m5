@@ -220,11 +220,14 @@ void transcribeAudio() {
         Serial.println("open SD");
         SD.remove("/recording.wav");
         File recordingFile = SD.open("/recording.wav", FILE_WRITE);
-        writeWavHeader(recordingFile, 16000, 16, 1);
+        writeWavHeader(recordingFile, 44100, 16, 1);
         recordingFile.write(recorder.gettempBuffer(), available);
         updateWavHeader(recordingFile);
         recordingFile.flush();
         recordingFile.close();
+        File recordCheck = SD.open("/audioCheck.wav",FILE_WRITE);
+        updateWavHeader(recordCheck);
+        recordCheck.close();
     }
     Serial.println("complete reccording.wav");
     File recordingFile = SD.open("/recording.wav", FILE_READ);

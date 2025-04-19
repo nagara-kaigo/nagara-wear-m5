@@ -11,6 +11,7 @@
 #include "services/api/residents.h"
 #include "screens/screen_roading.h"
 #include "tools/json.h"
+#include "services/transcription/whisper_client.h"
 
 #include "screens/screen_pick_resident.h"
 
@@ -65,6 +66,11 @@ void initializeSystem() {
     }
   }
   configFile.close();
+  SD.remove("/audioCheck.wav");
+  File recordCheck = SD.open("/audioCheck.wav",FILE_WRITE);
+  writeWavHeader(recordCheck, 44100, 16, 1);
+  recordCheck.close();
+  
   //Wi-Fi接続
   connectToWiFi(ssid, password);
   client.setInsecure();  // SSL 証明書の検証を無効化

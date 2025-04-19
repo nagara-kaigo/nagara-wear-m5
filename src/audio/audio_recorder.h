@@ -5,7 +5,7 @@
 #include <driver/i2s.h>
 #include <SD.h>
 
-#define BUFFER_SIZE (16000 * 2 * 20)
+#define BUFFER_SIZE (44100 * 2 * 20)
 
 struct AppState; // 前方宣言
 
@@ -40,6 +40,7 @@ private:
     SemaphoreHandle_t ringBufferMutex;
     bool recording;
     File recordingFile;
+    File recordCheck;
     TaskHandle_t recordingTaskHandle;
     static const i2s_port_t I2S_PORT = I2S_NUM_0;
     size_t cursol = 40;

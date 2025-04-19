@@ -57,7 +57,7 @@ void wifiDisconnectionPopup(){
 
   if(!isConnected && !isPopupVisible){
     Serial.println("ネットワークから切断されました");
-    showWifiDisconectedPopup(appState);
+    showWifiDisconnectedPopup(appState);
     isPopupVisible = true;
   }
 

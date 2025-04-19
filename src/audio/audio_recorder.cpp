@@ -37,6 +37,14 @@ AudioRecorder::~AudioRecorder() {
     }
 }
 
+void AudioRecorder::resetRingBuffer() {
+    if (xSemaphoreTake(ringBufferMutex, portMAX_DELAY) == pdTRUE) {
+        writeIndex = 0;
+        readIndex  = 0;
+        xSemaphoreGive(ringBufferMutex);
+    }
+}
+
 void AudioRecorder::initialize() {
     this->tempBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
     audioRingBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
@@ -88,6 +96,7 @@ void AudioRecorder::startRecording(AppState &state) {
     if (recording || recordingTaskHandle != nullptr) return;
     String recordedAt = getFormattedTime();
     String response;
+    resetRingBuffer();
     switch (state.selectedRecordType) {
     case MEAL:
         //食事記録作成
@@ -195,16 +204,21 @@ void AudioRecorder::recordTask(void* param) {
     esp_err_t result = i2s_read(I2S_PORT, buffer, sizeof(buffer), &bytesRead, portMAX_DELAY);
     if (result == ESP_OK && bytesRead > 0) {
         
-        if (xSemaphoreTake(recorder->ringBufferMutex, (TickType_t)10) == pdTRUE) {
-            for (size_t i = 0; i < bytesRead; i++) {
-              recorder->audioRingBuffer[recorder->writeIndex] = buffer[i];
-              recorder->writeIndex = (recorder->writeIndex + 1) % BUFFER_SIZE;
+        int16_t* in      = reinterpret_cast<int16_t*>(buffer); 
+        size_t   samples = bytesRead / 2;                       // 2 byte = 1 sample
+
+        if (xSemaphoreTake(recorder->ringBufferMutex, 10 / portTICK_PERIOD_MS)) {
+            for (size_t n = 0; n < samples; ++n) {
+
+                int16_t pcm16 = in[n];
+
+                recorder->audioRingBuffer[recorder->writeIndex]               = pcm16 & 0xFF;
+                recorder->audioRingBuffer[(recorder->writeIndex + 1) % BUFFER_SIZE] = pcm16 >> 8;
+
+                recorder->writeIndex = (recorder->writeIndex + 2) % BUFFER_SIZE;
             }
             xSemaphoreGive(recorder->ringBufferMutex);
-          }
-    }
-
-    //recorder->recording = false;
-    //vTaskDelete(nullptr);
+        }
     return;
+    }
 }

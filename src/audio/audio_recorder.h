@@ -14,6 +14,7 @@ public:
     AudioRecorder();
     ~AudioRecorder();
 
+    void resetRingBuffer();  
     void startRecording(AppState &state);
     void stopRecording();
     bool isRecording() const{return recording;};

@@ -66,10 +66,6 @@ void initializeSystem() {
     }
   }
   configFile.close();
-  SD.remove("/audioCheck.wav");
-  File recordCheck = SD.open("/audioCheck.wav",FILE_WRITE);
-  writeWavHeader(recordCheck, 44100, 16, 1);
-  recordCheck.close();
   
   //Wi-Fi接続
   connectToWiFi(ssid, password);

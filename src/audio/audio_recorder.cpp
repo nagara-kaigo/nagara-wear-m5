@@ -37,6 +37,14 @@ AudioRecorder::~AudioRecorder() {
     }
 }
 
+void AudioRecorder::resetRingBuffer() {
+    if (xSemaphoreTake(ringBufferMutex, portMAX_DELAY) == pdTRUE) {
+        writeIndex = 0;
+        readIndex  = 0;
+        xSemaphoreGive(ringBufferMutex);
+    }
+}
+
 void AudioRecorder::initialize() {
     this->tempBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
     audioRingBuffer = (uint8_t*)ps_malloc(BUFFER_SIZE);
@@ -88,6 +96,7 @@ void AudioRecorder::startRecording(AppState &state) {
     if (recording || recordingTaskHandle != nullptr) return;
     String recordedAt = getFormattedTime();
     String response;
+    resetRingBuffer();
     switch (state.selectedRecordType) {
     case MEAL:
         //食事記録作成

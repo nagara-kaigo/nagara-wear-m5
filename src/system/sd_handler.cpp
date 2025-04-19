@@ -1,17 +1,9 @@
 #include "sd_handler.h"
 #include <Arduino.h>
 #include <SD.h>
-#include "../services/transcription/whisper_client.h"
 
 bool initializeSD() {
     return SD.begin();
-}
-
-void initializeRecordFile(){//いずれ汎用化します
-    SD.remove("/recording.wav");
-    File recordingFile = SD.open("/recording.wav", FILE_WRITE);
-    writeWavHeader(recordingFile, 16000, 16, 1);
-    recordingFile.close();
 }
 
 void readFileFromSD(const char* filename) {

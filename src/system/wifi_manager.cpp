@@ -11,7 +11,6 @@ void connectToWiFi(String ssid, String password) {
     M5.Lcd.drawString("ネットワーク通信中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
-        Serial.println(WiFi.status());
         delay(500);
     }
     M5.Lcd.fillRect(0, 140, 340, 120, WHITE);

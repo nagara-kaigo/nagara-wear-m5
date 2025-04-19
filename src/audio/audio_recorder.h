@@ -5,7 +5,7 @@
 #include <driver/i2s.h>
 #include <SD.h>
 
-#define BUFFER_SIZE (16000 * 2 * 40)
+#define BUFFER_SIZE (16000 * 2 * 20)
 
 struct AppState; // 前方宣言
 

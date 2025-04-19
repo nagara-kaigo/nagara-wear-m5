@@ -3,6 +3,5 @@
 
 bool initializeSD();
 void readFileFromSD(const char* filename);
-void initializeRecordFile();
 
 #endif

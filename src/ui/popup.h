@@ -8,6 +8,12 @@ struct AppState; // 前方宣言
 #define WIFI_POPUP_STARTX  30
 #define WIFI_POPUP_STARTY  80
 
+#define LOADING_POPUP_WIDTH  260
+#define LOADING_POPUP_HEIGHT  80
+#define LOADING_POPUP_STARTX  30
+#define LOADING_POPUP_STARTY  80
+
 void showWifiDisconnectedPopup(const AppState &state);
+void showLoadingPopup(const AppState &state);
 
 #endif

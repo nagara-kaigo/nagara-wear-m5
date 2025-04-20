@@ -49,7 +49,8 @@ void rebootTranscriptionScreen(const AppState &state) {
     M5.Lcd.clear();
     M5.Lcd.fillScreen(WHITE);
     M5.Lcd.setCursor(10, 10);
-    M5.Lcd.setTextColor(BLACK);
+    Serial.println(state.mealTime);
     showHeaderBar(recordTypeToString(state.selectedRecordType) + "のレコーディング中");
+    showRecordFromJson(state, api.getRecordExtract());
     showFooterBarRecording(state);
 }

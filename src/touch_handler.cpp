@@ -15,37 +15,54 @@
 
 extern AppState appState;
 
-void handleTouchEvents() {
-  TouchPoint_t touch;
-  
-  if (!M5.Touch.ispressed()) {
-    return;
-  }
+void handleTapTransition(const TouchPoint_t &touch) {
 
-  touch = M5.Touch.getPressPoint();
-
-  // メインコンテンツのタッチ
+  /* ── メイン領域（y < 200） ───────────── */
   if (touch.y < 200) {
-    switch (appState.currentScreen) {
-      case RESIDENT_PICKER:
-        if (handleResidentPickerTouch(touch, appState)) {
-          changeScreen(RECORD_TYPE_PICKER);
-        }
-        break;
-      case STANDBY:
-        if (handleRecBtnTouch(touch, appState)) {
-          changeScreen(TRANSCRIPTION);
-        }
-        break;
-      case RECORD_TYPE_PICKER:
-        if(handleRecordTypeTouch(touch,appState)){
-          changeScreen(STANDBY);
-        }
-    }
-  } 
-  // フッター部分のタッチ
+      switch (appState.currentScreen) {
+          case RESIDENT_PICKER:
+              if (handleResidentPickerTouch(touch, appState)) {
+                  changeScreen(RECORD_TYPE_PICKER);
+              }
+              break;
+
+          case STANDBY:
+              if (handleRecBtnTouch(touch, appState)) {
+                  changeScreen(TRANSCRIPTION);
+              }
+              break;
+
+          case RECORD_TYPE_PICKER:
+              if (handleRecordTypeTouch(touch, appState)) {
+                  changeScreen(STANDBY);
+              }
+              break;
+      }
+  }
+  /* ── フッター領域 ──────────────────── */
   else {
-    handleFooterTouch(touch);
+      handleFooterTouch(touch);
+  }
+}
+
+void handleTouchEvents() {
+
+  static bool         prevPressed = false;
+  static TouchPoint_t isTouchPosition;
+  static size_t i = 0;
+
+  bool isPressed = M5.Touch.ispressed();
+  if (isPressed) {
+      //ispressedとの同期
+      if(M5.Touch.getPressPoint().x != -1){
+        isTouchPosition = M5.Touch.getPressPoint();
+        prevPressed = true;
+      return ;
+      }
+  }
+  if(prevPressed){
+    handleTapTransition(isTouchPosition);
+    prevPressed = false;
   }
 }
 

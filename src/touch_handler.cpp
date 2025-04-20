@@ -14,14 +14,15 @@
 #include "screens/screen_pick_record_type.h"
 
 extern AppState appState;
+SwipeState swipeState = SWIPE_NONE;
 
-void handleTapTransition(const TouchPoint_t &touch) {
+void handleTapTransition(const TouchPoint_t &touch, SwipeState swipeState) {
 
   /* ── メイン領域（y < 200） ───────────── */
   if (touch.y < 200) {
       switch (appState.currentScreen) {
           case RESIDENT_PICKER:
-              if (handleResidentPickerTouch(touch, appState)) {
+              if (handleResidentPickerTouch(touch, appState, swipeState)) {
                   changeScreen(RECORD_TYPE_PICKER);
               }
               break;
@@ -48,21 +49,41 @@ void handleTapTransition(const TouchPoint_t &touch) {
 void handleTouchEvents() {
 
   static bool         prevPressed = false;
-  static TouchPoint_t isTouchPosition;
+  static TouchPoint_t currentTouchPosition, firstTouchPosition;
   static size_t i = 0;
+
 
   bool isPressed = M5.Touch.ispressed();
   if (isPressed) {
+    if(!prevPressed){
+      firstTouchPosition = M5.Touch.getPressPoint();
+      //ispressedとの同期
+      if(firstTouchPosition == -1){
+        return;
+      }
+    }
       //ispressedとの同期
       if(M5.Touch.getPressPoint().x != -1){
-        isTouchPosition = M5.Touch.getPressPoint();
+        currentTouchPosition = M5.Touch.getPressPoint();
         prevPressed = true;
       return ;
       }
   }
   if(prevPressed){
-    handleTapTransition(isTouchPosition);
+    int differentPosition = currentTouchPosition.x - firstTouchPosition.x;
+    if(abs(differentPosition) >= SWIPE_RANGE){
+      if(differentPosition < 0){
+        swipeState = SWIPE_LEFT;
+        Serial.println("SWIPE_LEFT");
+      }
+      else if(differentPosition > 0){
+        Serial.println("SWIPE_RIGHT");
+        swipeState = SWIPE_RIGHT;
+      }
+    }
+    handleTapTransition(currentTouchPosition,swipeState);
     prevPressed = false;
+    swipeState = SWIPE_NONE;
   }
 }
 

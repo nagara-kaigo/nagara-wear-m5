@@ -53,7 +53,9 @@ bool isTouchInBox(int touchX, int touchY, int boxX, int boxY, int width, int hei
     return touchX >= boxX && touchX <= boxX + width && touchY >= boxY && touchY <= boxY + height;
 }
 
-bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
+bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state, SwipeState swipeState) {
+    Serial.println("handleResidentPickerTouch");
+    Serial.println(swipeState);
     size_t j = 0;
 
     size_t totalResidents = state.residentsList.size();
@@ -71,10 +73,28 @@ bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
             j++;
         }
 
-        if (isTouchInBox(touch.x, touch.y, x, y, BOX_WIDTH, BOX_HEIGHT)) {
+        if (isTouchInBox(touch.x, touch.y, x, y, BOX_WIDTH, BOX_HEIGHT) && (swipeState != 1 && swipeState != 2)) {
             state.selectedResident = state.residentsList[i];
             return true;
         }
+    }
+
+    if(state.totalResidentPage > 1 && state.currentResidentPage < state.totalResidentPage - 1 &&
+        swipeState == 1){
+        state.currentResidentPage++;
+        Serial.println("次ページへスワイプ");
+        showResidentPickerScreen(state);
+        delay(50);
+        return false;
+    }
+
+    if(state.totalResidentPage > 1 && state.currentResidentPage > 0 &&
+        swipeState == 2){
+        state.currentResidentPage--;
+        Serial.println("前ページへスワイプ");
+        showResidentPickerScreen(state);
+        delay(50);
+        return false;
     }
 
     // 左矢印のタッチ判定 (前ページへ)
@@ -84,7 +104,7 @@ bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
         state.currentResidentPage--;
         Serial.println("前ページへ");
         showResidentPickerScreen(state);
-        //return true;
+        return false;
     }
 
     // 右矢印のタッチ判定 (次ページへ)
@@ -94,7 +114,7 @@ bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
         state.currentResidentPage++;
         Serial.println("次ページへ");
         showResidentPickerScreen(state);
-        //return true;
+        return false;
     }
 
     return false;

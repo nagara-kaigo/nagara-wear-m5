@@ -33,6 +33,13 @@ enum Screen {
     ROADING
 };
 
+enum SwipeState {
+    SWIPE_NONE,
+    SWIPE_LEFT,
+    SWIPE_RIGHT
+};
+
+
 enum RecordType{
     MEAL,
     DRINK,

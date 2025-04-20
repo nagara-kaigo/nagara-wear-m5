@@ -2,6 +2,7 @@
 #define SCREEN_PICK_RESIDENT_H
 
 #include <M5Core2.h>
+#include <main.h>
 struct AppState; // 前方宣言
 
 #define ARROW_LEFT_X1 10
@@ -23,6 +24,6 @@ struct AppState; // 前方宣言
 #define TEXT_OFFSET_Y 20
 
 void showResidentPickerScreen(AppState &state);
-bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state);
+bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state, SwipeState swipeState);
 
 #endif

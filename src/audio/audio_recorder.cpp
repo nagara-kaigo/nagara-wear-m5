@@ -9,6 +9,8 @@
 #include "../services/api/records/elimination_records.h"
 #include "../services/api/records/beverage_records.h"
 #include "../services/api/records/daily_records.h"
+#include "../ui/popup.h"
+#include "../screens/screen_transcription.h"
 
 extern MyApi api;
 
@@ -99,6 +101,7 @@ void AudioRecorder::startRecording(AppState &state) {
     resetRingBuffer();
     switch (state.selectedRecordType) {
     case MEAL:
+        showLoadingPopup(state);
         //食事記録作成
         response = createFoodRecord(
             api,
@@ -111,9 +114,11 @@ void AudioRecorder::startRecording(AppState &state) {
             "WATER",               // beverageType(WATER, TEE, OTHER)
             0                    // beverageVolume
         );
+        rebootTranscriptionScreen(state);
         break;
     
     case BATH:
+        showLoadingPopup(state);
         //入浴記録作成
         response = createBathRecord(
             api,
@@ -121,9 +126,11 @@ void AudioRecorder::startRecording(AppState &state) {
             "",                     // notes
             ""                      // bathMethod (例: BATH, SHOWER, etc)
         );
+        rebootTranscriptionScreen(state);
         break;
 
     case EXCRETION: 
+        showLoadingPopup(state);
         //排泄記録作成
         response = createEliminationRecord(
             api,
@@ -139,8 +146,10 @@ void AudioRecorder::startRecording(AppState &state) {
             "",                    // urineAppearance (例: NORMAL, CLOUDY, etc)
             0                      // urineVolume
         );
+        rebootTranscriptionScreen(state);
         break;
     case DRINK: 
+        showLoadingPopup(state);
         //飲水記録作成
         response = createBeverageRecord(
             api,
@@ -149,8 +158,10 @@ void AudioRecorder::startRecording(AppState &state) {
             "WATER",               // beverageType (例: WATER, TEE, etc)
             0                      // volume
         );
+        rebootTranscriptionScreen(state);
         break;
     case EVERYDAY:
+        showLoadingPopup(state);
         //日常記録作成
         response = createDailyRecord(
             api,
@@ -158,6 +169,7 @@ void AudioRecorder::startRecording(AppState &state) {
             "",                     // notes
             "NORMAL"               // dailyStatus (例: NORMAL, WARNING, ALERT)
         );
+        rebootTranscriptionScreen(state);
         break;
     }
         

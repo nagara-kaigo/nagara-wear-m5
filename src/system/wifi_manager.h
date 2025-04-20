@@ -4,5 +4,6 @@
 #include <Arduino.h>
 
 void connectToWiFi(String ssid, String password);
+bool wifiDisconnectionObserve();
 
 #endif

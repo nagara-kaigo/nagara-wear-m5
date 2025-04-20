@@ -1,5 +1,7 @@
 #include "screen_manager.h"
 #include "services/api/api.h"
+#include "ui/popup.h"
+#include "system/wifi_manager.h"
 
 #include "screens/screen_pick_user.h"
 #include "screens/screen_pick_resident.h"
@@ -46,5 +48,22 @@ void popScreen() {
       Screen previous = appState.screenHistory.top();
       appState.screenHistory.pop();
       changeScreen(previous,false);
+  }
+}
+
+void wifiDisconnectionPopup(){
+  static bool isPopupVisible = false;
+  bool isConnected = wifiDisconnectionObserve();
+
+  if(!isConnected && !isPopupVisible){
+    Serial.println("ネットワークから切断されました");
+    showWifiDisconnectedPopup(appState);
+    isPopupVisible = true;
+  }
+
+  if (isConnected && isPopupVisible) {
+    Serial.println("ネットワークに再接続しました");
+    isPopupVisible = false;
+    showResidentPickerScreen(appState);
   }
 }

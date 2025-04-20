@@ -5,6 +5,7 @@
 
 void changeScreen(Screen newScreen, bool addStuck = true);
 void popScreen();
+void wifiDisconnectionPopup();
     
 
 #endif // SCREEN_MANAGER_H

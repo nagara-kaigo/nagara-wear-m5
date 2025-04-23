@@ -1,5 +1,6 @@
 #include <M5Core2.h>
 #include <WiFiClientSecure.h>
+#include <WebSocketsClient.h>
 #include <vector>
 #include "setup.h"
 #include "config.h"
@@ -12,8 +13,8 @@
 #include "screens/screen_roading.h"
 #include "tools/json.h"
 #include "services/transcription/whisper_client.h"
-
 #include "screens/screen_pick_resident.h"
+#include "services/api/general.h"
 
 AppState appState;
 
@@ -21,6 +22,11 @@ MyApi api;  // `MyApi` クラスのインスタンスを作成
 
 // **HTTP リクエストの送信**
 WiFiClientSecure client;
+WebSocketsClient webSocket;
+
+const char* websocket_host = "echo.websocket.events";  // テスト用公開WebSocketサーバー
+const int websocket_port = 80;
+const char* websocket_path = "/";
 
 void initializeSystem() {
   //M5スタックイニシャライズ
@@ -71,6 +77,14 @@ void initializeSystem() {
   connectToWiFi(ssid, password);
   client.setInsecure();  // SSL 証明書の検証を無効化
   M5.Lcd.setTextDatum(MC_DATUM);
+  //WebSocket通信
+  webSocket.begin(websocket_host, websocket_port, websocket_path);
+  webSocket.onEvent(webSocketEvent);
+  webSocket.setReconnectInterval(5000);
+
+  webSocket.sendTXT("Hello from ESP32!");
+
+
   // 現在時刻取得
   M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
   M5.Lcd.drawString("現在時刻取得中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);

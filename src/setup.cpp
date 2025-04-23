@@ -24,9 +24,9 @@ MyApi api;  // `MyApi` クラスのインスタンスを作成
 WiFiClientSecure client;
 WebSocketsClient webSocket;
 
-const char* websocket_host = "echo.websocket.events";  // テスト用公開WebSocketサーバー
-const int websocket_port = 80;
-const char* websocket_path = "/";
+const char* websocket_host = "api.openai.com";
+const int websocket_port = 443;
+const char* websocket_path = "/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17";
 
 void initializeSystem() {
   //M5スタックイニシャライズ
@@ -78,12 +78,13 @@ void initializeSystem() {
   client.setInsecure();  // SSL 証明書の検証を無効化
   M5.Lcd.setTextDatum(MC_DATUM);
   //WebSocket通信
-  webSocket.begin(websocket_host, websocket_port, websocket_path);
+  webSocket.beginSSL(websocket_host, websocket_port, websocket_path);
+  webSocket.setExtraHeaders((
+      String("Authorization: Bearer ") + OPENAI_API_KEY + "\r\n" +
+      "OpenAI-Beta: realtime=v1"
+  ).c_str());
   webSocket.onEvent(webSocketEvent);
   webSocket.setReconnectInterval(5000);
-
-  webSocket.sendTXT("Hello from ESP32!");
-
 
   // 現在時刻取得
   M5.Lcd.fillRect(0, 140, 340, 120, WHITE);

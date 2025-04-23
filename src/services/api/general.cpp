@@ -7,7 +7,14 @@
 extern WiFiClientSecure client;
 extern WebSocketsClient webSocket;
 
-
+String message = R"rawliteral(
+  {
+    "type": "start",
+    "input": {
+      "text": "Hello from ESP32!"
+    }
+  }
+  )rawliteral";
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
   switch (type) {
     case WStype_DISCONNECTED:
@@ -15,7 +22,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
       break;
     case WStype_CONNECTED:
       Serial.println("WebSocket Connected");
-      webSocket.sendTXT("Hello from ESP32!");
+      webSocket.sendTXT(message);
       break;
     case WStype_TEXT:
       Serial.printf("Received: %s\n", payload);

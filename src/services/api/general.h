@@ -1,7 +1,6 @@
 #ifndef GENERAL_H
 #define GENERAL_H
 #include <Arduino.h>
-#include <WebSocketsClient.h>
 
 
 class MyApi; // 前方宣言
@@ -14,6 +13,5 @@ String httpGet(MyApi& api, const String& endpoint, const String& token = "");
 
 String httpPatchJson(MyApi& api, const String& endpoint, const String& jsonBody, const String& token = "");
 
-void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
 
 #endif

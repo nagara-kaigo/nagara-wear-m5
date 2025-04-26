@@ -11,8 +11,11 @@
 #include "../services/api/records/daily_records.h"
 #include "../ui/popup.h"
 #include "../screens/screen_transcription.h"
+#include <WebSocketsClient.h>
+#include "../services/transcription/realtime_api.h"
 
 extern MyApi api;
+extern WebSocketsClient webSocket;
 
 AudioRecorder::AudioRecorder()
     : audioRingBuffer(nullptr), tempBuffer(nullptr), writeIndex(0), readIndex(0),
@@ -231,6 +234,8 @@ void AudioRecorder::recordTask(void* param) {
             }
             xSemaphoreGive(recorder->ringBufferMutex);
         }
+         // ------- ここで WebSocket 送信 -------
+         sendPcmChunk(in, samples);
     return;
     }
 }

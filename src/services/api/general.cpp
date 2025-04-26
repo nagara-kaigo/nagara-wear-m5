@@ -2,38 +2,8 @@
 #include "api.h"
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
-#include <WebSocketsClient.h>
 
 extern WiFiClientSecure client;
-extern WebSocketsClient webSocket;
-
-String message = R"rawliteral(
-  {
-    "type": "start",
-    "input": {
-      "text": "Hello from ESP32!"
-    }
-  }
-  )rawliteral";
-void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
-  switch (type) {
-    case WStype_DISCONNECTED:
-      Serial.println("WebSocket Disconnected");
-      break;
-    case WStype_CONNECTED:
-      Serial.println("WebSocket Connected");
-      webSocket.sendTXT(message);
-      break;
-    case WStype_TEXT:
-      Serial.printf("Received: %s\n", payload);
-      break;
-    default:
-      break;
-  }
-}
-
-
-
 
 // HTTP POST リクエストの共通処理
 String httpPostJson(MyApi& api, const String& endpoint, const String& jsonBody, const String& token) {

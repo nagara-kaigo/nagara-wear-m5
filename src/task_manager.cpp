@@ -36,6 +36,7 @@ void task0(void *parameter) {
 }
 
 void task1(void *parameter) {
+    /*
     AudioRecorder* recorder = static_cast<AudioRecorder*>(parameter);
     while (true) {  
         vTaskDelay(5000 / portTICK_PERIOD_MS);
@@ -50,11 +51,14 @@ void task1(void *parameter) {
         Serial.println("After transcribe info is:");
         Serial.println(recordInfo);
         showRecordFromJson(appState, recordInfo);
+        */
         vTaskDelay(pdMS_TO_TICKS(30));
+        /*
         if(!recorder->isRecording()){
             Serial.println("task1 vTaskDelete");
             changeScreen(EXTRACT);
             vTaskDelete(NULL);
         }
     }
+    */
 }

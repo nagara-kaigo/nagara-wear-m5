@@ -14,7 +14,7 @@
 #include "tools/json.h"
 #include "services/transcription/whisper_client.h"
 #include "screens/screen_pick_resident.h"
-#include "services/api/general.h"
+#include "services/transcription/realtime_api.h"
 
 AppState appState;
 

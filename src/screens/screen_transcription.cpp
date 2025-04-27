@@ -1,5 +1,5 @@
 #include "screen_transcription.h"
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "../ui/header.h"
 #include "../ui/footer.h"
 #include "task_manager.h"

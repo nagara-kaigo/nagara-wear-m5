@@ -1,7 +1,7 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <M5Core2.h>
+#include <M5Unified.h>
 
 void showHeaderBar(const String &title);
 

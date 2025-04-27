@@ -1,7 +1,7 @@
 #ifndef SCREEN_STANDBY_H
 #define SCREEN_STANDBY_H
 
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "main.h" // AppState を参照
 #include "config.h"
 #include "../ui/header.h"
@@ -14,6 +14,6 @@
 #define STARTY 80     // 四角の描画開始Y座標
 
 void showStandbyScreen(const AppState &state);
-bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state);
+bool handleRecBtnTouch(const lgfx::v1::touch_point_t& touch, AppState &state);
 
 #endif

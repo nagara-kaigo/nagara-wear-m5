@@ -50,7 +50,7 @@ bool isTouchInBox(int touchX, int touchY, int boxX, int boxY, int width, int hei
     return touchX >= boxX && touchX <= boxX + width && touchY >= boxY && touchY <= boxY + height;
 }
 
-bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state) {
+bool handleResidentPickerTouch(const lgfx::v1::touch_point_t& touch, AppState &state) {
     size_t j = 0;
 
     size_t totalResidents = state.residentsList.size();

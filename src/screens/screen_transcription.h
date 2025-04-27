@@ -1,7 +1,7 @@
 #ifndef SCREEN_TRANSCRIPTION_H
 #define SCREEN_TRANSCRIPTION_H
 
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "main.h" // AppState を参照
 #include "config.h"
 #include "../ui/header.h"

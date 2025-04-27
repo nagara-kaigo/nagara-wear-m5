@@ -15,7 +15,7 @@ void showUserPickerScreen(const AppState &state) {
     showFooterBar(state);
 }
 
-bool handleUserPickerTouch(const TouchPoint_t &touch, AppState &state) {
+bool handleUserPickerTouch(const lgfx::v1::touch_point_t& touch, AppState &state) {
     if (touch.x > 20 && touch.x < 280 && touch.y > 40 && touch.y < 100) {
         state.selectedUser = "こた";
         return true;

@@ -1,7 +1,7 @@
 #ifndef SCREEN_PICK_RESIDENT_H
 #define SCREEN_PICK_RESIDENT_H
 
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "main.h" // AppState を参照
 #include "config.h"
 #include "../ui/header.h"
@@ -26,6 +26,6 @@
 #define TEXT_OFFSET_Y 20
 
 void showResidentPickerScreen(AppState &state);
-bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state);
+bool handleResidentPickerTouch(const lgfx::v1::touch_point_t& touch, AppState &state);
 
 #endif

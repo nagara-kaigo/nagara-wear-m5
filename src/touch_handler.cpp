@@ -1,7 +1,7 @@
 #define FOOTER_HOME_MIN_X 109
 #define FOOTER_HOME_MAX_X 218
 
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "touch_handler.h"
 #include "screen_manager.h"
 #include "screens/screen_transcription.h"
@@ -9,13 +9,12 @@
 extern AppState appState;
 
 void handleTouchEvents() {
-  TouchPoint_t touch;
-  
-  if (!M5.Touch.ispressed()) {
-    return;
-  }
+//	M5.update();
+//	if (!M5.Touch.wasClicked()) {
+//		return;
+//	}
 
-  touch = M5.Touch.getPressPoint();
+  auto touch = M5.Touch.getTouchPointRaw();
 
   // メインコンテンツのタッチ
   if (touch.y < 200) {
@@ -42,12 +41,12 @@ void handleTouchEvents() {
   }
 }
 
-void handleFooterTouch(TouchPoint_t touch) {
+void handleFooterTouch(const lgfx::v1::touch_point_t& touch) {
   if(appState.currentScreen == TRANSCRIPTION){
     Serial.println("currentScreen is TRANSCRIPTION");
-    M5.Axp.SetLDOEnable(3, true);
+    M5.Power.setLDO3(true);
     delay(75);
-    M5.Axp.SetLDOEnable(3, false);
+    M5.Power.setLDO3(false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
       changeScreen(USER_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
@@ -55,9 +54,9 @@ void handleFooterTouch(TouchPoint_t touch) {
     }
   }
   else{
-    M5.Axp.SetLDOEnable(3, true);
+    M5.Power.setLDO3(true);
     delay(75);
-    M5.Axp.SetLDOEnable(3, false);
+    M5.Power.setLDO3(false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
       changeScreen(RESIDENT_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {

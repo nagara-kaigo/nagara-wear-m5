@@ -1,7 +1,7 @@
 #include "audio_recorder.h"
 #include "../services/transcription/whisper_client.h"
 #include "../services/api/api.h"
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "../tools/json.h"
 #include "../services/api/food_records.h"
 #include "../services/api/bath_records.h"

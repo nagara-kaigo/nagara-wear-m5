@@ -4,7 +4,7 @@
 #include "../../task_manager.h"
 #include <string>
 #include <ArduinoJson.h>
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "../../services/api/api.h"
 #include "../../screens/screen_transcription.h"
 #include <main.h>

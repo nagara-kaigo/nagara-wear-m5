@@ -21,7 +21,7 @@ void showRecordTypeScreen(const AppState &state) {
 }
 
 
-bool handleRecordTypeTouch(const TouchPoint_t &touch, AppState &state) {
+bool handleRecordTypeTouch(const lgfx::v1::touch_point_t& touch, AppState &state) {
     if (touch.x > 69 && touch.x < 69+86 && touch.y > 40 && touch.y < 40+75) {
         state.selectedRecordType = MEAL;
         return true;

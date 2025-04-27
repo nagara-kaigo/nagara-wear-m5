@@ -46,7 +46,7 @@ void showStandbyScreen(const AppState &state) {
     showFooterBar(state);
 }
 
-bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state) {
+bool handleRecBtnTouch(const lgfx::v1::touch_point_t& touch, AppState &state) {
     // ボタン共通のサイズと配置
 
     // 各ボタンの範囲

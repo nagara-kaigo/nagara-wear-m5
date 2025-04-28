@@ -12,6 +12,7 @@
 #include "../api/records.h"
 #include <WiFiClientSecure.h>
 #include "../../system/sd_handler.h"
+#include "realtime_api.h"
 
 //extern AudioRecorder recorder;
 const char* API_KEY = OPENAI_API_KEY;
@@ -186,6 +187,7 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
 
 
 void transcribeAudio() {
+    uint8_t* tempBuf = recorder.gettempBuffer();
     //File recordingFile = SD.open("/recording.wav", FILE_READ);
     /*
     if (!recordingFile) {
@@ -208,16 +210,27 @@ void transcribeAudio() {
           // 大きすぎると chunkFile が巨大になるので、必要なら制限
           // ここではとりあえず全部読み出す
           for (size_t i = 0; i < available; i++) {
-            uint8_t* tempBuf = recorder.gettempBuffer();
             tempBuf[i] = recorder.getaudioRingBuffer()[recorder.getreadIndex()];
             recorder.setReadIndex((recorder.getreadIndex() + 1) % BUFFER_SIZE);
           }
           xSemaphoreGive(recorder.getRingBufferMutex());
         }
+        Serial.println("complete tmpBuf");
 
-        if (available == 0) {
-          Serial.println("No new data in ring buffer");
-        }
+        //WebSocket通信
+        if (available > 0) {
+          const int16_t* pcm16 = reinterpret_cast<int16_t*>(tempBuf);
+          size_t samples = available / 2;
+          Serial.println("start sendPcmChunk");
+          Serial.printf("ptr=%p  available=%u  freeHeap=%u\n",
+            tempBuf, available, ESP.getFreeHeap());
+          sendPcmChunk(pcm16, samples);
+      } else {
+          Serial.println("No new data to send, skipping sendPcmChunk.");
+      }
+
+
+        /*
         Serial.println("open SD");
         initializeRecordFile();
         File recordingFile = SD.open("/recording.wav", FILE_APPEND);
@@ -314,6 +327,8 @@ void transcribeAudio() {
       // 認識結果を表示
     M5.Lcd.setTextSize(0.5);
     //drawWrappedText(jpResponse,24,appState);
+    */
+}
 }
 
 

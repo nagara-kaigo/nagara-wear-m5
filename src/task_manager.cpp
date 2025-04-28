@@ -52,6 +52,8 @@ void task1(void *parameter) {
         Serial.println(recordInfo);
         showRecordFromJson(appState, recordInfo);
         */
+        vTaskDelay(3000 / portTICK_PERIOD_MS);
+        transcribeAudio();
         vTaskDelay(pdMS_TO_TICKS(30));
         /*
         if(!recorder->isRecording()){

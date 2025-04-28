@@ -15,6 +15,11 @@ String createFoodRecord(
     const String& beverageType,
     int beverageVolume)
 {
+  Serial.println("[DEBUG] createFoodRecord() called");
+
+  // apiチェック
+  Serial.println("[DEBUG] api.getResidentUid() = " + api.getResidentUid());
+  Serial.println("[DEBUG] api.getUserToken() = " + api.getUserToken());
   StaticJsonDocument<512> doc;
 
   doc["recordedAt"] = recordedAt;

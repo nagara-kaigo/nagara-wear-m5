@@ -234,8 +234,6 @@ void AudioRecorder::recordTask(void* param) {
             }
             xSemaphoreGive(recorder->ringBufferMutex);
         }
-         // ------- ここで WebSocket 送信 -------
-         sendPcmChunk(in, samples);
     return;
     }
 }

@@ -97,6 +97,14 @@ void AudioRecorder::initialize() {
     i2s_set_clk(I2S_PORT, 16000, I2S_BITS_PER_SAMPLE_16BIT, I2S_CHANNEL_MONO);
 }
 
+
+bool AudioRecorder::isSendBufferReady(size_t chunkSize) {
+    size_t availableBytes = (this->writeIndex + BUFFER_SIZE - readIndex) % BUFFER_SIZE;
+    return availableBytes >= chunkSize;
+}
+
+
+
 void AudioRecorder::startRecording(AppState &state) {
     if (recording || recordingTaskHandle != nullptr) return;
     String recordedAt = getFormattedTime();

@@ -16,7 +16,6 @@ void task1(void *parameter);
 
 void startBackgroundTasks() {
     xTaskCreatePinnedToCore(task0, "AudioTask", 32768, &recorder, 2, &task0Handle, 1);
-    xTaskCreatePinnedToCore(task1, "NetworkTask", 32768, &recorder, 1, &task1Handle, 1);
 }
 
 void stopBackgroundTasks() {
@@ -27,6 +26,8 @@ void stopBackgroundTasks() {
 void task0(void *parameter) {
     AudioRecorder* recorder = static_cast<AudioRecorder*>(parameter);
     recorder->startRecording(appState);
+    Serial.println("start task1 desuuuuuuuuuuuuuu");
+    xTaskCreatePinnedToCore(task1, "NetworkTask", 32768, recorder, 1, &task1Handle, 1);
     while(recorder->isRecording()){
         recorder->recordTask(parameter);
         vTaskDelay(pdMS_TO_TICKS(30));
@@ -36,8 +37,8 @@ void task0(void *parameter) {
 }
 
 void task1(void *parameter) {
-    /*
     AudioRecorder* recorder = static_cast<AudioRecorder*>(parameter);
+    /*
     while (true) {  
         vTaskDelay(5000 / portTICK_PERIOD_MS);
         Serial.println("[task1] Transcribing audio");
@@ -52,15 +53,11 @@ void task1(void *parameter) {
         Serial.println(recordInfo);
         showRecordFromJson(appState, recordInfo);
         */
-        vTaskDelay(3000 / portTICK_PERIOD_MS);
+        vTaskDelay(50 / portTICK_PERIOD_MS);
         transcribeAudio();
-        vTaskDelay(pdMS_TO_TICKS(30));
-        /*
         if(!recorder->isRecording()){
             Serial.println("task1 vTaskDelete");
             changeScreen(EXTRACT);
             vTaskDelete(NULL);
         }
-    }
-    */
 }

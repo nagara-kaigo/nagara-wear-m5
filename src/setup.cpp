@@ -26,7 +26,7 @@ WebSocketsClient webSocket;
 
 const char* websocket_host = "api.openai.com";
 const int websocket_port = 443;
-const char* websocket_path = "/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17";
+const char* websocket_path = "/v1/realtime?intent=transcription";
 
 void initializeSystem() {
   //M5スタックイニシャライズ
@@ -78,7 +78,7 @@ void initializeSystem() {
   client.setInsecure();  // SSL 証明書の検証を無効化
   M5.Lcd.setTextDatum(MC_DATUM);
   //WebSocket通信
-  webSocket.beginSSL(websocket_host, websocket_port, websocket_path);
+  webSocket.beginSSL(websocket_host, websocket_port, websocket_path,"","realtime");
   webSocket.setExtraHeaders((
       String("Authorization: Bearer ") + OPENAI_API_KEY + "\r\n" +
       "OpenAI-Beta: realtime=v1"

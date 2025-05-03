@@ -20,6 +20,7 @@ public:
     bool isRecording() const{return recording;};
     void initialize();
     static void recordTask(void* param);
+    bool isSendBufferReady(size_t chunkSize);
     SemaphoreHandle_t getRingBufferMutex() const {return ringBufferMutex;}
     volatile size_t getwriteIndex() const {return writeIndex;};
     volatile size_t getreadIndex() const {return readIndex;};

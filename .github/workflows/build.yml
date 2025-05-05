@@ -1,0 +1,42 @@
+name: Build M5Stack Project
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Create config.env
+        run: |
+          touch config.env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> config.env
+          echo "API_LOGIN_ID=${{ vars.API_LOGIN_ID }}" >> config.env
+          echo "API_PASSWORD=${{ vars.API_PASSWORD }}" >> config.env
+          echo "API_BASE_URL=${{ vars.API_BASE_URL }}" >> config.env
+
+      - name: Generate config.h from config.env
+        run: python generate_config.py
+
+      - name: Build with PlatformIO
+        run: pio run

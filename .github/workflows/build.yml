@@ -1,7 +1,6 @@
 name: Build M5Stack Project
 
 on:
-  push:
   pull_request:
 
 jobs:

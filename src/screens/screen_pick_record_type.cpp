@@ -4,28 +4,28 @@
 #include "../ui/footer.h"
 
 void showRecordTypeScreen(const AppState &state) {
-    M5.Lcd.clear();
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setTextColor(BLACK, WHITE);
+    M5.Display.clear();
+    M5.Display.fillScreen(TFT_WHITE);
+    M5.Display.setTextColor(TFT_BLACK, TFT_WHITE);
     String title = "利用者:" + state.selectedResident.familyName + " " + state.selectedResident.givenName;
     showHeaderBar(title);
-    M5.Lcd.drawRect(69,  40, 86, 75, BLACK);   // 上段 左
-    M5.Lcd.drawRect(165, 40, 86, 75, BLACK);  // 上段 右
-    M5.Lcd.drawRect(21,  125, 86, 75, BLACK); // 下段 左
-    M5.Lcd.drawRect(117, 125, 86, 75, BLACK); // 下段 中
-    M5.Lcd.drawRect(213, 125, 86, 75, BLACK); // 下段 右
-    M5.Lcd.setTextDatum(MC_DATUM); // Middle-Center
-    M5.Lcd.drawString("食事", 112, 77);
-    M5.Lcd.drawString("飲料", 208, 77);
-    M5.Lcd.drawString("排泄", 64, 162);
-    M5.Lcd.drawString("入浴", 160, 162);
-    M5.Lcd.drawString("日常", 256, 162);
+    M5.Display.drawRect(69,  40, 86, 75, TFT_BLACK);   // 上段 左
+    M5.Display.drawRect(165, 40, 86, 75, TFT_BLACK);  // 上段 右
+    M5.Display.drawRect(21,  125, 86, 75, TFT_BLACK); // 下段 左
+    M5.Display.drawRect(117, 125, 86, 75, TFT_BLACK); // 下段 中
+    M5.Display.drawRect(213, 125, 86, 75, TFT_BLACK); // 下段 右
+    M5.Display.setTextDatum(textdatum_t::middle_center); // Middle-Center
+    M5.Display.drawString("食事", 112, 77);
+    M5.Display.drawString("飲料", 208, 77);
+    M5.Display.drawString("排泄", 64, 162);
+    M5.Display.drawString("入浴", 160, 162);
+    M5.Display.drawString("日常", 256, 162);
 
     showFooterBar(state);
 }
 
 
-bool handleRecordTypeTouch(const TouchPoint_t &touch, AppState &state) {
+bool handleRecordTypeTouch(const lgfx::v1::touch_point_t& touch, AppState &state) {
     if (touch.x > 69 && touch.x < 69+86 && touch.y > 40 && touch.y < 40+75) {
         state.selectedRecordType = MEAL;
         return true;

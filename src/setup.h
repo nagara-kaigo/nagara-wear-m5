@@ -1,7 +1,7 @@
 #ifndef SETUP_H
 #define SETUP_H
 
-#include "CUF_24px.h"
+//#include "CUF_24px.h"
 
 void initializeSystem();
 

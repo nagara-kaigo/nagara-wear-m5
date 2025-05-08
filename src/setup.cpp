@@ -1,4 +1,4 @@
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include <WiFiClientSecure.h>
 #include <vector>
 #include "setup.h"
@@ -24,31 +24,37 @@ WiFiClientSecure client;
 
 void initializeSystem() {
   //M5スタックイニシャライズ
-  M5.begin();
-  M5.Axp.SetLDOEnable(2, true);
-  M5.Lcd.setTextFont(4);
-  M5.Lcd.setFreeFont(&unicode_24px);
-
-  appState.currentScreen = RESIDENT_PICKER;
+  auto cfg = M5.config();
+  M5.begin(cfg);
+  
+  // ディスプレイ設定
+  M5.Display.setFont(&fonts::lgfxJapanGothic_24);
+  M5.Display.setTextSize(1);
+  
+  // タッチ設定
+  M5.Touch.begin(&M5.Display);
+  
+  appState.currentScreen = PICK_RESIDENT;
   appState.screenHistory.push(appState.currentScreen);
 
   showRoadingScreen(appState);
   
   String ssid, password;
-
+  /*
   //SDカード初期化
   if (!initializeSD()) {
     Serial.println("SD Card init failed!");
-    M5.Lcd.drawString("メモリーカードが確認できませんでした", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+    M5.Display.drawString("メモリーカードが確認できませんでした", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
     return;
   }
-  M5.Lcd.drawString("メモリーカードを確認しました", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+  M5.Display.drawString("メモリーカードを確認しました", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
+  */
   // SSIDとパスワードの取得
   File configFile = SD.open("/wifi.env");
   if (!configFile) {
     Serial.println("Failed to open config.env file");
-    M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
-    M5.Lcd.drawString("有効なネットワーク情報がありません", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+    M5.Display.fillRect(0, 140, 340, 120, WHITE);
+    M5.Display.drawString("有効なネットワーク情報がありません", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
     return;
   }
   // ファイルの内容を読み取り
@@ -70,14 +76,14 @@ void initializeSystem() {
   //Wi-Fi接続
   connectToWiFi(ssid, password);
   client.setInsecure();  // SSL 証明書の検証を無効化
-  M5.Lcd.setTextDatum(MC_DATUM);
+  M5.Display.setTextDatum(MC_DATUM);
   // 現在時刻取得
-  M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
-  M5.Lcd.drawString("現在時刻取得中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+  M5.Display.fillRect(0, 140, 340, 120, WHITE);
+  M5.Display.drawString("現在時刻取得中...", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
   initializeTime();
   //ログイン
-  M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
-  M5.Lcd.drawString("ログイン中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+  M5.Display.fillRect(0, 140, 340, 120, WHITE);
+  M5.Display.drawString("ログイン中...", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
   String loginResponse = api.loginToApi(API_LOGIN_ID, API_PASSWORD);
   Serial.println("Login Response:");
   Serial.println(loginResponse);
@@ -89,13 +95,13 @@ void initializeSystem() {
   Serial.println(userinfo);
   String familyName = getJsonValue(userinfo,"familyName");
   String givenName = getJsonValue(userinfo,"givenName");
-  M5.Lcd.drawString("こんにちは " + givenName, M5.Lcd.width() / 2, M5.Lcd.height() * 1 / 4);
+  M5.Display.drawString("こんにちは " + givenName, M5.Display.width() / 2, M5.Display.height() * 1 / 4);
   appState.userName = familyName + " " + givenName;
   String tenantUid = getJsonValue(userinfo,"tenantUid");
   api.setTenantUid(tenantUid);
   //テナントレジデント一覧取得
-  M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
-  M5.Lcd.drawString("利用者さんを取得中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+  M5.Display.fillRect(0, 140, 340, 120, WHITE);
+  M5.Display.drawString("利用者さんを取得中...", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
   String tenantResidents = getTenantResidents(api,token);
   Serial.println("tenantUser:");
   Serial.println(tenantResidents);

@@ -1,4 +1,4 @@
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "loop.h"
 #include "touch_handler.h"
 #include "screen_manager.h"

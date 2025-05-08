@@ -1,8 +1,10 @@
 #ifndef SCREEN_STANDBY_H
 #define SCREEN_STANDBY_H
 
-#include <M5Core2.h> // touchPoint_t
-struct AppState;
+#include <Arduino.h>
+#include <M5Unified.h>
+
+struct AppState; // 前方宣言
 
 #define MEALTIME_RECTWIDTH 80     // 幅
 #define MEALTIME_RECTHEIGHT 80     // 高さ
@@ -15,6 +17,6 @@ struct AppState;
 #define CENTER_STARTY  80
 
 void showStandbyScreen(const AppState &state);
-bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state);
+bool handleRecBtnTouch(const lgfx::v1::touch_point_t& touch, AppState &state);
 
 #endif

@@ -2,6 +2,7 @@
 #include "services/api/api.h"
 #include "ui/popup.h"
 #include "system/wifi_manager.h"
+#include <stack>
 
 #include "screens/screen_pick_user.h"
 #include "screens/screen_pick_resident.h"
@@ -21,7 +22,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
     appState.currentScreen = newScreen;
 
     switch (newScreen) {
-      case RESIDENT_PICKER:
+      case PICK_RESIDENT:
         showResidentPickerScreen(appState);
         break;
       case STANDBY:
@@ -36,7 +37,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
         appState.screenHistory = std::stack<Screen>(); // 履歴をクリア
         showRecordFromJson(appState, api.getRecordExtract());
         break;
-      case RECORD_TYPE_PICKER:
+      case PICK_RECORD_TYPE:
         showRecordTypeScreen(appState);
         break;
     }

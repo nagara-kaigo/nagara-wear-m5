@@ -4,60 +4,55 @@
 #include "../ui/footer.h"
 
 void showStandbyScreen(const AppState &state) {
-    M5.Lcd.clear();
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setTextColor(BLACK, WHITE);
+    M5.Display.clear();
+    M5.Display.fillScreen(TFT_WHITE);
+    M5.Display.setTextColor(TFT_BLACK, TFT_WHITE);
     String type = recordTypeToString(state.selectedRecordType);
     String title = state.selectedResident.familyName + state.selectedResident.givenName + "の" + type + "を記録";
     showHeaderBar(title);
-    M5.Lcd.setTextDatum(3);
-
-
-
-    // テキストを中央揃えするための Datum 設定
-    M5.Lcd.setTextDatum(MC_DATUM); // 中心を基準にテキストを描画
+    M5.Display.setTextDatum(textdatum_t::middle_center);
 
     switch (state.selectedRecordType)
     {
     case MEAL:{
         // 1つ目の四角
         int x1 = MEALTIME_STARTX;
-        M5.Lcd.drawRect(x1, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("朝食", x1 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
+        M5.Display.drawRect(x1, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, TFT_BLACK);
+        M5.Display.drawString("朝食", x1 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
 
         // 2つ目の四角
         int x2 = x1 + MEALTIME_RECTWIDTH + GAP;
-        M5.Lcd.drawRect(x2, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("昼食", x2 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
+        M5.Display.drawRect(x2, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, TFT_BLACK);
+        M5.Display.drawString("昼食", x2 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
 
         // 3つ目の四角
         int x3 = x2 + MEALTIME_RECTWIDTH + GAP;
-        M5.Lcd.drawRect(x3, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("夕食", x3 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
+        M5.Display.drawRect(x3, MEALTIME_STARTY, MEALTIME_RECTWIDTH, MEALTIME_RECTHEIGHT, TFT_BLACK);
+        M5.Display.drawString("夕食", x3 + MEALTIME_RECTWIDTH/2, MEALTIME_STARTY + MEALTIME_RECTHEIGHT/2);
         break;
     }
     
     case DRINK:{
-        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
+        M5.Display.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, TFT_BLACK);
+        M5.Display.drawString("REC", CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
 
     case EXCRETION:{
-        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
+        M5.Display.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, TFT_BLACK);
+        M5.Display.drawString("REC", CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
 
     case BATH:{
-        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
+        M5.Display.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, TFT_BLACK);
+        M5.Display.drawString("REC", CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
 
     case EVERYDAY:{
-        M5.Lcd.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, BLACK);
-        M5.Lcd.drawString("REC",CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
+        M5.Display.drawRect(CENTER_STARTX, CENTER_STARTY, CENTER_RECTWIDTH, CENTER_RECTHEIGHT, TFT_BLACK);
+        M5.Display.drawString("REC", CENTER_STARTX + CENTER_RECTWIDTH/2, CENTER_STARTY + CENTER_RECTHEIGHT/2);
         break;
     }
     default:{
@@ -68,7 +63,7 @@ void showStandbyScreen(const AppState &state) {
     showFooterBar(state);
 }
 
-bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state) {
+bool handleRecBtnTouch(const lgfx::v1::touch_point_t& touch, AppState &state) {
     switch (state.selectedRecordType)
     {
     case MEAL:{
@@ -138,6 +133,4 @@ bool handleRecBtnTouch(const TouchPoint_t &touch, AppState &state) {
         return false;
     }
     }
-
-    
 }

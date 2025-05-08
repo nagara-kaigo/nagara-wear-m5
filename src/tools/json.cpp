@@ -7,7 +7,7 @@
 //JSONから任意のパーツを取り出す
 String getJsonValue(const String& jsonText, const String& part) {
     // 1) JSON解析用のドキュメントを用意（バッファサイズ 1024）
-    DynamicJsonDocument doc(1024);
+    JsonDocument doc;
 
     // 2) JSON文字列をdocにパース
     DeserializationError error = deserializeJson(doc, jsonText);
@@ -32,7 +32,7 @@ String getJsonValue(const String& jsonText, const String& part) {
 
   String getValueInJson(const String& jsonText, const String& part, const String& field) {
     // 1) JSONをパースする
-    DynamicJsonDocument doc(2048); // 必要に応じて容量調整
+    JsonDocument doc;
     DeserializationError error = deserializeJson(doc, jsonText);
     if (error) {
       Serial.print("[Error] Failed to parse JSON: ");
@@ -71,7 +71,7 @@ std::vector<Resident> getValueAllInJson(
     // 戻り値用のコンテナ
     std::vector<Resident> residentsList;
     // ArduinoJsonでパース用のDynamicJsonDocumentを準備 (容量は適宜調整)
-    DynamicJsonDocument doc(4096);
+    JsonDocument doc;
     DeserializationError err = deserializeJson(doc, jsonStr);
     if (err) {
         // JSONパース失敗時は空のリストを返すなど

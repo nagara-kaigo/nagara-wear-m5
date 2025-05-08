@@ -159,7 +159,7 @@ void writeWavHeader(File file, int sampleRate, int bitsPerSample, int numChannel
     String jsonPart = response.substring(index + 4);
 
     // 3) JSON解析用のドキュメントを用意（バッファサイズは適宜拡大可能）
-    DynamicJsonDocument doc(1024);
+    JsonDocument doc;
 
     // 4) JSON文字列をdocにパース
     DeserializationError error = deserializeJson(doc, jsonPart);

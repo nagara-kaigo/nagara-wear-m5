@@ -2,7 +2,6 @@
 #define SETUP_H
 
 #include "main.h"
-#include "CUF_24px.h"
 
 void initializeSystem();
 

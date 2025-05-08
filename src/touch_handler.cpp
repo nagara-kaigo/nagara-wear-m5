@@ -9,12 +9,11 @@
 extern AppState appState;
 
 void handleTouchEvents() {
-//	M5.update();
-//	if (!M5.Touch.wasClicked()) {
-//		return;
-//	}
+  if (!M5.Touch.isEnabled()) {
+    return;
+  }
 
-  auto touch = M5.Touch.getTouchPointRaw();
+  auto touch = M5.Touch.getDetail();
 
   // メインコンテンツのタッチ
   if (touch.y < 200) {
@@ -44,9 +43,9 @@ void handleTouchEvents() {
 void handleFooterTouch(const lgfx::v1::touch_point_t& touch) {
   if(appState.currentScreen == TRANSCRIPTION){
     Serial.println("currentScreen is TRANSCRIPTION");
-    M5.Power.setLDO3(true);
+    //M5.Power.setLDO3(true);
     delay(75);
-    M5.Power.setLDO3(false);
+    //M5.Power.setLDO3(false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
       changeScreen(USER_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {
@@ -54,9 +53,9 @@ void handleFooterTouch(const lgfx::v1::touch_point_t& touch) {
     }
   }
   else{
-    M5.Power.setLDO3(true);
+    //M5.Power.setLDO3(true);
     delay(75);
-    M5.Power.setLDO3(false);
+    //M5.Power.setLDO3(false);
     if (touch.x >= FOOTER_HOME_MIN_X && touch.x <= FOOTER_HOME_MAX_X) {
       changeScreen(RESIDENT_PICKER);
     } else if (touch.x < FOOTER_HOME_MIN_X) {

@@ -21,11 +21,11 @@ String mealTimeToString(MealTime mt) {
 
 void updateTranscriptionText(const String& newText) {
     transcriptionText = newText;
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.setTextColor(BLACK);
-    M5.Lcd.setTextSize(2);
-    M5.Lcd.print(transcriptionText);
+    M5.Display.fillScreen(TFT_WHITE);
+    M5.Display.setCursor(10, 10);
+    M5.Display.setTextColor(TFT_BLACK);
+    M5.Display.setTextSize(2);
+    M5.Display.print(transcriptionText);
 }
 
 void toggleRecording() {
@@ -39,21 +39,20 @@ void toggleRecording() {
 }
 
 void showTranscriptionScreen(const AppState &state) {
-    M5.Lcd.clear();
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setCursor(10, 10);
+    M5.Display.clear();
+    M5.Display.fillScreen(TFT_WHITE);
+    M5.Display.setCursor(10, 10);
     Serial.println(state.mealTime);
     showHeaderBar(mealTimeToString(state.mealTime) + "レコーディング中");
     showFooterBarRecording(state);
     toggleRecording();
 }
 
-
 void rebootTranscriptionScreen(const AppState &state) {
-    M5.Lcd.clear();
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setCursor(10, 10);
-    M5.Lcd.setTextColor(BLACK);
+    M5.Display.clear();
+    M5.Display.fillScreen(TFT_WHITE);
+    M5.Display.setCursor(10, 10);
+    M5.Display.setTextColor(TFT_BLACK);
     showHeaderBar(mealTimeToString(state.mealTime) + "レコーディング中");
     showFooterBarRecording(state);
 }

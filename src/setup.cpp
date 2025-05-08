@@ -20,15 +20,19 @@ WiFiClientSecure client;
 
 void initializeSystem() {
   //M5スタックイニシャライズ
-  M5.begin();
-  M5.Axp.SetLDOEnable(2, true);
-  M5.Lcd.setTextFont(4);
-  M5.Lcd.setFreeFont(&unicode_24px);
-
+  auto cfg = M5.config();
+  M5.begin(cfg);
+  
+  // ディスプレイ設定
+  M5.Display.setFont(&fonts::lgfxJapanGothic_24);
+  M5.Display.setTextSize(1);
+  
+  // タッチ設定
+  M5.Touch.begin(&M5.Display);
+  
   appState.currentScreen = RESIDENT_PICKER;
   appState.screenHistory.push(appState.currentScreen);
   
-
   //SDカード初期化
   if (!initializeSD()) {
     Serial.println("SD Card init failed!");

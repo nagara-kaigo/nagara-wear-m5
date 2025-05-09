@@ -22,7 +22,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
     appState.currentScreen = newScreen;
 
     switch (newScreen) {
-      case PICK_RESIDENT:
+      case RESIDENT_PICKER:
         showResidentPickerScreen(appState);
         break;
       case STANDBY:
@@ -37,7 +37,7 @@ void changeScreen(Screen newScreen, bool addStuck) {
         appState.screenHistory = std::stack<Screen>(); // 履歴をクリア
         showRecordFromJson(appState, api.getRecordExtract());
         break;
-      case PICK_RECORD_TYPE:
+      case RECORD_TYPE_PICKER:
         showRecordTypeScreen(appState);
         break;
     }

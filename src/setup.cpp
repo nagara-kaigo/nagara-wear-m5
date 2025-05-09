@@ -34,7 +34,7 @@ void initializeSystem() {
   // タッチ設定
   M5.Touch.begin(&M5.Display);
   
-  appState.currentScreen = PICK_RESIDENT;
+  appState.currentScreen = RESIDENT_PICKER;
   appState.screenHistory.push(appState.currentScreen);
 
   showRoadingScreen(appState);

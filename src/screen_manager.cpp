@@ -2,6 +2,7 @@
 #include "services/api/api.h"
 #include "ui/popup.h"
 #include "system/wifi_manager.h"
+#include <stack>
 
 #include "screens/screen_pick_user.h"
 #include "screens/screen_pick_resident.h"

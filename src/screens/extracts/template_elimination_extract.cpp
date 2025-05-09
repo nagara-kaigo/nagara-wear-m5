@@ -1,6 +1,6 @@
 #include "template_elimination_extract.h"
 #include "screen_manager.h"
-#include <M5Core2.h>      
+#include <M5Unified.h>      
 
 void showEliminationRecordFromJson(const JsonDocument& doc) {
     const char* eliminationMethod = doc["eliminationMethod"] | "UNKNOWN";
@@ -14,48 +14,48 @@ void showEliminationRecordFromJson(const JsonDocument& doc) {
     int urineVolume = doc["urineVolume"] | -1;
     const char* notes = doc["notes"] | "";
 
-    M5.Lcd.setTextColor(BLACK);
-    M5.Lcd.setCursor(0, 60);
+    M5.Display.setTextColor(BLACK);
+    M5.Display.setCursor(0, 60);
 
-    M5.Lcd.print("方法: ");
-    M5.Lcd.println(eliminationMethod);
+    M5.Display.print("方法: ");
+    M5.Display.println(eliminationMethod);
 
     if (hasFeces) {
-        M5.Lcd.print("便: ");
+        M5.Display.print("便: ");
         if (fecalIncontinence) {
-            M5.Lcd.println("失禁");
+            M5.Display.println("失禁");
         } else {
-            M5.Lcd.print("量: ");
+            M5.Display.print("量: ");
             if (fecesVolume >= 0) {
-                M5.Lcd.printf("%d g\n", fecesVolume);
+                M5.Display.printf("%d g\n", fecesVolume);
             } else {
-                M5.Lcd.println("不明");
+                M5.Display.println("不明");
             }
-            M5.Lcd.print("外観: ");
-            M5.Lcd.println(fecesAppearance);
+            M5.Display.print("外観: ");
+            M5.Display.println(fecesAppearance);
         }
     }
 
     if (hasUrine) {
-        M5.Lcd.print("尿: ");
+        M5.Display.print("尿: ");
         if (urinaryIncontinence) {
-            M5.Lcd.println("失禁");
+            M5.Display.println("失禁");
         } else {
-            M5.Lcd.print("量: ");
+            M5.Display.print("量: ");
             if (urineVolume >= 0) {
-                M5.Lcd.printf("%d ml\n", urineVolume);
+                M5.Display.printf("%d ml\n", urineVolume);
             } else {
-                M5.Lcd.println("不明");
+                M5.Display.println("不明");
             }
-            M5.Lcd.print("外観: ");
-            M5.Lcd.println(urineAppearance);
+            M5.Display.print("外観: ");
+            M5.Display.println(urineAppearance);
         }
     }
 
-    M5.Lcd.print("特記事項: ");
+    M5.Display.print("特記事項: ");
     if (strlen(notes) > 0) {
-        M5.Lcd.println(notes);
+        M5.Display.println(notes);
     } else {
-        M5.Lcd.println("なし");
+        M5.Display.println("なし");
     }
 }

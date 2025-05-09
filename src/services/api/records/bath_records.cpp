@@ -10,7 +10,7 @@ String createBathRecord(
   const String& notes,
   const String& bathMethod
 ) {
-  StaticJsonDocument<256> doc;
+  JsonDocument doc;
   doc["recordedAt"] = recordedAt;
   doc["notes"] = notes;
   doc["bathMethod"] = bathMethod;
@@ -24,7 +24,7 @@ String createBathRecord(
   
 // 入浴記録の追記
 String bathTranscription(MyApi& api, const String& transcription){
-  StaticJsonDocument<128> doc;
+  JsonDocument doc;
   doc["transcription"] = transcription;
 
   String jsonBody;

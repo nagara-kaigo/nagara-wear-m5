@@ -1,22 +1,22 @@
 #include "wifi_manager.h"
 #include <WiFi.h>
 #include "config.h"
-#include <M5Core2.h>
+#include <M5Unified.h>
 
 //const char* ssid = WIFI_SSID;
 //const char* password = WIFI_PASSWORD;
 
 void connectToWiFi(String ssid, String password) {
-    M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
-    M5.Lcd.drawString("ネットワーク通信中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+    M5.Display.fillRect(0, 140, 340, 120, TFT_WHITE);
+    M5.Display.drawString("ネットワーク通信中...", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
         Serial.println(WiFi.status());
         delay(500);
     }
-    M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
+    M5.Display.fillRect(0, 140, 340, 120, TFT_WHITE);
     Serial.println("WiFi Connected!");
-    M5.Lcd.drawString("ネットワーク通信成功", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
+    M5.Display.drawString("ネットワーク通信成功", M5.Display.width() / 2, M5.Display.height() * 3 / 4);
 }
 
 bool wifiDisconnectionObserve(){

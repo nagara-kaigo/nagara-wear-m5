@@ -10,7 +10,7 @@ String createDailyRecord(
   const String& notes,
   const String& dailyStatus
 ) {
-  StaticJsonDocument<256> doc;
+  JsonDocument doc;
   doc["recordedAt"] = recordedAt;
   doc["notes"] = notes;
   doc["dailyStatus"] = dailyStatus;
@@ -24,7 +24,7 @@ String createDailyRecord(
   
 // 日常記録の追記
 String dailyTranscription(MyApi& api, const String& transcription){
-  StaticJsonDocument<128> doc;
+  JsonDocument doc;
   doc["transcription"] = transcription;
 
   String jsonBody;

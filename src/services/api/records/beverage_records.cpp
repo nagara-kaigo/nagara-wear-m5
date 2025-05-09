@@ -11,7 +11,7 @@ String createBeverageRecord(
   const String& beverageType,
   int volume
 ) {
-  StaticJsonDocument<256> doc;
+  JsonDocument doc;
   doc["recordedAt"] = recordedAt;
   doc["notes"] = notes;
   doc["beverageType"] = beverageType;
@@ -26,7 +26,7 @@ String createBeverageRecord(
   
 // 飲料記録の追記
 String beverageTranscription(MyApi& api, const String& transcription){
-  StaticJsonDocument<128> doc;
+  JsonDocument doc;
   doc["transcription"] = transcription;
 
   String jsonBody;

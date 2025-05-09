@@ -2,7 +2,7 @@
 #include "../services/transcription/whisper_client.h"
 #include "../services/api/api.h"
 #include "../system/time_manager.h"
-#include <M5Core2.h>
+#include <M5Unified.h>
 #include "../tools/json.h"
 #include "../services/api/records/food_records.h"
 #include "../services/api/records/bath_records.h"

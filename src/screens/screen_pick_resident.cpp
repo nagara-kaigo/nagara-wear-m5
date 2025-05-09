@@ -4,11 +4,11 @@
 #include "../ui/footer.h"
 
 void showResidentPickerScreen(AppState &state) {
-    M5.Lcd.clear();
-    M5.Lcd.fillScreen(WHITE);
-    M5.Lcd.setTextColor(BLACK, WHITE);
+    M5.Display.clear();
+    M5.Display.fillScreen(TFT_WHITE);
+    M5.Display.setTextColor(TFT_BLACK, TFT_WHITE);
     showHeaderBar("利用者を選んでください");
-    M5.Lcd.setTextDatum(3);
+    M5.Display.setTextDatum(textdatum_t::middle_left);
 
     size_t totalResidents = state.residentsList.size();
     Serial.println(totalResidents);
@@ -30,19 +30,19 @@ void showResidentPickerScreen(AppState &state) {
             j++;
         }
     
-        M5.Lcd.drawRect(x, y, BOX_WIDTH, BOX_HEIGHT, BLACK);
-        M5.Lcd.drawString(state.residentsList[i].familyName, x + TEXT_OFFSET_X, y + TEXT_OFFSET_Y);
+        M5.Display.drawRect(x, y, BOX_WIDTH, BOX_HEIGHT, TFT_BLACK);
+        M5.Display.drawString(state.residentsList[i].familyName, x + TEXT_OFFSET_X, y + TEXT_OFFSET_Y);
     }
 
     // ページに応じて矢印を表示
     if (state.totalResidentPage > 1 && state.currentResidentPage < state.totalResidentPage - 1) {
         // 右矢印（次ページあり）
-        M5.Lcd.fillTriangle(ARROW_RIGHT_X1, ARROW_Y_CENTER, ARROW_RIGHT_X2, ARROW_Y_TOP, ARROW_RIGHT_X2, ARROW_Y_BOTTOM, BLACK);
+        M5.Display.fillTriangle(ARROW_RIGHT_X1, ARROW_Y_CENTER, ARROW_RIGHT_X2, ARROW_Y_TOP, ARROW_RIGHT_X2, ARROW_Y_BOTTOM, TFT_BLACK);
     }
 
     if (state.totalResidentPage > 1 && state.currentResidentPage > 0) {
         // 左矢印（前ページあり）
-        M5.Lcd.fillTriangle(ARROW_LEFT_X1, ARROW_Y_CENTER, ARROW_LEFT_X2, ARROW_Y_TOP, ARROW_LEFT_X2, ARROW_Y_BOTTOM, BLACK);
+        M5.Display.fillTriangle(ARROW_LEFT_X1, ARROW_Y_CENTER, ARROW_LEFT_X2, ARROW_Y_TOP, ARROW_LEFT_X2, ARROW_Y_BOTTOM, TFT_BLACK);
     }
 
     showFooterBar(state);
@@ -53,7 +53,8 @@ bool isTouchInBox(int touchX, int touchY, int boxX, int boxY, int width, int hei
     return touchX >= boxX && touchX <= boxX + width && touchY >= boxY && touchY <= boxY + height;
 }
 
-bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state, SwipeState swipeState) {
+//bool handleResidentPickerTouch(const TouchPoint_t &touch, AppState &state, SwipeState swipeState) {
+bool handleResidentPickerTouch(const lgfx::v1::touch_point_t& touch, AppState &state, SwipeState swipeState) {
     Serial.println("handleResidentPickerTouch");
     Serial.println(swipeState);
     size_t j = 0;

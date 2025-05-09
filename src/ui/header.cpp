@@ -1,8 +1,8 @@
 #include "header.h"
-#include <M5Core2.h>
+#include <M5Unified.h>
 
 void showHeaderBar(const String &title) {
-    M5.Lcd.drawLine(10, 30, 310, 30, BLACK);
-    M5.Lcd.setTextDatum(4);
-    M5.Lcd.drawString(title, 160, 15);
+    M5.Display.drawLine(10, 30, 310, 30, TFT_BLACK);
+    M5.Display.setTextDatum(textdatum_t::middle_center);
+    M5.Display.drawString(title, 160, 15);
 }

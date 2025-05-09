@@ -18,7 +18,7 @@ String createEliminationRecord(
   const String& urineAppearance,
   int urineVolume
 ) {
-  StaticJsonDocument<256> doc;
+  JsonDocument doc;
   doc["recordedAt"] = recordedAt;
   doc["notes"] = notes;
   doc["eliminationMethod"] = eliminationMethod;
@@ -40,7 +40,7 @@ String createEliminationRecord(
   
 // 排泄記録の追記
 String eliminationTranscription(MyApi& api, const String& transcription){
-  StaticJsonDocument<128> doc;
+  JsonDocument doc;
   doc["transcription"] = transcription;
 
   String jsonBody;

@@ -15,7 +15,7 @@ String createFoodRecord(
     const String& beverageType,
     int beverageVolume)
 {
-  StaticJsonDocument<512> doc;
+  JsonDocument doc;
 
   doc["recordedAt"] = recordedAt;
   doc["notes"] = notes;
@@ -35,7 +35,7 @@ String createFoodRecord(
 
 // 食事記録の追記
 String foodTranscription(MyApi& api, const String& transcription){
-  StaticJsonDocument<128> doc;
+  JsonDocument doc;
   doc["transcription"] = transcription;
 
   String jsonBody;

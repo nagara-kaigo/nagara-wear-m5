@@ -1,5 +1,6 @@
 #include <M5Core2.h>
 #include <WiFiClientSecure.h>
+#include <WebSocketsClient.h>
 #include <vector>
 #include "setup.h"
 #include "config.h"
@@ -12,8 +13,8 @@
 #include "screens/screen_roading.h"
 #include "tools/json.h"
 #include "services/transcription/whisper_client.h"
-
 #include "screens/screen_pick_resident.h"
+#include "services/api/general.h"
 
 AppState appState;
 
@@ -21,6 +22,11 @@ MyApi api;  // `MyApi` クラスのインスタンスを作成
 
 // **HTTP リクエストの送信**
 WiFiClientSecure client;
+WebSocketsClient webSocket;
+
+const char* websocket_host = "api.openai.com";
+const int websocket_port = 443;
+const char* websocket_path = "/v1/realtime?model=gpt-4o-realtime-preview-2024-12-17";
 
 void initializeSystem() {
   //M5スタックイニシャライズ
@@ -71,6 +77,15 @@ void initializeSystem() {
   connectToWiFi(ssid, password);
   client.setInsecure();  // SSL 証明書の検証を無効化
   M5.Lcd.setTextDatum(MC_DATUM);
+  //WebSocket通信
+  webSocket.beginSSL(websocket_host, websocket_port, websocket_path);
+  webSocket.setExtraHeaders((
+      String("Authorization: Bearer ") + OPENAI_API_KEY + "\r\n" +
+      "OpenAI-Beta: realtime=v1"
+  ).c_str());
+  webSocket.onEvent(webSocketEvent);
+  webSocket.setReconnectInterval(5000);
+
   // 現在時刻取得
   M5.Lcd.fillRect(0, 140, 340, 120, WHITE);
   M5.Lcd.drawString("現在時刻取得中...", M5.Lcd.width() / 2, M5.Lcd.height() * 3 / 4);
